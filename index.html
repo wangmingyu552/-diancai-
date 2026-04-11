@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>盼盼老婆请点菜</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config={theme:{extend:{colors:{warm:{50:'#FEF7ED',100:'#FFF4E6',200:'#FDDCB5',300:'#F0D9B5',400:'#E8A87C',500:'#E8590C',600:'#D9480F',700:'#C2410C'},bark:{50:'#F5EDE4',100:'#E8D5C4',200:'#D4B896',300:'#8C6D4F',400:'#5C3D2E',500:'#2D1B0E'}},fontFamily:{display:['ZCOOL KuaiLe','cursive'],body:['Noto Sans SC','sans-serif']}}}}
+</script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+::-webkit-scrollbar{display:none}
+body{overscroll-behavior:none}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+@keyframes bounceIn{0%{transform:scale(.3);opacity:0}50%{transform:scale(1.08)}70%{transform:scale(.92)}100%{transform:scale(1);opacity:1}}
+@keyframes pulseSoft{0%,100%{opacity:1}50%{opacity:.55}}
+@keyframes float1{0%,100%{transform:translate(0,0) rotate(0deg)}50%{transform:translate(15px,-25px) rotate(8deg)}}
+@keyframes float2{0%,100%{transform:translate(0,0) rotate(0deg)}50%{transform:translate(-20px,-15px) rotate(-6deg)}}
+@keyframes confettiFall{0%{transform:translateY(-10px) rotate(0);opacity:1}100%{transform:translateY(120px) rotate(720deg);opacity:0}}
+.anim-fade{animation:fadeUp .35s ease-out both}
+.anim-slide{animation:slideUp .3s ease-out both}
+.anim-bounce{animation:bounceIn .4s ease-out both}
+.anim-pulse{animation:pulseSoft 2s ease-in-out infinite}
+.anim-float1{animation:float1 7s ease-in-out infinite}
+.anim-float2{animation:float2 9s ease-in-out infinite}
+.dish-card{transition:transform .15s,box-shadow .15s}
+.dish-card:active{transform:scale(.94)}
+.dish-card.sel{box-shadow:0 0 0 2.5px #E8590C,0 4px 14px rgba(232,89,12,.18)}
+.tab-btn{transition:all .2s}
+.tab-btn.active{color:#E8590C;border-bottom:2.5px solid #E8590C}
+.modal-mask{background:rgba(45,27,14,.45);backdrop-filter:blur(4px)}
+.status-dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+.status-dot.ordered{background:#E8590C;animation:pulseSoft 1.2s infinite}
+.status-dot.seen{background:#F59F00}
+.status-dot.shopping{background:#339AF0}
+.status-dot.cooking{background:#845EF7}
+.status-dot.eating{background:#2F9E44}
+.bottom-safe{padding-bottom:max(16px,env(safe-area-inset-bottom))}
+.bg-scene{background-image:radial-gradient(ellipse at 15% 85%,rgba(232,89,12,.06) 0%,transparent 55%),radial-gradient(ellipse at 85% 15%,rgba(232,89,12,.04) 0%,transparent 50%)}
+input,textarea,select{font-family:inherit}
+.confetti-piece{position:absolute;width:8px;height:8px;border-radius:2px;animation:confettiFall 1.5s ease-out forwards}
+.loading-spinner{width:32px;height:32px;border:3px solid #FDDCB5;border-top-color:#E8590C;border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body class="bg-warm-50 font-body text-bark-500 min-h-screen bg-scene">
+<div id="app"></div>
+<div id="modal" class="hidden fixed inset-0 z-50"></div>
+<div id="toast-box" class="fixed top-5 left-1/2 -translate-x-1/2 z-[999] flex flex-col items-center gap-2 pointer-events-none"></div>
+
+<!-- ============================================
+     Supabase SDK
+     ============================================ -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+/* ★★★ 在这里填入你的 Supabase 信息 ★★★ */
+const SUPABASE_URL = 'https://ojgsscrfdkyckhilqgxf.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9qZ3NzY3JmZGt5Y2toaWxxZ3hmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU5MTM2MDUsImV4cCI6MjA5MTQ4OTYwNX0.JQ9NORVl1JSQX9pPX6jd76wc7txJYQL8mkHPYbqeyPo';
+/* ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★ */
+</script>
+
+<script>
+/* ============================================================
+   常量
+   ============================================================ */
+const CATEGORIES=['全部','荤菜','素菜','汤','主食'];
+const CAT_ICONS={'全部':'fa-utensils','荤菜':'fa-drumstick-bite','素菜':'fa-leaf','汤':'fa-bowl-food','主食':'fa-bowl-rice'};
+const STATUS_LABELS={ordered:'已点菜',seen:'已看到',shopping:'买菜中',cooking:'做饭中',eating:'开饭啦'};
+const STATUS_ICONS={ordered:'fa-bell',seen:'fa-eye',shopping:'fa-cart-shopping',cooking:'fa-fire-burner',eating:'fa-utensils'};
+const STATUS_MSGS={
+  ordered:{wife:['老婆已经点好菜啦，盼盼快接单!','叮咚~ 今晚的菜单已送达','菜单已下单，等盼盼来接~'],hubby:['老婆点了菜，快看看!','新订单来了!','老婆在等你接单哦']},
+  seen:{wife:['盼盼看到啦，马上安排!','收到收到，这就去买菜','盼盼已读不回...开玩笑的']},
+  shopping:{wife:['盼盼在菜市场挑菜中~','正在挑选最新鲜的食材','买菜去了，马上回来~']},
+  cooking:{wife:['锅里咕噜咕噜响啦，再等一会儿~','盼盼大厨正在施展厨艺','快好了快好了，再耐心等一下']},
+  eating:{wife:['饭做好啦! 快洗手吃饭~','今晚的菜已就位，快来验收!','开饭开饭!']}
+};
+const CANCEL_REASONS=[{text:'加班太晚了，明天补上!',icon:'fa-briefcase'},{text:'今天身体不太舒服',icon:'fa-face-tired'},{text:'今天出去吃',icon:'fa-utensils'},{text:'今天点外卖',icon:'fa-motorcycle'}];
+
+/* ============================================================
+   Supabase 客户端
+   ============================================================ */
+let sb;
+try{sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY)}catch(e){console.error('Supabase 初始化失败:',e)}
+
+/* ============================================================
+   数据层（异步）
+   ============================================================ */
+const DB={
+  _dishes:[],_orders:[],_templates:[],_inventory:{},_settings:{},
+  _ready:false,
+
+  async init(){
+    if(this._ready)return;
+    if(!sb){toast('Supabase 连接失败，请检查 URL 和 Key','error');return}
+    try{
+      const [dRes,oRes,tRes,iRes,sRes]=await Promise.all([
+        sb.from('dishes').select('*').order('is_favorite',{ascending:false}),
+        sb.from('orders').select('*').order('created_at',{ascending:false}),
+        sb.from('templates').select('*'),
+        sb.from('inventory').select('*'),
+        sb.from('settings').select('*')
+      ]);
+      this._dishes=dRes.data||[];
+      this._orders=oRes.data||[];
+      this._templates=tRes.data||[];
+      (iRes.data||[]).forEach(r=>{this._inventory[r.ingredient_name]=r.have_it});
+      (sRes.data||[]).forEach(r=>{this._settings[r.key]=r.value});
+      this._ready=true;
+      this._subscribe();
+    }catch(e){console.error('数据加载失败:',e);toast('数据加载失败','error')}
+  },
+
+  _subscribe(){
+    if(!sb)return;
+    const ch=sb.channel('pp-realtime').subscribe((status)=>{
+      if(status==='SUBSCRIBED')console.log('实时连接已建立');
+    });
+    ch.on('postgres_changes',{event:'*',schema:'public',table:'orders'},async()=>{
+      const{data}=await sb.from('orders').select('*').order('created_at',{ascending:false});
+      this._orders=data||[];renderCurrentPage();
+    });
+    ch.on('postgres_changes',{event:'*',schema:'public',table:'dishes'},async()=>{
+      const{data}=await sb.from('dishes').select('*').order('is_favorite',{ascending:false});
+      this._dishes=data||[];renderCurrentPage();
+    });
+    ch.on('postgres_changes',{event:'*',schema:'public',table:'templates'},async()=>{
+      const{data}=await sb.from('templates').select('*');
+      this._templates=data||[];renderCurrentPage();
+    });
+    ch.on('postgres_changes',{event:'*',schema:'public',table:'inventory'},async()=>{
+      const{data}=await sb.from('inventory').select('*');
+      this._inventory={};(data||[]).forEach(r=>{this._inventory[r.ingredient_name]=r.have_it});
+      renderCurrentPage();
+    });
+  },
+
+  dishes(){return this._dishes},
+  orders(){return this._orders},
+  templates(){return this._templates},
+  inventory(){return this._inventory},
+  setting(k,d=null){return this._settings[k]!==undefined?this._settings[k]:d},
+  today(){return new Date().toISOString().slice(0,10)},
+  todayOrder(){return this._orders.find(o=>o.order_date===this.today()&&!o.cancelled)},
+  recentOrders(n=5){return this._orders.filter(o=>!o.cancelled).slice(0,n)},
+  dishWeekCount(did){const w=Date.now()-7*864e5;return this._orders.filter(o=>o.created_at&&new Date(o.created_at).getTime()>w&&!o.cancelled).reduce((c,o)=>{const items=typeof o.items==='string'?JSON.parse(o.items):o.items;return c+(items||[]).filter(i=>i.did===did).length},0)},
+  getDish(id){return this._dishes.find(d=>d.id===id)},
+  getDishesByIds(ids){return ids.map(id=>this.getDish(id)).filter(Boolean)},
+  orderCost(o){const items=typeof o.items==='string'?JSON.parse(o.items):o.items;return this.getDishesByIds((items||[]).map(i=>i.did)).reduce((s,d)=>s+(d.cost_estimate||0),0)},
+
+  async addOrder(items,remark){
+    const o={id:'o'+Date.now(),order_date:this.today(),status:'ordered',remark:remark||'',items:items.map(did=>({did})),cancelled:false,cancel_reason:'',rating:null};
+    const{error}=await sb.from('orders').insert(o);
+    if(error)toast('下单失败：'+error.message,'error');
+    else toast('下单成功，盼盼快接单!','success');
+    return error?null:o;
+  },
+  async updateOrder(id,patch){
+    patch.updated_at=new Date().toISOString();
+    const{error}=await sb.from('orders').update(patch).eq('id',id);
+    if(error)toast('更新失败','error');
+  },
+  async setInv(name,have){
+    if(have){
+      await sb.from('inventory').upsert({ingredient_name:name,have_it:true,updated_at:new Date().toISOString()},{onConflict:'ingredient_name'});
+    }else{
+      await sb.from('inventory').delete().eq('ingredient_name',name);
+    }
+    this._inventory[name]=have||undefined;
+  },
+  hasInv(name){return !!this._inventory[name]},
+  async saveDish(d){
+    if(d._exists){const{...clean}=d;delete clean._exists;const{error}=await sb.from('dishes').update(clean).eq('id',d.id);if(error)toast('保存失败','error')}
+    else{const{...clean}=d;delete clean._exists;const{error}=await sb.from('dishes').insert(clean);if(error)toast('添加失败','error')}
+  },
+  async deleteDish(id){await sb.from('dishes').delete().eq('id',id)},
+  async saveTpl(t){
+    if(t._exists){const{...clean}=t;delete clean._exists;await sb.from('templates').update(clean).eq('id',t.id)}
+    else{const{...clean}=t;delete clean._exists;await sb.from('templates').insert(clean)}
+  },
+  async deleteTpl(id){await sb.from('templates').delete().eq('id',id)},
+  async saveSetting(k,v){await sb.from('settings').upsert({key:k,value:v},{onConflict:'key'});this._settings[k]=v},
+  async setNoCook(date,reason){
+    await this.saveSetting('noCook_'+date,'1');
+    await this.saveSetting('noCookReason_'+date,reason);
+    this._settings['noCook_'+date]='1';
+    this._settings['noCookReason_'+date]=reason;
+  },
+  async cancelNoCook(date){
+    await sb.from('settings').delete().eq('key','noCook_'+date);
+    await sb.from('settings').delete().eq('key','noCookReason_'+date);
+    delete this._settings['noCook_'+date];
+    delete this._settings['noCookReason_'+date];
+  },
+  isNoCook(){return !!this._settings['noCook_'+this.today()]}
+};
+
+/* ============================================================
+   工具函数
+   ============================================================ */
+const $=s=>document.querySelector(s);
+const $$=s=>document.querySelectorAll(s);
+const pick=arr=>arr[Math.floor(Math.random()*arr.length)];
+const fmtDate=d=>{const p=d.split('-');return `${+p[1]}月${+p[2]}日`};
+const weekDay=d=>['日','一','二','三','四','五','六'][new Date(d).getDay()];
+function uid(){return 'id'+Date.now()+Math.random().toString(36).slice(2,6)}
+function toast(msg,type='info'){
+  const colors={info:'bg-bark-500 text-white',success:'bg-green-600 text-white',warn:'bg-amber-500 text-white',error:'bg-red-500 text-white'};
+  const el=document.createElement('div');
+  el.className=`${colors[type]||colors.info} px-5 py-2.5 rounded-xl text-sm font-medium shadow-lg anim-fade pointer-events-auto`;
+  el.textContent=msg;$('#toast-box').appendChild(el);
+  setTimeout(()=>{el.style.opacity='0';el.style.transition='opacity .3s';setTimeout(()=>el.remove(),300)},2500);
+}
+function showModal(html){const m=$('#modal');m.classList.remove('hidden');m.innerHTML=`<div class="modal-mask absolute inset-0 flex items-end sm:items-center justify-center" data-action="close-modal"><div class="bg-white w-full sm:max-w-md sm:rounded-2xl rounded-t-2xl anim-slide max-h-[85vh] overflow-y-auto" onclick="event.stopPropagation()">${html}</div></div>`}
+function closeModal(){$('#modal').classList.add('hidden');$('#modal').innerHTML=''}
+function loadingHTML(){return `<div class="min-h-screen flex flex-col items-center justify-center gap-3"><div class="loading-spinner"></div><p class="text-bark-300 text-sm">加载中...</p></div>`}
+function showConfetti(){
+  const colors=['#E8590C','#2F9E44','#F59F00','#E03131','#339AF0','#845EF7'];
+  const c=document.createElement('div');c.style.cssText='position:fixed;top:50%;left:50%;z-index:9999;pointer-events:none;';
+  document.body.appendChild(c);
+  for(let i=0;i<30;i++){const p=document.createElement('div');p.className='confetti-piece';p.style.backgroundColor=pick(colors);p.style.left=(Math.random()*200-100)+'px';p.style.animationDelay=(Math.random()*.5)+'s';p.style.animationDuration=(1+Math.random())+'s';p.style.borderRadius=Math.random()>.5?'50%':'2px';c.appendChild(p)}
+  setTimeout(()=>c.remove(),2500);
+}
+
+/* ============================================================
+   路由
+   ============================================================ */
+let currentPage='',currentTab='';
+function go(page,tab=''){currentPage=page;currentTab=tab;window.location.hash=page+(tab?'/'+tab:'');renderCurrentPage()}
+async function renderCurrentPage(){
+  if(!DB._ready){$('#app').innerHTML=loadingHTML();await DB.init()}
+  renderPage(currentPage,currentTab);
+}
+function renderPage(page,tab){
+  const app=$('#app');
+  if(page==='role-select'){app.innerHTML=pgRoleSelect();return}
+  if(page==='wife'){
+    if(tab==='waiting'){app.innerHTML=pgWifeWaiting();return}
+    if(tab==='calendar'){app.innerHTML=pgCalendar('wife');return}
+    app.innerHTML=pgWifeHome();
+  }else if(page==='hubby'){
+    if(tab==='manage'){app.innerHTML=pgHubbyManage();return}
+    if(tab==='stats'){app.innerHTML=pgHubbyStats();return}
+    if(tab==='calendar'){app.innerHTML=pgCalendar('hubby');return}
+    if(tab==='settings'){app.innerHTML=pgSettings();return}
+    app.innerHTML=pgHubbyHome();
+  }else{app.innerHTML=pgRoleSelect()}
+}
+function initRouter(){
+  const hash=window.location.hash.slice(1)||'';
+  const[page,...rest]=hash.split('/');
+  const role=localStorage.getItem('pp_role');
+  if(page==='wife'||page==='hubby')go(page,rest[0]||'home');
+  else if(role)go(role==='wife'?'wife/home':'hubby/home');
+  else go('role-select');
+  window.addEventListener('hashchange',()=>{const h=window.location.hash.slice(1)||'';const[p,...r]=h.split('/');if(p!==currentPage||r[0]!==currentTab){currentPage=p;currentTab=r[0]||'';renderCurrentPage()}});
+}
+
+/* ============================================================
+   页面：角色选择
+   ============================================================ */
+function pgRoleSelect(){
+  const anni=DB.setting('anni','');
+  let anniHtml='';
+  if(anni){const diff=Math.floor((Date.now()-new Date(anni).getTime())/864e5);anniHtml=`<div class="text-center mb-6 anim-fade" style="animation-delay:.5s"><span class="inline-block bg-warm-100 text-warm-600 px-4 py-1.5 rounded-full text-sm font-medium"><i class="fa-solid fa-heart text-red-400 mr-1"></i> 在一起的第 ${diff} 天</span></div>`}
+  return `<div class="min-h-screen flex flex-col items-center justify-center px-6 relative overflow-hidden">
+    <div class="absolute top-20 left-10 w-16 h-16 rounded-full bg-warm-200/40 anim-float1"></div>
+    <div class="absolute bottom-32 right-8 w-12 h-12 rounded-full bg-warm-300/30 anim-float2"></div>
+    <div class="text-center mb-10 anim-fade">
+      <div class="w-20 h-20 mx-auto mb-5 bg-gradient-to-br from-warm-500 to-warm-700 rounded-3xl flex items-center justify-center shadow-lg shadow-warm-500/25"><i class="fa-solid fa-kitchen-set text-white text-3xl"></i></div>
+      <h1 class="font-display text-3xl text-bark-500 mb-2">盼盼老婆请点菜</h1>
+      <p class="text-bark-300 text-sm">今天想吃什么呢</p>
+    </div>
+    ${anniHtml}
+    <div class="flex flex-col gap-4 w-full max-w-xs anim-fade" style="animation-delay:.2s">
+      <button data-action="select-role" data-role="wife" class="w-full py-4 px-6 bg-gradient-to-r from-rose-400 to-pink-500 text-white rounded-2xl font-medium text-lg shadow-lg shadow-rose-400/25 active:scale-95 transition-transform flex items-center justify-center gap-3"><i class="fa-solid fa-heart"></i> 我是老婆</button>
+      <button data-action="select-role" data-role="hubby" class="w-full py-4 px-6 bg-gradient-to-r from-warm-500 to-warm-700 text-white rounded-2xl font-medium text-lg shadow-lg shadow-warm-500/25 active:scale-95 transition-transform flex items-center justify-center gap-3"><i class="fa-solid fa-fire-burner"></i> 我是盼盼</button>
+    </div>
+    <p class="text-bark-200 text-xs mt-10 anim-fade" style="animation-delay:.6s">本系统仅限盼盼和老婆使用</p>
+  </div>`;
+}
+
+/* ============================================================
+   底部导航
+   ============================================================ */
+function wifeNav(tab){
+  const tabs=[{id:'home',icon:'fa-hand-pointer',label:'点菜'},{id:'calendar',icon:'fa-calendar-days',label:'历史'}];
+  return `<nav class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-lg border-t border-warm-100 flex bottom-safe z-40">${tabs.map(t=>`<button data-action="wife-tab" data-tab="${t.id}" class="tab-btn flex-1 flex flex-col items-center py-2.5 text-xs ${tab===t.id?'active text-warm-500':'text-bark-300'}"><i class="fa-solid ${t.icon} text-lg mb-0.5"></i>${t.label}</button>`).join('')}<button data-action="switch-role" class="flex-1 flex flex-col items-center py-2.5 text-xs text-bark-300"><i class="fa-solid fa-right-left text-lg mb-0.5"></i>切换</button></nav>`;
+}
+function hubbyNav(tab){
+  const tabs=[{id:'home',icon:'fa-bell',label:'接单'},{id:'manage',icon:'fa-book',label:'菜谱'},{id:'stats',icon:'fa-chart-pie',label:'统计'},{id:'settings',icon:'fa-gear',label:'设置'}];
+  return `<nav class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-lg border-t border-warm-100 flex bottom-safe z-40">${tabs.map(t=>`<button data-action="hubby-tab" data-tab="${t.id}" class="tab-btn flex-1 flex flex-col items-center py-2.5 text-xs ${tab===t.id?'active text-warm-500':'text-bark-300'}"><i class="fa-solid ${t.icon} text-lg mb-0.5"></i>${t.label}</button>`).join('')}<button data-action="switch-role" class="flex-1 flex flex-col items-center py-2.5 text-xs text-bark-300"><i class="fa-solid fa-right-left text-lg mb-0.5"></i>切换</button></nav>`;
+}
+
+/* ============================================================
+   页面：老婆主页
+   ============================================================ */
+let _selCats='全部',_selDishes=new Set();
+function pgWifeHome(){
+  const order=DB.todayOrder();
+  if(order){setTimeout(()=>go('wife/waiting'),50);return '<div class="min-h-screen flex items-center justify-center"><div class="loading-spinner"></div></div>'}
+  _selDishes=new Set();_selCats='全部';
+  const dishes=DB.dishes();const recent=DB.recentOrders(3);const tpls=DB.templates();
+  const anni=DB.setting('anni','');
+  let anniBanner='';
+  if(anni){const today=new Date();const ad=new Date(anni);if(today.getMonth()===ad.getMonth()&&today.getDate()===ad.getDate()){anniBanner=`<div class="bg-gradient-to-r from-rose-50 to-pink-50 border border-rose-200 rounded-2xl p-4 mb-4 anim-fade"><div class="flex items-center gap-2 text-rose-500 font-medium mb-1"><i class="fa-solid fa-heart"></i> 今天是纪念日哦</div><p class="text-rose-400 text-sm">要不要加个硬菜庆祝一下？</p></div>`}}
+  return `<div class="min-h-screen pb-24">
+    <header class="sticky top-0 z-30 bg-warm-50/90 backdrop-blur-lg px-4 pt-4 pb-3">
+      <div class="flex items-center justify-between mb-3">
+        <h1 class="font-display text-xl">今天吃什么</h1>
+        <button data-action="mark-no-cook" class="text-bark-300 text-xs border border-warm-200 rounded-full px-3 py-1 active:bg-warm-100"><i class="fa-solid fa-xmark mr-1"></i>今天不做饭</button>
+      </div>
+      ${anniBanner}
+      ${recent.length?`<div class="mb-3"><div class="text-xs text-bark-300 mb-2">最近吃过</div><div class="flex gap-2 overflow-x-auto pb-1">${recent.map(o=>{const items=typeof o.items==='string'?JSON.parse(o.items):o.items;const names=DB.getDishesByIds((items||[]).map(i=>i.did)).slice(0,3).map(d=>d.name).join('、');const extra=(items||[]).length>3?`等${items.length}道`:'';return `<button data-action="reorder" data-oid="${o.id}" class="shrink-0 bg-white border border-warm-200 rounded-xl px-3 py-2 text-left active:bg-warm-50 transition"><div class="text-xs text-bark-400 mb-0.5">${fmtDate(o.order_date)}</div><div class="text-sm font-medium text-bark-500 truncate max-w-[180px]">${names}${extra}</div><div class="text-xs text-warm-500 mt-1">再来一次</div></button>`}).join('')}</div></div>`:''}
+      ${tpls.length?`<div class="mb-3"><div class="text-xs text-bark-300 mb-2">快速选套</div><div class="flex gap-2 overflow-x-auto pb-1">${tpls.map(t=>{const items=typeof t.items==='string'?JSON.parse(t.items):t.items;return `<button data-action="apply-tpl" data-tid="${t.id}" class="shrink-0 bg-white border border-warm-200 rounded-xl px-4 py-2.5 text-left active:bg-warm-50 transition min-w-[120px]"><i class="fa-solid ${t.icon} text-warm-500 mb-1"></i><div class="text-sm font-medium">${t.name}</div><div class="text-xs text-bark-300">${t.description}</div></button>`}).join('')}<button data-action="random-meal" class="shrink-0 bg-gradient-to-br from-warm-500 to-warm-700 rounded-xl px-4 py-2.5 text-left text-white active:opacity-90 transition min-w-[120px]"><i class="fa-solid fa-dice mb-1"></i><div class="text-sm font-medium">随便选</div><div class="text-xs text-warm-200">摇一套</div></button></div></div>`:''}
+      <div class="flex gap-1 overflow-x-auto" id="cat-tabs">${CATEGORIES.map(c=>`<button data-action="cat-filter" data-cat="${c}" class="tab-btn shrink-0 px-3 py-1.5 text-sm rounded-full border ${_selCats===c?'bg-warm-500 text-white border-warm-500':'border-warm-200 text-bark-400'}"><i class="fa-solid ${CAT_ICONS[c]} mr-1 text-xs"></i>${c}</button>`).join('')}</div>
+    </header>
+    <div class="px-4 pt-2" id="dish-list">${renderDishGrid(dishes)}</div>
+    <div class="fixed bottom-16 left-0 right-0 z-30 px-4 pb-2 bottom-safe pointer-events-none" id="sel-bar" style="display:none">
+      <div class="bg-bark-500 text-white rounded-2xl px-5 py-3 flex items-center justify-between shadow-xl pointer-events-auto">
+        <div class="flex items-center gap-2"><span class="bg-white/20 rounded-lg w-7 h-7 flex items-center justify-center text-sm font-bold" id="sel-count">0</span><span class="text-sm">道菜</span><span class="text-white/50 text-xs ml-1" id="sel-cost"></span></div>
+        <button data-action="go-confirm" class="bg-warm-500 text-white px-5 py-2 rounded-xl text-sm font-medium active:scale-95 transition-transform">去下单</button>
+      </div>
+    </div>
+    ${wifeNav('home')}
+  </div>`;
+}
+
+function renderDishGrid(dishes){
+  const filtered=_selCats==='全部'?dishes:dishes.filter(d=>d.category===_selCats);
+  const favs=filtered.filter(d=>d.is_favorite);const others=filtered.filter(d=>!d.is_favorite);
+  let html='';
+  if(favs.length&&_selCats==='全部'){html+=`<div class="text-xs text-warm-500 font-medium mb-2 mt-1"><i class="fa-solid fa-star mr-1"></i>常吃</div><div class="grid grid-cols-3 gap-2 mb-4">${favs.map(d=>dishCard(d)).join('')}</div>`;if(others.length)html+=`<div class="text-xs text-bark-300 mb-2 mt-1">全部</div>`}
+  html+=`<div class="grid grid-cols-3 gap-2 mb-4">${others.map(d=>dishCard(d)).join('')}</div>`;
+  if(!filtered.length)html=`<div class="text-center text-bark-300 py-16"><i class="fa-solid fa-bowl-rice text-3xl mb-3 opacity-30"></i><p>暂无菜品</p></div>`;
+  return html;
+}
+function dishCard(d){
+  const wc=DB.dishWeekCount(d.id);const sel=_selDishes.has(d.id);
+  const badge=wc>=2?`<span class="absolute -top-1 -right-1 bg-amber-500 text-white text-[10px] px-1 rounded-full">本周${wc}次</span>`:'';
+  return `<button data-action="toggle-dish" data-did="${d.id}" class="dish-card relative bg-white border border-warm-100 rounded-xl p-3 text-left ${sel?'sel border-warm-500':'hover:shadow-sm'}">${badge}${d.is_favorite&&!_selCats?'<i class="fa-solid fa-star text-amber-400 text-[10px] absolute top-2 left-2"></i>':''}<div class="text-sm font-medium leading-tight ${sel?'text-warm-600':'text-bark-500'}">${d.name}</div><div class="flex items-center justify-between mt-1.5"><span class="text-[10px] text-bark-300">${d.cook_time}分钟</span><span class="text-[10px] text-bark-300">~${d.cost_estimate}元</span></div></button>`;
+}
+
+/* ============================================================
+   页面：老婆等待页
+   ============================================================ */
+function pgWifeWaiting(){
+  const order=DB.todayOrder();
+  if(!order||order.cancelled){setTimeout(()=>go('wife/home'),50);return '<div class="min-h-screen flex items-center justify-center"><div class="loading-spinner"></div></div>'}
+  const st=order.status;const items=typeof order.items==='string'?JSON.parse(order.items):order.items;
+  const dishes=DB.getDishesByIds((items||[]).map(i=>i.did));
+  const msgs=STATUS_MSGS[st];const msg=msgs?pick(msgs.wife||msgs):'';
+  const isEating=st==='eating';
+  let rateHtml='';
+  if(isEating&&!order.rating){rateHtml=`<div class="mt-6 anim-fade"><div class="text-center text-sm text-bark-300 mb-3">给盼盼今天的表现打个分吧</div><div class="flex justify-center gap-4"><button data-action="rate" data-r="good" class="flex flex-col items-center gap-1.5 p-4 bg-green-50 border-2 border-green-200 rounded-2xl active:scale-95 transition-transform"><span class="text-3xl"><i class="fa-solid fa-face-grin-hearts text-green-500"></i></span><span class="text-sm text-green-600 font-medium">好吃</span></button><button data-action="rate" data-r="ok" class="flex flex-col items-center gap-1.5 p-4 bg-amber-50 border-2 border-amber-200 rounded-2xl active:scale-95 transition-transform"><span class="text-3xl"><i class="fa-solid fa-face-meh text-amber-500"></i></span><span class="text-sm text-amber-600 font-medium">一般般</span></button><button data-action="rate" data-r="bad" class="flex flex-col items-center gap-1.5 p-4 bg-red-50 border-2 border-red-200 rounded-2xl active:scale-95 transition-transform"><span class="text-3xl"><i class="fa-solid fa-face-tired text-red-400"></i></span><span class="text-sm text-red-500 font-medium">下次别做</span></button></div></div>`}
+  if(order.rating){const rm={good:{i:'fa-face-grin-hearts',c:'text-green-500',bg:'bg-green-50',t:'好吃!'},ok:{i:'fa-face-meh',c:'text-amber-500',bg:'bg-amber-50',t:'一般般'},bad:{i:'fa-face-tired',c:'text-red-400',bg:'bg-red-50',t:'下次别做'}};const r=rm[order.rating];rateHtml=`<div class="mt-6 text-center anim-fade"><div class="inline-flex items-center gap-2 ${r.bg} px-5 py-2.5 rounded-full"><i class="fa-solid ${r.i} ${r.c} text-xl"></i><span class="text-sm font-medium">${r.t}</span></div></div>`}
+  const steps=['ordered','seen','shopping','cooking','eating'];const si=steps.indexOf(st);
+  const progressHtml=`<div class="flex items-center justify-between mb-6 px-2">${steps.map((s,i)=>{const done=i<=si;const active=i===si;return `<div class="flex flex-col items-center flex-1"><div class="flex items-center w-full"><div class="w-7 h-7 rounded-full flex items-center justify-center text-xs shrink-0 ${done?'bg-warm-500 text-white':'bg-warm-100 text-bark-300'} ${active?'anim-pulse ring-2 ring-warm-300':''}">${done?'<i class="fa-solid fa-check text-[10px]"></i>':i+1}</div>${i<steps.length-1?`<div class="flex-1 h-0.5 mx-1 ${i<si?'bg-warm-500':'bg-warm-100'}"></div>`:''}</div><span class="text-[10px] mt-1 ${active?'text-warm-500 font-medium':'text-bark-300'}">${STATUS_LABELS[s]}</span></div>`}).join('')}</div>`;
+  return `<div class="min-h-screen pb-24 flex flex-col">
+    <header class="px-4 pt-6 pb-4 text-center">
+      <div class="w-16 h-16 mx-auto mb-3 rounded-full bg-warm-100 flex items-center justify-center anim-bounce ${isEating?'bg-green-100':''}"><i class="fa-solid ${STATUS_ICONS[st]} text-2xl ${isEating?'text-green-500':'text-warm-500'}"></i></div>
+      <h2 class="font-display text-xl mb-2">${STATUS_LABELS[st]}</h2>
+      <p class="text-bark-300 text-sm anim-fade" id="status-msg">${msg}</p>
+    </header>
+    <div class="px-5">${progressHtml}
+      <div class="bg-white rounded-2xl border border-warm-100 p-4 mb-4"><div class="text-xs text-bark-300 mb-2">今晚菜单</div><div class="flex flex-wrap gap-2">${dishes.map(d=>`<span class="bg-warm-50 text-bark-500 px-3 py-1 rounded-full text-sm">${d.name}</span>`).join('')}</div>${order.remark?`<div class="mt-3 text-sm text-warm-600 bg-warm-50 rounded-lg px-3 py-2"><i class="fa-solid fa-quote-left text-warm-300 mr-1 text-xs"></i>${order.remark}</div>`:''}</div>
+      ${rateHtml}
+      ${!isEating&&st!=='ordered'?`<button data-action="wife-modify" class="w-full mt-4 text-sm text-bark-300 border border-warm-200 rounded-xl py-2.5 active:bg-warm-50">${st==='seen'?'<i class="fa-solid fa-pen mr-1"></i>想改一下菜':'<i class="fa-solid fa-rotate-left mr-1"></i>撤回修改'}</button>`:''}
+    </div>
+    ${wifeNav('home')}
+  </div>`;
+}
+
+/* ============================================================
+   页面：盼盼主页
+   ============================================================ */
+function pgHubbyHome(){
+  if(DB.isNoCook()){return `<div class="min-h-screen pb-24 flex flex-col items-center justify-center px-6"><div class="text-center anim-fade"><div class="w-20 h-20 mx-auto mb-4 bg-warm-100 rounded-full flex items-center justify-center"><i class="fa-solid fa-couch text-warm-400 text-3xl"></i></div><h2 class="font-display text-xl mb-2">今天不用做饭</h2><p class="text-bark-300 text-sm mb-6">${DB.setting('noCookReason_'+DB.today(),'')}<br>好好休息吧</p><button data-action="cancel-no-cook" class="text-warm-500 text-sm border border-warm-300 rounded-full px-5 py-2 active:bg-warm-50">撤销，我去做饭</button></div>${hubbyNav('home')}</div>`}
+  const order=DB.todayOrder();
+  if(!order){return `<div class="min-h-screen pb-24 flex flex-col items-center justify-center px-6"><div class="text-center anim-fade"><div class="w-20 h-20 mx-auto mb-4 bg-warm-100 rounded-full flex items-center justify-center anim-pulse"><i class="fa-solid fa-bell text-warm-400 text-3xl"></i></div><h2 class="font-display text-xl mb-2">等待老婆点菜中</h2><p class="text-bark-300 text-sm">老婆还没选好今晚吃什么</p><p class="text-bark-200 text-xs mt-2">页面打开后会自动刷新</p></div>${hubbyNav('home')}</div>`}
+  if(order.cancelled){return `<div class="min-h-screen pb-24 flex flex-col items-center justify-center px-6"><div class="text-center anim-fade"><div class="w-20 h-20 mx-auto mb-4 bg-warm-100 rounded-full flex items-center justify-center"><i class="fa-solid fa-ban text-bark-300 text-3xl"></i></div><h2 class="font-display text-xl mb-2">订单已取消</h2><p class="text-bark-300 text-sm">${order.cancel_reason||''}</p></div>${hubbyNav('home')}</div>`}
+  const st=order.status;const items=typeof order.items==='string'?JSON.parse(order.items):order.items;
+  const dishes=DB.getDishesByIds((items||[]).map(i=>i.did)).sort((a,b)=>(b.cook_time||0)-(a.cook_time||0));
+  const total=DB.orderCost(order);
+  const allIng=new Map();dishes.forEach(d=>{(d.ingredients||[]).forEach(name=>{if(!allIng.has(name))allIng.set(name,d.name)})});
+  const ingList=[...allIng.keys()];
+  const sorted=[...dishes].sort((a,b)=>(b.cook_time||0)-(a.cook_time||0));
+  const totalTime=dishes.length?Math.max(...dishes.map(d=>d.cook_time||0)):0;
+  const steps=['ordered','seen','shopping','cooking','eating'];const si=steps.indexOf(st);const nextSt=si<steps.length-1?steps[si+1]:null;
+  let actionHtml='';
+  if(nextSt){
+    if(st==='ordered'){actionHtml=`<button data-action="update-status" data-st="seen" class="w-full py-4 bg-gradient-to-r from-warm-500 to-warm-700 text-white rounded-2xl font-medium text-lg shadow-lg shadow-warm-500/25 active:scale-[.97] transition-transform"><i class="fa-solid fa-eye mr-2"></i>已看到，去买菜</button>`}
+    else{actionHtml=`<div class="flex gap-3">${si>1?`<button data-action="update-status" data-st="${steps[si-1]}" class="flex-1 py-3 border border-warm-200 text-bark-400 rounded-xl text-sm active:bg-warm-50"><i class="fa-solid fa-arrow-left mr-1"></i>${STATUS_LABELS[steps[si-1]]}</button>`:''}<button data-action="update-status" data-st="${nextSt}" class="flex-1 py-3 bg-gradient-to-r from-warm-500 to-warm-700 text-white rounded-xl font-medium active:scale-[.97] transition-transform"><i class="fa-solid ${STATUS_ICONS[nextSt]} mr-1"></i>${STATUS_LABELS[nextSt]}</button></div>`}
+  }
+  return `<div class="min-h-screen pb-24">
+    <header class="sticky top-0 z-30 bg-warm-50/90 backdrop-blur-lg px-4 pt-4 pb-3"><div class="flex items-center justify-between"><h1 class="font-display text-xl">今晚菜单</h1><div class="flex items-center gap-1.5"><span class="status-dot ${st}"></span><span class="text-sm font-medium text-warm-600">${STATUS_LABELS[st]}</span></div></div></header>
+    <div class="px-4 space-y-4 pb-4">
+      <div class="bg-white rounded-2xl border border-warm-100 p-4 anim-fade"><div class="flex flex-wrap gap-2 mb-2">${dishes.map(d=>`<span class="bg-warm-50 text-bark-500 px-3 py-1.5 rounded-full text-sm font-medium">${d.name}<span class="text-bark-300 text-xs ml-1">${d.cook_time}min</span></span>`).join('')}</div>${order.remark?`<div class="text-sm text-warm-600 bg-warm-50 rounded-lg px-3 py-2 mt-2"><i class="fa-solid fa-quote-left text-warm-300 mr-1 text-xs"></i>${order.remark}</div>`:''}<div class="text-right text-xs text-bark-300 mt-2">预估菜价 ~${total}元</div></div>
+      <div class="bg-white rounded-2xl border border-warm-100 p-4 anim-fade" style="animation-delay:.1s"><div class="flex items-center justify-between mb-3"><div class="text-sm font-medium"><i class="fa-solid fa-list-ol text-warm-500 mr-1.5"></i>做菜顺序</div><div class="text-xs text-bark-300">预计 ${totalTime} 分钟</div></div><div class="space-y-2">${sorted.map((d,i)=>`<div class="flex items-center gap-3"><div class="w-6 h-6 rounded-full ${i===0?'bg-warm-500 text-white':'bg-warm-100 text-bark-400'} flex items-center justify-center text-xs font-bold shrink-0">${i+1}</div><div class="flex-1 text-sm">${d.name}</div><div class="text-xs text-bark-300">${d.cook_time}分钟</div></div>`).join('')}</div>${sorted.length>1?`<div class="text-xs text-bark-300 mt-3 bg-warm-50 rounded-lg px-3 py-2"><i class="fa-solid fa-lightbulb text-warm-400 mr-1"></i>先做耗时最长的${sorted[0].name}，利用等待时间做其他的</div>`:''}</div>
+      <div class="bg-white rounded-2xl border border-warm-100 p-4 anim-fade" style="animation-delay:.2s"><div class="flex items-center justify-between mb-3"><div class="text-sm font-medium"><i class="fa-solid fa-cart-shopping text-warm-500 mr-1.5"></i>食材清单</div><div class="text-xs text-bark-300">${ingList.length} 种</div></div><div class="space-y-1.5">${ingList.map(name=>{const has=DB.hasInv(name);return `<div class="flex items-center gap-3 py-1"><button data-action="toggle-inv" data-name="${encodeURIComponent(name)}" class="w-5 h-5 rounded border-2 flex items-center justify-center shrink-0 transition ${has?'bg-green-500 border-green-500':'border-warm-300'}">${has?'<i class="fa-solid fa-check text-white text-[10px]"></i>':''}</button><span class="text-sm flex-1 ${has?'text-bark-300 line-through':'text-bark-500'}">${name}</span><span class="text-[10px] text-bark-200">${allIng.get(name)}</span></div>`}).join('')}</div></div>
+      <div class="anim-fade" style="animation-delay:.3s">${actionHtml}${st==='ordered'||st==='seen'?`<button data-action="cancel-order" data-oid="${order.id}" class="w-full mt-3 text-sm text-bark-300 border border-warm-200 rounded-xl py-2.5 active:bg-warm-50">今天做不了</button>`:''}</div>
+      ${order.rating?`<div class="text-center anim-fade">${order.rating==='good'?'<span class="text-green-500"><i class="fa-solid fa-face-grin-hearts text-2xl"></i> 老婆说好吃!</span>':order.rating==='ok'?'<span class="text-amber-500"><i class="fa-solid fa-face-meh text-2xl"></i> 老婆说一般般</span>':'<span class="text-red-400"><i class="fa-solid fa-face-tired text-2xl"></i> 老婆说下次别做了</span>'}</div>`:''}
+    </div>
+    ${hubbyNav('home')}
+  </div>`;
+}
+
+/* ============================================================
+   页面：菜品管理
+   ============================================================ */
+let _manageTab='dishes';
+function pgHubbyManage(){
+  const dishes=DB.dishes();const tpls=DB.templates();
+  return `<div class="min-h-screen pb-24">
+    <header class="sticky top-0 z-30 bg-warm-50/90 backdrop-blur-lg px-4 pt-4 pb-3"><div class="flex items-center justify-between mb-3"><h1 class="font-display text-xl">菜谱管理</h1><button data-action="${_manageTab==='dishes'?'add-dish':'add-tpl'}" class="bg-warm-500 text-white px-4 py-2 rounded-xl text-sm font-medium active:scale-95 transition-transform"><i class="fa-solid fa-plus mr-1"></i>添加</button></div><div class="flex gap-1">${[{id:'dishes',label:'菜品'},{id:'tpls',label:'套餐模板'}].map(t=>`<button data-action="manage-tab" data-mt="${t.id}" class="tab-btn px-4 py-1.5 text-sm rounded-full border ${_manageTab===t.id?'bg-warm-500 text-white border-warm-500':'border-warm-200 text-bark-400'}">${t.label}</button>`).join('')}</div></header>
+    <div class="px-4">${_manageTab==='dishes'?`<div class="space-y-2">${dishes.map(d=>`<div class="bg-white rounded-xl border border-warm-100 p-3 flex items-center gap-3"><div class="flex-1"><div class="flex items-center gap-2"><span class="text-sm font-medium">${d.name}</span><span class="text-[10px] px-1.5 py-0.5 rounded bg-warm-50 text-bark-300">${d.category}</span>${d.is_favorite?'<i class="fa-solid fa-star text-amber-400 text-[10px]"></i>':''}</div><div class="text-xs text-bark-300 mt-0.5">${d.cook_time}min · ~${d.cost_estimate}元 · ${(d.ingredients||[]).length}种食材</div></div><button data-action="edit-dish" data-did="${d.id}" class="text-bark-300 p-2 active:text-warm-500"><i class="fa-solid fa-pen text-xs"></i></button><button data-action="del-dish" data-did="${d.id}" class="text-bark-300 p-2 active:text-red-500"><i class="fa-solid fa-trash text-xs"></i></button></div>`).join('')}</div>`:`<div class="space-y-3">${tpls.map(t=>{const items=typeof t.items==='string'?JSON.parse(t.items):t.items;const dishItems=DB.getDishesByIds(items);return `<div class="bg-white rounded-xl border border-warm-100 p-4"><div class="flex items-center justify-between mb-2"><div class="flex items-center gap-2"><i class="fa-solid ${t.icon} text-warm-500"></i><span class="font-medium">${t.name}</span></div><div class="flex gap-1"><button data-action="edit-tpl" data-tid="${t.id}" class="text-bark-300 p-1.5 active:text-warm-500"><i class="fa-solid fa-pen text-xs"></i></button><button data-action="del-tpl" data-tid="${t.id}" class="text-bark-300 p-1.5 active:text-red-500"><i class="fa-solid fa-trash text-xs"></i></button></div></div><div class="text-xs text-bark-300 mb-2">${t.description}</div><div class="flex flex-wrap gap-1">${dishItems.map(d=>`<span class="text-xs bg-warm-50 px-2 py-0.5 rounded">${d.name}</span>`).join('')}</div></div>`}).join('')}</div>`}</div>
+    ${hubbyNav('manage')}
+  </div>`;
+}
+
+/* ============================================================
+   页面：统计
+   ============================================================ */
+function pgHubbyStats(){
+  const orders=DB.orders().filter(o=>!o.cancelled);
+  const thisMonth=new Date();thisMonth.setDate(1);thisMonth.setHours(0,0,0,0);
+  const mo=orders.filter(o=>o.created_at&&new Date(o.created_at).getTime()>=thisMonth.getTime());
+  const totalDays=new Set(mo.map(o=>o.order_date)).size;
+  const totalDishes=mo.reduce((s,o)=>{const items=typeof o.items==='string'?JSON.parse(o.items):o.items;return s+(items||[]).length},0);
+  const totalCost=mo.reduce((s,o)=>s+DB.orderCost(o),0);
+  const avgCost=totalDays?Math.round(totalCost/totalDays):0;
+  const dishCount={};orders.forEach(o=>{const items=typeof o.items==='string'?JSON.parse(o.items):o.items;(items||[]).forEach(i=>{dishCount[i.did]=(dishCount[i.did]||0)+1})});
+  const top5=Object.entries(dishCount).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  let meatCnt=0,vegCnt=0;mo.forEach(o=>{const items=typeof o.items==='string'?JSON.parse(o.items):o.items;(items||[]).forEach(i=>{const d=DB.getDish(i.did);if(d){if(d.category==='荤菜')meatCnt++;else if(d.category==='素菜')vegCnt++}})});
+  const dishTotal=meatCnt+vegCnt;const meatPct=dishTotal?Math.round(meatCnt/dishTotal*100):50;const vegPct=100-meatPct;
+  const rated=mo.filter(o=>o.rating);const goodCnt=rated.filter(o=>o.rating==='good').length;const goodRate=rated.length?Math.round(goodCnt/rated.length*100):0;
+  const last7=[];for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const ds=d.toISOString().slice(0,10);const o=orders.find(x=>x.order_date===ds&&!x.cancelled);last7.push({date:ds,order:o})}
+  return `<div class="min-h-screen pb-24">
+    <header class="sticky top-0 z-30 bg-warm-50/90 backdrop-blur-lg px-4 pt-4 pb-3"><h1 class="font-display text-xl">吃饭统计</h1></header>
+    <div class="px-4 space-y-4 pb-4">
+      <div class="grid grid-cols-2 gap-3 anim-fade">
+        <div class="bg-white rounded-2xl border border-warm-100 p-4 text-center"><div class="text-2xl font-bold text-warm-600">${totalDays}</div><div class="text-xs text-bark-300 mt-1">做饭天数</div></div>
+        <div class="bg-white rounded-2xl border border-warm-100 p-4 text-center"><div class="text-2xl font-bold text-warm-600">${totalDishes}</div><div class="text-xs text-bark-300 mt-1">做了多少道菜</div></div>
+        <div class="bg-white rounded-2xl border border-warm-100 p-4 text-center"><div class="text-2xl font-bold text-warm-600">${totalCost}</div><div class="text-xs text-bark-300 mt-1">买菜花费(元)</div></div>
+        <div class="bg-white rounded-2xl border border-warm-100 p-4 text-center"><div class="text-2xl font-bold text-warm-600">${avgCost}</div><div class="text-xs text-bark-300 mt-1">日均花费(元)</div></div>
+      </div>
+      <div class="bg-white rounded-2xl border border-warm-100 p-4 anim-fade" style="animation-delay:.1s"><div class="text-sm font-medium mb-2"><i class="fa-solid fa-face-grin-hearts text-green-500 mr-1.5"></i>好评率</div><div class="flex items-center gap-3"><div class="flex-1 h-3 bg-warm-100 rounded-full overflow-hidden"><div class="h-full bg-gradient-to-r from-green-400 to-green-500 rounded-full transition-all" style="width:${goodRate}%"></div></div><span class="text-lg font-bold text-green-600">${goodRate}%</span></div><div class="text-xs text-bark-300 mt-1">${rated.length} 次评价</div></div>
+      <div class="bg-white rounded-2xl border border-warm-100 p-4 anim-fade" style="animation-delay:.15s"><div class="text-sm font-medium mb-2"><i class="fa-solid fa-chart-pie text-warm-500 mr-1.5"></i>本月荤素比</div><div class="flex items-center gap-3"><div class="flex-1 h-3 bg-green-100 rounded-full overflow-hidden flex"><div class="h-full bg-warm-500" style="width:${meatPct}%"></div><div class="h-full bg-green-500" style="width:${vegPct}%"></div></div></div><div class="flex justify-between text-xs mt-2"><span class="text-warm-500">荤 ${meatPct}%</span><span class="text-green-500">素 ${vegPct}%</span></div>${meatPct>65?'<div class="text-xs text-amber-500 mt-1"><i class="fa-solid fa-lightbulb mr-1"></i>荤菜偏多，可以多加点素菜哦</div>':''}</div>
+      <div class="bg-white rounded-2xl border border-warm-100 p-4 anim-fade" style="animation-delay:.2s"><div class="text-sm font-medium mb-3"><i class="fa-solid fa-trophy text-amber-500 mr-1.5"></i>老婆最爱 TOP5</div><div class="space-y-2.5">${top5.map(([did,cnt],i)=>{const d=DB.getDish(did);if(!d)return'';const maxCnt=top5[0]?.[1]||1;return `<div class="flex items-center gap-3"><span class="w-5 h-5 rounded-full ${i===0?'bg-amber-400 text-white':i===1?'bg-bark-200 text-white':i===2?'bg-amber-700 text-white':'bg-warm-100 text-bark-300'} flex items-center justify-center text-xs font-bold">${i+1}</span><div class="flex-1"><div class="flex justify-between text-sm mb-1"><span>${d.name}</span><span class="text-bark-300">${cnt}次</span></div><div class="h-1.5 bg-warm-100 rounded-full overflow-hidden"><div class="h-full bg-warm-500 rounded-full" style="width:${Math.round(cnt/maxCnt*100)}%"></div></div></div></div>`}).join('')}${!top5.length?'<div class="text-center text-bark-300 text-sm py-4">暂无数据</div>':''}</div></div>
+      <div class="bg-white rounded-2xl border border-warm-100 p-4 anim-fade" style="animation-delay:.25s"><div class="text-sm font-medium mb-3"><i class="fa-solid fa-calendar-week text-warm-500 mr-1.5"></i>近7天</div><div class="space-y-2">${last7.map(({date,order})=>`<div class="flex items-center gap-3 py-1"><div class="w-12 text-center"><div class="text-xs text-bark-300">${fmtDate(date)}</div><div class="text-[10px] text-bark-200">周${weekDay(date)}</div></div><div class="w-1.5 h-1.5 rounded-full ${order?'bg-green-500':'bg-warm-200'}"></div><div class="flex-1 text-sm ${order?'text-bark-500':'text-bark-200'}">${order?(()=>{const items=typeof order.items==='string'?JSON.parse(order.items):order.items;return DB.getDishesByIds((items||[]).map(i=>i.did)).map(d=>d.name).join('、')})():'休息'}</div></div>`).join('')}</div></div>
+    </div>
+    ${hubbyNav('stats')}
+  </div>`;
+}
+
+/* ============================================================
+   页面：日历
+   ============================================================ */
+function pgCalendar(role){
+  const now=new Date();const year=now.getFullYear(),month=now.getMonth();
+  const firstDay=new Date(year,month,1).getDay();const daysInMonth=new Date(year,month+1,0).getDate();
+  const orders=DB.orders();const today=DB.today();
+  let cells='';for(let i=0;i<firstDay;i++)cells+=`<div class="aspect-square"></div>`;
+  for(let d=1;d<=daysInMonth;d++){const ds=`${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;const o=orders.find(x=>x.order_date===ds);const isToday=ds===today;const hasOrder=o&&!o.cancelled;const cancelled=o&&o.cancelled;let dot='';if(hasOrder){const items=typeof o.items==='string'?JSON.parse(o.items):o.items;dot=`<div class="flex gap-0.5 justify-center mt-0.5">${(items||[]).slice(0,3).map(()=>'<div class="w-1 h-1 rounded-full bg-warm-500"></div>').join('')}</div>`}if(cancelled)dot=`<div class="text-[10px] text-bark-200 mt-0.5">休</div>`;cells+=`<button data-action="cal-day" data-date="${ds}" class="aspect-square flex flex-col items-center justify-center rounded-xl text-sm transition ${isToday?'bg-warm-500 text-white font-bold':'hover:bg-warm-50'} ${!isToday&&hasOrder?'text-bark-500':''} ${!isToday&&!hasOrder&&!cancelled?'text-bark-300':''}">${d}${dot}</button>`}
+  return `<div class="min-h-screen pb-24"><header class="sticky top-0 z-30 bg-warm-50/90 backdrop-blur-lg px-4 pt-4 pb-3"><h1 class="font-display text-xl">${year}年${month+1}月</h1></header><div class="px-4"><div class="grid grid-cols-7 gap-1 mb-2">${['日','一','二','三','四','五','六'].map(w=>`<div class="text-center text-xs text-bark-300 py-1">${w}</div>`).join('')}</div><div class="grid grid-cols-7 gap-1">${cells}</div><div id="cal-detail" class="mt-4"></div></div>${role==='wife'?wifeNav('calendar'):hubbyNav('calendar')}</div>`;
+}
+
+/* ============================================================
+   页面：设置
+   ============================================================ */
+function pgSettings(){
+  const anni=DB.setting('anni','');
+  return `<div class="min-h-screen pb-24">
+    <header class="sticky top-0 z-30 bg-warm-50/90 backdrop-blur-lg px-4 pt-4 pb-3"><h1 class="font-display text-xl">设置</h1></header>
+    <div class="px-4 space-y-4">
+      <div class="bg-white rounded-2xl border border-warm-100 p-4 anim-fade"><div class="text-sm font-medium mb-3"><i class="fa-solid fa-heart text-rose-400 mr-1.5"></i>纪念日</div><input type="date" id="anni-input" value="${anni}" class="w-full border border-warm-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-warm-500"><p class="text-xs text-bark-300 mt-2">设置后，纪念日当天会显示彩蛋</p><button data-action="save-anni" class="mt-3 bg-warm-500 text-white px-5 py-2 rounded-xl text-sm active:scale-95 transition-transform">保存</button></div>
+      <div class="bg-white rounded-2xl border border-warm-100 p-4 anim-fade" style="animation-delay:.1s"><div class="text-sm font-medium mb-3"><i class="fa-solid fa-database text-warm-500 mr-1.5"></i>数据管理</div><button data-action="export-data" class="w-full text-sm text-bark-400 border border-warm-200 rounded-xl py-2.5 mb-2 active:bg-warm-50"><i class="fa-solid fa-download mr-1"></i>导出数据(CSV)</button></div>
+      <div class="bg-white rounded-2xl border border-warm-100 p-4 anim-fade" style="animation-delay:.2s"><div class="text-sm font-medium mb-2"><i class="fa-solid fa-circle-info text-warm-500 mr-1.5"></i>使用说明</div><div class="text-xs text-bark-300 space-y-1.5 leading-relaxed"><p>1. 两个人各用手机浏览器打开同一个链接</p><p>2. 分别选择"我是老婆"和"我是盼盼"</p><p>3. 数据通过 Supabase 实时同步，无需刷新</p><p>4. 建议添加到手机主屏幕，体验更好</p></div></div>
+    </div>
+    ${hubbyNav('settings')}
+  </div>`;
+}
+
+/* ============================================================
+   模态框
+   ============================================================ */
+function showConfirmModal(){if(!_selDishes.size){toast('还没选菜哦','warn');return}const dishes=DB.getDishesByIds([..._selDishes]);const total=dishes.reduce((s,d)=>s+(d.cost_estimate||0),0);showModal(`<div class="p-5"><div class="flex items-center justify-between mb-4"><h3 class="font-display text-lg">确认下单</h3><button data-action="close-modal" class="text-bark-300 p-1"><i class="fa-solid fa-xmark"></i></button></div><div class="flex flex-wrap gap-2 mb-3">${dishes.map(d=>`<span class="bg-warm-50 text-bark-500 px-3 py-1 rounded-full text-sm">${d.name}</span>`).join('')}</div><div class="text-xs text-bark-300 mb-4">${dishes.length}道菜 · 预估~${total}元</div><div class="mb-4"><label class="text-xs text-bark-300 block mb-1">备注（可选）</label><textarea id="order-remark" rows="2" placeholder="少油、不要香菜、想吃辣的..." class="w-full border border-warm-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-warm-500 resize-none"></textarea></div><button data-action="submit-order" class="w-full py-3.5 bg-gradient-to-r from-warm-500 to-warm-700 text-white rounded-2xl font-medium text-base active:scale-[.97] transition-transform">召唤盼盼做饭</button></div>`)}
+function showCancelModal(oid){showModal(`<div class="p-5"><div class="flex items-center justify-between mb-4"><h3 class="font-display text-lg">今天做不了</h3><button data-action="close-modal" class="text-bark-300 p-1"><i class="fa-solid fa-xmark"></i></button></div><div class="space-y-2 mb-4">${CANCEL_REASONS.map(r=>`<button data-action="do-cancel" data-oid="${oid}" data-reason="${encodeURIComponent(r.text)}" class="w-full flex items-center gap-3 p-3 bg-warm-50 rounded-xl text-left active:bg-warm-100 transition"><i class="fa-solid ${r.icon} text-warm-500 w-5 text-center"></i><span class="text-sm">${r.text}</span></button>`).join('')}<div class="flex items-center gap-2 p-3"><i class="fa-solid fa-pen text-warm-500 w-5 text-center"></i><input type="text" id="cancel-custom" placeholder="其他原因..." class="flex-1 text-sm border-b border-warm-200 focus:outline-none focus:border-warm-500 pb-1 bg-transparent"><button data-action="do-cancel-custom" data-oid="${oid}" class="text-warm-500 text-sm font-medium shrink-0">确定</button></div></div></div>`)}
+function showNoCookModal(){showModal(`<div class="p-5"><div class="flex items-center justify-between mb-4"><h3 class="font-display text-lg">今天不做饭</h3><button data-action="close-modal" class="text-bark-300 p-1"><i class="fa-solid fa-xmark"></i></button></div><div class="space-y-2"><button data-action="save-no-cook" data-reason="${encodeURIComponent('不在家吃')}" class="w-full flex items-center gap-3 p-3 bg-warm-50 rounded-xl active:bg-warm-100"><i class="fa-solid fa-house-circle-xmark text-warm-500 w-6 text-center"></i><span class="text-sm">不在家吃</span></button><button data-action="save-no-cook" data-reason="${encodeURIComponent('盼盼自己解决')}" class="w-full flex items-center gap-3 p-3 bg-warm-50 rounded-xl active:bg-warm-100"><i class="fa-solid fa-bowl-rice text-warm-500 w-6 text-center"></i><span class="text-sm">盼盼自己解决</span></button><div class="flex items-center gap-2 p-3"><i class="fa-solid fa-pen text-warm-500 w-6 text-center"></i><input id="no-cook-custom" placeholder="写一下..." class="flex-1 text-sm border-b border-warm-200 focus:outline-none focus:border-warm-500 pb-1 bg-transparent"><button data-action="save-no-cook-custom" class="text-warm-500 text-sm font-medium">确定</button></div></div></div>`)}
+function showDishModal(did){const d=did?DB.getDish(did):null;const isEdit=!!d;showModal(`<div class="p-5"><div class="flex items-center justify-between mb-4"><h3 class="font-display text-lg">${isEdit?'编辑菜品':'添加菜品'}</h3><button data-action="close-modal" class="text-bark-300 p-1"><i class="fa-solid fa-xmark"></i></button></div><div class="space-y-3"><div><label class="text-xs text-bark-300 block mb-1">菜名</label><input id="dm-name" value="${d?d.name:''}" class="w-full border border-warm-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-warm-500" placeholder="如：红烧排骨"></div><div class="grid grid-cols-2 gap-3"><div><label class="text-xs text-bark-300 block mb-1">分类</label><select id="dm-cat" class="w-full border border-warm-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-warm-500 bg-white">${['荤菜','素菜','汤','主食'].map(c=>`<option ${d&&d.category===c?'selected':''}>${c}</option>`).join('')}</select></div><div><label class="text-xs text-bark-300 block mb-1">烹饪时间(分钟)</label><input id="dm-time" type="number" value="${d?d.cook_time:15}" class="w-full border border-warm-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-warm-500"></div></div><div><label class="text-xs text-bark-300 block mb-1">预估菜价(元)</label><input id="dm-cost" type="number" value="${d?d.cost_estimate:10}" class="w-full border border-warm-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-warm-500"></div><div><label class="text-xs text-bark-300 block mb-1">食材（每行一种）</label><textarea id="dm-ing" rows="4" class="w-full border border-warm-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-warm-500 resize-none" placeholder="排骨500g&#10;葱姜蒜&#10;生抽老抽">${d?(d.ingredients||[]).join('\n'):''}</textarea></div><label class="flex items-center gap-2"><input id="dm-fav" type="checkbox" ${d&&d.is_favorite?'checked':''} class="w-4 h-4 rounded accent-warm-500"><span class="text-sm">设为常吃（置顶显示）</span></label><button data-action="save-dish" data-did="${did||''}" class="w-full py-3 bg-warm-500 text-white rounded-xl font-medium active:scale-95 transition-transform">${isEdit?'保存修改':'添加菜品'}</button></div></div>`)}
+function showTplModal(tid){const t=tid?DB.templates().find(x=>x.id===tid):null;const isEdit=!!t;const dishes=DB.dishes();const selItems=new Set(t?(typeof t.items==='string'?JSON.parse(t.items):t.items):[]);window._tmSel=selItems;showModal(`<div class="p-5"><div class="flex items-center justify-between mb-4"><h3 class="font-display text-lg">${isEdit?'编辑模板':'添加模板'}</h3><button data-action="close-modal" class="text-bark-300 p-1"><i class="fa-solid fa-xmark"></i></button></div><div class="space-y-3"><div class="grid grid-cols-2 gap-3"><div><label class="text-xs text-bark-300 block mb-1">模板名称</label><input id="tm-name" value="${t?t.name:''}" class="w-full border border-warm-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-warm-500" placeholder="如：简单餐"></div><div><label class="text-xs text-bark-300 block mb-1">描述</label><input id="tm-desc" value="${t?t.description:''}" class="w-full border border-warm-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-warm-500" placeholder="如：两菜一汤"></div></div><div><label class="text-xs text-bark-300 block mb-2">选择菜品（点击选择）</label><div class="max-h-48 overflow-y-auto grid grid-cols-2 gap-2" id="tm-dishes">${dishes.map(d=>`<button data-action="tm-toggle" data-did="${d.id}" class="text-left text-xs p-2 rounded-lg border ${selItems.has(d.id)?'bg-warm-50 border-warm-500 text-warm-600':'border-warm-200 text-bark-400'}">${d.name}</button>`).join('')}</div></div><button data-action="save-tpl" data-tid="${tid||''}" class="w-full py-3 bg-warm-500 text-white rounded-xl font-medium active:scale-95 transition-transform">${isEdit?'保存修改':'添加模板'}</button></div></div>`)}
+function showDayDetail(date){const el=$('#cal-detail');if(!el)return;const o=DB.orders().find(x=>x.order_date===date);if(!o){el.innerHTML=`<div class="bg-white rounded-xl border border-warm-100 p-4 text-center text-bark-300 text-sm">${fmtDate(date)} 周${weekDay(date)} — 休息</div>`;return}const items=typeof o.items==='string'?JSON.parse(o.items):o.items;const dishes=DB.getDishesByIds((items||[]).map(i=>i.did));el.innerHTML=`<div class="bg-white rounded-xl border border-warm-100 p-4 anim-fade"><div class="text-sm font-medium mb-2">${fmtDate(date)} 周${weekDay(date)}</div>${o.cancelled?`<div class="text-sm text-bark-300">${o.cancel_reason}</div>`:`<div class="flex flex-wrap gap-1.5 mb-2">${dishes.map(d=>`<span class="text-xs bg-warm-50 px-2 py-0.5 rounded">${d.name}</span>`).join('')}</div><div class="flex items-center gap-2 text-xs text-bark-300"><span class="status-dot ${o.status}"></span>${STATUS_LABELS[o.status]}${o.rating?(o.rating==='good'?'<span class="text-green-500 ml-1">好吃</span>':o.rating==='ok'?'<span class="text-amber-500 ml-1">一般</span>':'<span class="text-red-400 ml-1">别做了</span>'):''}</div>${o.remark?`<div class="text-xs text-warm-600 mt-1">${o.remark}</div>`:''}`}</div>`}
+
+/* ============================================================
+   事件处理
+   ============================================================ */
+document.addEventListener('click',async e=>{
+  const btn=e.target.closest('[data-action]');if(!btn)return;
+  const a=btn.dataset.action;const d=btn.dataset;
+  switch(a){
+    case 'select-role':localStorage.setItem('pp_role',d.role);go(d.role==='wife'?'wife/home':'hubby/home');break;
+    case 'switch-role':localStorage.removeItem('pp_role');go('role-select');break;
+    case 'cat-filter':_selCats=d.cat;const list=$('#dish-list');if(list)list.innerHTML=renderDishGrid(DB.dishes());$$('#cat-tabs .tab-btn').forEach(b=>{if(b.dataset.cat===_selCats)b.className=b.className.replace(/border-warm-200 text-bark-400/g,'bg-warm-500 text-white border-warm-500');else b.className=b.className.replace(/bg-warm-500 text-white border-warm-500/g,'border-warm-200 text-bark-400')});break;
+    case 'toggle-dish':if(_selDishes.has(d.did))_selDishes.delete(d.did);else _selDishes.add(d.did);refreshSelBar();$$('.dish-card').forEach(c=>{if(c.dataset.did===d.did)c.classList.toggle('sel',_selDishes.has(d.did))});break;
+    case 'go-confirm':showConfirmModal();break;
+    case 'submit-order':{const remark=$('#order-remark')?.value||'';closeModal();const result=await DB.addOrder([..._selDishes],remark);if(result){_selDishes.clear();setTimeout(()=>go('wife/waiting'),600)}break}
+    case 'reorder':{const o=DB.orders().find(x=>x.id===d.oid);if(o){const items=typeof o.items==='string'?JSON.parse(o.items):o.items;_selDishes=new Set((items||[]).map(i=>i.did));refreshSelBar();toast('已选好，可修改后提交','info')}break}
+    case 'apply-tpl':{const t=DB.templates().find(x=>x.id===d.tid);if(t){const items=typeof t.items==='string'?JSON.parse(t.items):t.items;_selDishes=new Set(items);refreshSelBar();toast('已选好，可修改后提交','info')}break}
+    case 'random-meal':{const dishes=DB.dishes();const w3=Date.now()-3*864e5;const recent=new Set();DB.orders().filter(o=>o.created_at&&new Date(o.created_at).getTime()>w3&&!o.cancelled).forEach(o=>{const items=typeof o.items==='string'?JSON.parse(o.items):o.items;(items||[]).forEach(i=>recent.add(i.did))});const cats={'荤菜':2,'素菜':1,'汤':1};const picked=[];for(const[cat,n]of Object.entries(cats)){const pool=dishes.filter(dd=>dd.category===cat&&!recent.has(dd.id)&&!picked.includes(dd.id));const src=pool.length>=n?pool:dishes.filter(dd=>dd.category===cat&&!picked.includes(dd.id));for(let i=0;i<n&&src.length;i++){const idx=Math.floor(Math.random()*src.length);picked.push(src[idx].id);src.splice(idx,1)}}_selDishes=new Set(picked);refreshSelBar();toast('随机选好了，不满意可以换','success');break}
+    case 'mark-no-cook':showNoCookModal();break;
+    case 'save-no-cook':await DB.setNoCook(DB.today(),decodeURIComponent(d.reason));closeModal();renderCurrentPage();break;
+    case 'save-no-cook-custom':{const v=$('#no-cook-custom')?.value||'不做饭';await DB.setNoCook(DB.today(),v);closeModal();renderCurrentPage();break}
+    case 'rate':{const o=DB.todayOrder();if(o){await DB.updateOrder(o.id,{rating:d.r});toast(d.r==='good'?'谢谢老婆!':d.r==='ok'?'下次改进!':'好吧...',d.r==='good'?'success':'info');if(d.r==='good')showConfetti();renderCurrentPage()}break}
+    case 'wife-modify':{const o=DB.todayOrder();if(o&&(o.status==='ordered'||o.status==='seen')){await DB.updateOrder(o.id,{status:'ordered'});go('wife/home')}break}
+    case 'update-status':{const o=DB.todayOrder();if(o){await DB.updateOrder(o.id,{status:d.st});toast(STATUS_LABELS[d.st],'success');renderCurrentPage()}break}
+    case 'cancel-order':showCancelModal(d.oid);break;
+    case 'do-cancel':{await DB.updateOrder(d.oid,{cancelled:true,cancel_reason:decodeURIComponent(d.reason),status:'cancelled'});closeModal();toast('已取消','info');renderCurrentPage();break}
+    case 'do-cancel-custom':{const v=$('#cancel-custom')?.value||'';if(!v.trim()){toast('请填写原因','warn');return}await DB.updateOrder(d.oid,{cancelled:true,cancel_reason:v,status:'cancelled'});closeModal();toast('已取消','info');renderCurrentPage();break}
+    case 'toggle-inv':{const name=decodeURIComponent(d.name);await DB.setInv(name,!DB.hasInv(name));renderCurrentPage();break}
+    case 'cancel-no-cook':await DB.cancelNoCook(DB.today());renderCurrentPage();break;
+    case 'wife-tab':go('wife/'+d.tab);break;
+    case 'hubby-tab':go('hubby/'+d.tab);break;
+    case 'manage-tab':_manageTab=d.mt;renderCurrentPage();break;
+    case 'add-dish':showDishModal(null);break;
+    case 'edit-dish':showDishModal(d.did);break;
+    case 'save-dish':{const name=$('#dm-name')?.value?.trim();if(!name){toast('请输入菜名','warn');return}const cat=$('#dm-cat')?.value;const time=parseInt($('#dm-time')?.value)||15;const cost=parseInt($('#dm-cost')?.value)||10;const ing=($('#dm-ing')?.value||'').split('\n').map(s=>s.trim()).filter(Boolean);const fav=$('#dm-fav')?.checked||false;const existing=d.did?DB.getDish(d.did):null;const dishObj={id:d.did||uid(),name,category:cat,ingredients:ing,cook_time:time,cost_estimate:cost,is_favorite:fav};if(existing)dishObj._exists=true;await DB.saveDish(dishObj);closeModal();toast(d.did?'已保存':'已添加','success');renderCurrentPage();break}
+    case 'del-dish':await DB.deleteDish(d.did);toast('已删除','info');renderCurrentPage();break;
+    case 'add-tpl':showTplModal(null);break;
+    case 'edit-tpl':showTplModal(d.tid);break;
+    case 'tm-toggle':{if(!window._tmSel)window._tmSel=new Set();if(window._tmSel.has(d.did))window._tmSel.delete(d.did);else window._tmSel.add(d.did);$$('#tm-dishes button').forEach(b=>{if(b.dataset.did===d.did){if(window._tmSel.has(d.did))b.className=b.className.replace('border-warm-200 text-bark-400','bg-warm-50 border-warm-500 text-warm-600');else b.className=b.className.replace('bg-warm-50 border-warm-500 text-warm-600','border-warm-200 text-bark-400')}});break}
+    case 'save-tpl':{const name=$('#tm-name')?.value?.trim();if(!name){toast('请输入模板名称','warn');return}const desc=$('#tm-desc')?.value?.trim();const items=[...(window._tmSel||[])];const existing=d.tid?DB.templates().find(x=>x.id===d.tid):null;const tplObj={id:d.tid||uid(),name,description:desc,icon:'fa-utensils',items};if(existing)tplObj._exists=true;await DB.saveTpl(tplObj);window._tmSel=null;closeModal();toast(d.tid?'已保存':'已添加','success');renderCurrentPage();break}
+    case 'del-tpl':await DB.deleteTpl(d.tid);toast('已删除','info');renderCurrentPage();break;
+    case 'cal-day':showDayDetail(d.date);break;
+    case 'save-anni':{const v=$('#anni-input')?.value||'';await DB.saveSetting('anni',v);toast('已保存','success');break}
+    case 'export-data':{const orders=DB.orders();let csv='\uFEFF日期,状态,菜品,备注,评价\n';orders.forEach(o=>{const items=typeof o.items==='string'?JSON.parse(o.items):o.items;const names=DB.getDishesByIds((items||[]).map(i=>i.did)).map(d=>d.name).join('+');const rating=o.rating==='good'?'好吃':o.rating==='ok'?'一般':o.rating==='bad'?'别做了':'';csv+=`${o.order_date},${o.cancelled?'取消':STATUS_LABELS[o.status]},"${names}","${o.remark||''}","${rating}"\n`});const blob=new Blob([csv],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`盼盼点菜记录_${DB.today()}.csv`;a.click();toast('已导出','success');break}
+    case 'close-modal':closeModal();break;
+  }
+});
+
+function refreshSelBar(){const bar=$('#sel-bar');if(!bar)return;const count=_selDishes.size;bar.style.display=count>0?'block':'none';const ce=$('#sel-count');if(ce)ce.textContent=count;const co=$('#sel-cost');if(co){const dishes=DB.getDishesByIds([..._selDishes]);const total=dishes.reduce((s,d)=>s+(d.cost_estimate||0),0);co.textContent=`~${total}元`}}
+
+/* 自动刷新等待页文案 */
+setInterval(()=>{const m=$('#status-msg');if(m&&currentPage==='wife/waiting'){const o=DB.todayOrder();if(o){const msgs=STATUS_MSGS[o.status];if(msgs)m.textContent=pick(msgs.wife||msgs)}}},4000);
+
+/* 启动 */
+initRouter();
+</script>
+</body>
+</html>
