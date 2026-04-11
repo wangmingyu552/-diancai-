@@ -1,0 +1,10 @@
+{
+  "name": "盼盼老婆请点菜",
+  "short_name": "点菜",
+  "description": "盼盼老婆的专属点菜系统",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFF5F7",
+  "theme_color": "#FF6B9D",
+  "orientation": "portrait"
+}
