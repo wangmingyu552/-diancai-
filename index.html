@@ -382,6 +382,115 @@ body{overscroll-behavior:none;margin:0;position:relative;z-index:1}
 .stagger-30{animation-delay:1.5s}
 
 /* ============================================
+   性能优化 - GPU 加速
+   ============================================ */
+.gpu-accelerate{
+  transform:translateZ(0);
+  backface-visibility:hidden;
+  perspective:1000px;
+}
+.will-change-transform{will-change:transform}
+.will-change-opacity{will-change:opacity}
+.will-change-all{will-change:transform,opacity}
+
+/* 减少动画在低端设备上的消耗 */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.01ms !important;
+  }
+}
+
+/* ============================================
+   响应式布局 - 桌面端优化
+   ============================================ */
+/* 平板尺寸 (≥ 640px) */
+@media(min-width:640px){
+  .modal-mask{
+    align-items:center !important;
+  }
+}
+
+/* 桌面端小屏幕 (≥ 768px) */
+@media(min-width:768px){
+  /* 主应用容器居中，限制最大宽度 */
+  #app{
+    max-width:768px;
+    margin:0 auto;
+    box-shadow:0 0 60px rgba(255,107,157,0.15);
+  }
+  
+  /* 侧边栏优化 */
+  .sidebar{
+    max-width:320px !important;
+  }
+  
+  /* 模态框更宽一点 */
+  .modal-mask .bg-white{
+    max-width:480px !important;
+    border-radius:28px !important;
+  }
+  
+  /* Toast 位置优化 */
+  .toast-container{
+    top:30px;
+  }
+}
+
+/* 桌面端中等屏幕 (≥ 1024px) */
+@media(min-width:1024px){
+  #app{
+    max-width:480px;
+  }
+  
+  /* 模态框更大一点 */
+  .modal-mask .bg-white{
+    max-width:520px !important;
+  }
+}
+
+/* 桌面端大屏幕 (≥ 1280px) */
+@media(min-width:1280px){
+  /* 可以在左右添加装饰 */
+  body::before,
+  body::after{
+    content:'';
+    position:fixed;
+    top:0;
+    bottom:0;
+    width:calc((100vw - 480px) / 2);
+    z-index:1;
+    pointer-events:none;
+  }
+  body::before{
+    left:0;
+    background:
+      radial-gradient(ellipse at 80% 30%, rgba(255,182,193,0.3) 0%, transparent 50%),
+      radial-gradient(ellipse at 60% 80%, rgba(255,218,233,0.2) 0%, transparent 50%);
+  }
+  body::after{
+    right:0;
+    background:
+      radial-gradient(ellipse at 20% 40%, rgba(255,218,233,0.3) 0%, transparent 50%),
+      radial-gradient(ellipse at 40% 70%, rgba(255,182,193,0.2) 0%, transparent 50%);
+  }
+}
+
+/* 横屏优化 */
+@media(orientation:landscape) and (max-height:500px){
+  /* 横屏时模态框调整 */
+  .modal-mask .bg-white{
+    max-height:90vh !important;
+  }
+  
+  /* 调整一些垂直间距 */
+  .modal-body-pro{
+    max-height:45vh !important;
+  }
+}
+
+/* ============================================
    菜品卡片 - 专业炫酷版
    ============================================ */
 .dish-card{
@@ -1130,6 +1239,7 @@ button{cursor:pointer;-webkit-user-select:none;user-select:none;border:none;back
   background:linear-gradient(135deg, rgba(255,107,157,0.15), transparent);
   opacity:0;
   transition:opacity .3s;
+  pointer-events:none;
 }
 .dish-tag:hover{
   transform:translateY(-2px) scale(1.05);
@@ -1190,6 +1300,7 @@ button{cursor:pointer;-webkit-user-select:none;user-select:none;border:none;back
   background:linear-gradient(135deg, rgba(255,107,157,0.08), transparent);
   opacity:0;
   transition:opacity .3s;
+  pointer-events:none;
 }
 .btn-secondary:hover{
   transform:translateY(-2px);
@@ -1222,6 +1333,7 @@ button{cursor:pointer;-webkit-user-select:none;user-select:none;border:none;back
   background:linear-gradient(135deg, rgba(255,255,255,0.3), transparent 50%, rgba(255,255,255,0.15));
   opacity:0;
   transition:opacity .3s;
+  pointer-events:none;
 }
 .btn-amber:hover{
   background-position:100% 100%;
@@ -1334,6 +1446,7 @@ button{cursor:pointer;-webkit-user-select:none;user-select:none;border:none;back
   background:linear-gradient(135deg, rgba(255,107,157,0.06), transparent);
   opacity:0;
   transition:opacity .3s;
+  pointer-events:none;
 }
 .list-item-pro:hover{
   transform:translateX(4px);
@@ -1690,6 +1803,7 @@ button{cursor:pointer;-webkit-user-select:none;user-select:none;border:none;back
   background:linear-gradient(135deg, rgba(255,255,255,0.3), transparent);
   opacity:0;
   transition:opacity .3s;
+  pointer-events:none;
 }
 .badge-pro:hover{
   transform:translateY(-2px) scale(1.05);
@@ -1848,6 +1962,7 @@ button{cursor:pointer;-webkit-user-select:none;user-select:none;border:none;back
   background:linear-gradient(135deg, rgba(255,107,157,0.1), transparent);
   opacity:0;
   transition:opacity .3s;
+  pointer-events:none;
 }
 .btn-group-pro button:hover::before{opacity:1}
 .btn-group-pro button.active{
@@ -2030,6 +2145,7 @@ button{cursor:pointer;-webkit-user-select:none;user-select:none;border:none;back
   background:linear-gradient(135deg, rgba(255,107,157,0.08), transparent);
   opacity:0;
   transition:opacity .35s;
+  pointer-events:none;
 }
 .list-item-ultra:hover{
   transform:translateX(6px) translateY(-2px);
@@ -2496,6 +2612,243 @@ button{cursor:pointer;-webkit-user-select:none;user-select:none;border:none;back
 }
 
 /* ============================================
+   全局加载遮罩 - 专业炫酷版
+   ============================================ */
+.loading-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(255,255,255,0.85);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:16px;
+  z-index:1000;
+  animation:fadeInScale .3s ease-out;
+}
+.loading-overlay.hidden{
+  opacity:0;
+  visibility:hidden;
+  transition:all .3s ease;
+}
+.loading-overlay .loading-text{
+  color:#FF6B9D;
+  font-size:14px;
+  font-weight:500;
+}
+.loading-overlay .loading-spinner{
+  width:50px;
+  height:50px;
+}
+
+/* ============================================
+   错误提示组件 - 专业炫酷版
+   ============================================ */
+.error-container{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:40px 20px;
+  text-align:center;
+  gap:16px;
+}
+.error-icon{
+  font-size:64px;
+  animation:shake .5s ease-in-out;
+}
+.error-title{
+  font-size:18px;
+  font-weight:600;
+  color:#374151;
+}
+.error-message{
+  font-size:14px;
+  color:#6B7280;
+  max-width:300px;
+}
+.btn-retry{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding:12px 24px;
+  background:linear-gradient(135deg, #FF6B9D, #FF8FB8);
+  color:white;
+  font-size:14px;
+  font-weight:600;
+  border-radius:12px;
+  box-shadow:0 4px 12px rgba(255,107,157,0.3);
+  transition:all .3s cubic-bezier(.34,1.56,.64,1);
+}
+.btn-retry:hover{
+  transform:translateY(-2px);
+  box-shadow:0 8px 20px rgba(255,107,157,0.4);
+}
+.btn-retry:active{
+  transform:scale(.98);
+}
+
+/* ============================================
+   空状态设计 - 专业炫酷版
+   ============================================ */
+.empty-state{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:60px 20px;
+  text-align:center;
+  gap:12px;
+}
+.empty-icon{
+  font-size:72px;
+  opacity:0.6;
+  animation:float3d 4s ease-in-out infinite;
+}
+.empty-title{
+  font-size:18px;
+  font-weight:600;
+  color:#4B5563;
+}
+.empty-desc{
+  font-size:14px;
+  color:#9CA3AF;
+  max-width:280px;
+}
+.empty-action{
+  margin-top:8px;
+}
+
+/* ============================================
+   Toast 提示 - 专业炫酷版
+   ============================================ */
+.toast-container{
+  position:fixed;
+  top:20px;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:2000;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  pointer-events:none;
+}
+.toast{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:12px 20px;
+  background:rgba(30,30,40,0.9);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  color:white;
+  font-size:14px;
+  font-weight:500;
+  border-radius:12px;
+  box-shadow:0 8px 32px rgba(0,0,0,0.2);
+  animation:slideInBounce .5s cubic-bezier(.68,-.55,.265,1.55);
+  pointer-events:auto;
+  min-width:200px;
+  max-width:90vw;
+}
+.toast.success{
+  background:linear-gradient(135deg, rgba(34,197,94,0.95), rgba(16,185,129,0.9));
+}
+.toast.error{
+  background:linear-gradient(135deg, rgba(239,68,68,0.95), rgba(248,113,113,0.9));
+}
+.toast.warning{
+  background:linear-gradient(135deg, rgba(251,191,36,0.95), rgba(245,158,11,0.9));
+}
+.toast.info{
+  background:linear-gradient(135deg, rgba(59,130,246,0.95), rgba(96,165,250,0.9));
+}
+.toast-icon{
+  font-size:18px;
+}
+.toast.hide{
+  animation:fadeUp .3s ease-in reverse;
+  opacity:0;
+  transform:translateY(-10px);
+}
+
+/* ============================================
+   图片懒加载样式 - 专业炫酷版
+   ============================================ */
+.lazy-img{
+  opacity:0;
+  transition:opacity .5s ease, filter .3s ease;
+  will-change:opacity;
+}
+.lazy-img.loaded{
+  opacity:1;
+}
+.lazy-img.error{
+  opacity:0;
+}
+
+/* 图片容器 */
+.img-container{
+  position:relative;
+  overflow:hidden;
+  background:linear-gradient(135deg, #FFF5F7, #FFF0F5);
+}
+.img-container img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+/* 图片骨架屏占位 */
+.img-skeleton{
+  position:absolute;
+  inset:0;
+  background:linear-gradient(90deg, rgba(255,107,157,0.08) 25%, rgba(255,107,157,0.15) 50%, rgba(255,107,157,0.08) 75%);
+  background-size:200% 100%;
+  animation:skeletonShimmer 1.5s infinite;
+}
+
+/* 图片加载失败降级显示 */
+.img-fallback{
+  position:absolute;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  background:linear-gradient(135deg, #FFF5F7, #FFF0F5);
+}
+.img-fallback .fallback-emoji{
+  font-size:32px;
+  opacity:0.7;
+}
+.img-fallback .fallback-text{
+  font-size:10px;
+  color:#FF6B9D;
+  opacity:0.6;
+}
+
+/* 菜品图片卡片样式 */
+.dish-img-card{
+  position:relative;
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow:0 2px 8px rgba(255,107,157,0.1);
+  transition:all .3s cubic-bezier(.34,1.56,.64,1);
+}
+.dish-img-card:hover{
+  transform:translateY(-3px) scale(1.02);
+  box-shadow:0 8px 24px rgba(255,107,157,0.2);
+}
+.dish-img-card.sel{
+  box-shadow:0 0 0 3px rgba(255,107,157,0.3), 0 8px 24px rgba(255,107,157,0.2);
+}
+
+/* ============================================
    炫酷高亮效果 - 专业版
    ============================================ */
 .highlight-pro{
@@ -2610,6 +2963,8 @@ try{sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY)}catch(e){console.
 const DB={
   _dishes:[],_orders:[],_templates:[],_inventory:{},_settings:{},
   _reviews:[],_shoppingLists:[],_specialDates:[],_achievements:[],
+  _wishlist:[],_rewards:[],_redemptions:[],
+  _countdownSettings:[],_specialDateMenus:[],
   _ready:false,
   _subscribed:false,
 
@@ -2631,7 +2986,10 @@ const DB={
         sb.from('reviews').select('*').order('created_at',{ascending:false}),
         sb.from('shopping_lists').select('*').order('created_at',{ascending:false}),
         sb.from('special_dates').select('*'),
-        sb.from('achievements').select('*')
+        sb.from('achievements').select('*'),
+        sb.from('wishlist').select('*').order('created_at',{ascending:false}),
+        sb.from('rewards').select('*'),
+        sb.from('redemptions').select('*').order('redeemed_at',{ascending:false})
       ]);
       
       // 处理 dishes
@@ -2681,6 +3039,21 @@ const DB={
         this._achievements=results[8].value.data||[];
       }else{this._achievements=[]}
       
+      // 处理 wishlist
+      if(results[9].status==='fulfilled'&&!results[9].value.error){
+        this._wishlist=results[9].value.data||[];
+      }else{this._wishlist=[]}
+      
+      // 处理 rewards
+      if(results[10].status==='fulfilled'&&!results[10].value.error){
+        this._rewards=results[10].value.data||[];
+      }else{this._rewards=[]}
+      
+      // 处理 redemptions
+      if(results[11].status==='fulfilled'&&!results[11].value.error){
+        this._redemptions=results[11].value.data||[];
+      }else{this._redemptions=[]}
+      
       this._ready=true;
       this._subscribe();
     }catch(e){console.error('数据加载失败:',e)}
@@ -2728,6 +3101,18 @@ const DB={
       const{data}=await sb.from('achievements').select('*');
       this._achievements=data||[];renderCurrentPage();
     });
+    ch.on('postgres_changes',{event:'*',schema:'public',table:'wishlist'},async()=>{
+      const{data}=await sb.from('wishlist').select('*').order('created_at',{ascending:false});
+      this._wishlist=data||[];renderCurrentPage();
+    });
+    ch.on('postgres_changes',{event:'*',schema:'public',table:'rewards'},async()=>{
+      const{data}=await sb.from('rewards').select('*');
+      this._rewards=data||[];renderCurrentPage();
+    });
+    ch.on('postgres_changes',{event:'*',schema:'public',table:'redemptions'},async()=>{
+      const{data}=await sb.from('redemptions').select('*').order('redeemed_at',{ascending:false});
+      this._redemptions=data||[];renderCurrentPage();
+    });
     ch.subscribe((status)=>{
       if(status==='SUBSCRIBED')console.log('实时连接已建立');
     });
@@ -2768,10 +3153,28 @@ const DB={
   },
   hasInv(name){return !!this._inventory[name]},
   async saveDish(d){
-    if(d._exists){const{...clean}=d;delete clean._exists;const{error}=await sb.from('dishes').update(clean).eq('id',d.id);if(error)toast('保存失败','error')}
-    else{const{...clean}=d;delete clean._exists;const{error}=await sb.from('dishes').insert(clean);if(error)toast('添加失败','error')}
+    const clean={};
+    for(const k in d){
+      if(k!=='_exists')clean[k]=d[k];
+    }
+    if(d._exists){
+      const existing=this.getDish(d.id);
+      const merged=existing?{...existing,...clean}:clean;
+      const{error}=await sb.from('dishes').update(clean).eq('id',d.id);
+      if(error){toast('保存失败：'+error.message,'error');return}
+      const idx=this._dishes.findIndex(x=>x.id===d.id);
+      if(idx>=0)this._dishes[idx]=merged;
+    }else{
+      const{error}=await sb.from('dishes').insert(clean);
+      if(error){toast('添加失败：'+error.message,'error');return}
+      this._dishes.push(clean);
+    }
   },
-  async deleteDish(id){await sb.from('dishes').delete().eq('id',id)},
+  async deleteDish(id){
+    await sb.from('dishes').delete().eq('id',id);
+    const idx=this._dishes.findIndex(x=>x.id===id);
+    if(idx>=0)this._dishes.splice(idx,1);
+  },
   async saveTpl(t){
     if(t._exists){const{...clean}=t;delete clean._exists;await sb.from('templates').update(clean).eq('id',t.id)}
     else{const{...clean}=t;delete clean._exists;await sb.from('templates').insert(clean)}
@@ -2815,9 +3218,14 @@ const DB={
   },
 
   async updateShoppingList(id,patch){
-    patch.updated_at=new Date().toISOString();
-    const{error}=await sb.from('shopping_lists').update(patch).eq('id',id);
-    if(error)toast('更新清单失败','error');
+    // 只保留 shopping_lists 表中存在的字段
+    const allowed=['order_id','name','items','is_completed','completed_at'];
+    const clean={};
+    for(const k of allowed){
+      if(patch[k]!==undefined)clean[k]=patch[k];
+    }
+    const{error}=await sb.from('shopping_lists').update(clean).eq('id',id);
+    if(error)toast('更新清单失败：'+error.message,'error');
   },
 
   async deleteShoppingList(id){
@@ -3287,11 +3695,17 @@ const DB={
     return combo;
   },
 
-  async unlockAchievement(id){
+  async unlockAchievement(id,reward=0){
     const{error}=await sb.from('achievements').update({unlocked_at:new Date().toISOString()}).eq('id',id);
     if(!error){
       const ach=this._achievements.find(a=>a.id===id);
-      if(ach)toast(`🎉 解锁成就：${ach.name}！`,'success');
+      if(ach){
+        let msg=`🎉 解锁成就：${ach.name}！`;
+        if(reward>0)msg+=` 奖励 ${reward} 亲亲！😘`;
+        toast(msg,'success');
+        // 撒花庆祝
+        try{showConfetti()}catch(e){}
+      }
     }
   },
 
@@ -3337,20 +3751,272 @@ const DB={
   checkAchievements(){
     const stats=this.getCookingStats();
     const unlocked=this.getUnlockedAchievements().map(a=>a.id);
+    
+    // 成就奖励配置
+    const rewards={
+      a1:10,   // 初次下厨
+      a2:50,   // 连续一周
+      a3:100,  // 满汉全席
+      a4:80,   // 五星大厨
+      a5:60,   // 硬菜大师
+      a6:40,   // 快手小能手
+      a7:200,  // 甜蜜纪念日
+      a8:500,  // 百次成就
+      a9:60,   // 减脂达人
+      a10:40   // 无辣不欢
+    };
+    
+    // 计算连续做饭天数
+    const getStreak=()=>{
+      const orders=this._orders.filter(o=>!o.cancelled);
+      if(!orders.length)return 0;
+      const dates=[...new Set(orders.map(o=>o.order_date))].sort().reverse();
+      if(!dates.length)return 0;
+      let streak=0;
+      const today=this.today();
+      const d=new Date(today);
+      for(let i=0;i<365;i++){
+        const dateStr=d.toISOString().split('T')[0];
+        if(dates.includes(dateStr)){
+          streak++;
+        }else if(i>0){
+          break;
+        }
+        d.setDate(d.getDate()-1);
+      }
+      return streak;
+    };
+    
+    // 检查是否做过硬菜三件套
+    const checkHardDishes=()=>{
+      const dishNames=new Set();
+      const orders=this._orders.filter(o=>!o.cancelled);
+      orders.forEach(o=>{
+        const items=typeof o.items==='string'?JSON.parse(o.items):o.items;
+        (items||[]).forEach(i=>{
+          const d=this.getDish(i.did);
+          if(d)dishNames.add(d.name);
+        });
+      });
+      return dishNames.has('红烧肉')&&dishNames.has('红烧排骨')&&dishNames.has('可乐鸡翅');
+    };
+    
+    // 检查是否在纪念日做饭
+    const checkAnniversary=()=>{
+      const orders=this._orders.filter(o=>!o.cancelled);
+      const specialDates=this._specialDates||[];
+      for(const sd of specialDates){
+        if(!sd.date)continue;
+        const sdDate=new Date(sd.date);
+        for(const o of orders){
+          if(!o.order_date)continue;
+          const oDate=new Date(o.order_date);
+          if(sd.repeat_yearly){
+            // 检查月日是否相同
+            if(sdDate.getMonth()===oDate.getMonth()&&sdDate.getDate()===oDate.getDate())return true;
+          }else{
+            if(sd.date===o.order_date)return true;
+          }
+        }
+      }
+      return false;
+    };
+    
     const toCheck=[
       {id:'a1',check:()=>stats.totalOrders>=1},
+      {id:'a2',check:()=>getStreak()>=7},
       {id:'a3',check:()=>stats.totalDishes>=10},
       {id:'a4',check:()=>stats.goodRatings>=10},
+      {id:'a5',check:()=>checkHardDishes()},
       {id:'a6',check:()=>stats.quickDishes>=10},
+      {id:'a7',check:()=>checkAnniversary()},
       {id:'a8',check:()=>stats.totalOrders>=100},
       {id:'a9',check:()=>stats.lowFatDishes>=20},
       {id:'a10',check:()=>stats.spicyDishes>=10}
     ];
+    
     toCheck.forEach(async({id,check})=>{
       if(!unlocked.includes(id)&&check()){
-        await this.unlockAchievement(id);
+        await this.unlockAchievement(id,rewards[id]);
       }
     });
+  },
+
+  // ========== 心愿单相关方法 ==========
+  wishlist(){return this._wishlist},
+  
+  isInWishlist(dishId){
+    return this._wishlist.some(w=>w.dish_id===dishId);
+  },
+  
+  async addToWishlist(dishId,reason='',remindDate=null){
+    const item={
+      id:'w'+Date.now(),
+      dish_id:dishId,
+      reason:reason||'',
+      remind_date:remindDate,
+      created_at:new Date().toISOString()
+    };
+    const{error}=await sb.from('wishlist').insert(item);
+    if(error){
+      toast('添加心愿单失败：'+error.message,'error');
+      return null;
+    }
+    toast('已添加到心愿单！💭','success');
+    return item;
+  },
+  
+  async removeFromWishlist(id){
+    await sb.from('wishlist').delete().eq('id',id);
+    toast('已从心愿单移除','info');
+  },
+  
+  // ========== 兑换商店相关方法 ==========
+  rewards(){return this._rewards.filter(r=>r.is_active!==false)},
+  redemptions(){return this._redemptions},
+  
+  getTotalKisses(){
+    // 计算总亲亲数：已解锁成就的奖励总和
+    const unlocked=this.getUnlockedAchievements();
+    const rewardMap={
+      a1:10,a2:50,a3:100,a4:80,a5:60,
+      a6:40,a7:200,a8:500,a9:60,a10:40
+    };
+    let total=0;
+    unlocked.forEach(a=>{
+      if(rewardMap[a.id])total+=rewardMap[a.id];
+    });
+    // 减去已兑换的
+    const usedRedemptions=this._redemptions.filter(r=>r.is_used);
+    // 这里需要知道每个兑换用了多少亲亲，暂时先返回成就获得的
+    return total;
+  },
+  
+  getUsedKisses(){
+    // 计算已用亲亲数
+    let used=0;
+    this._redemptions.forEach(r=>{
+      const reward=this._rewards.find(rw=>rw.id===r.reward_id);
+      if(reward)used+=reward.cost;
+    });
+    return used;
+  },
+  
+  getAvailableKisses(){
+    return this.getTotalKisses()-this.getUsedKisses();
+  },
+  
+  async redeemReward(rewardId){
+    const reward=this._rewards.find(r=>r.id===rewardId);
+    if(!reward){
+      toast('兑换商品不存在','error');
+      return null;
+    }
+    const available=this.getAvailableKisses();
+    if(available<reward.cost){
+      toast(`亲亲不够！还需要 ${reward.cost-available} 个亲亲`, 'error');
+      return null;
+    }
+    const redemption={
+      id:'rd'+Date.now(),
+      reward_id:rewardId,
+      redeemed_at:new Date().toISOString(),
+      is_used:false
+    };
+    const{error}=await sb.from('redemptions').insert(redemption);
+    if(error){
+      toast('兑换失败：'+error.message,'error');
+      return null;
+    }
+    toast(`🎉 兑换成功！获得：${reward.name}`,'success');
+    try{showConfetti(30)}catch(e){}
+    return redemption;
+  },
+  
+  async useRedemption(id){
+    const{error}=await sb.from('redemptions').update({
+      is_used:true,
+      used_at:new Date().toISOString()
+    }).eq('id',id);
+    if(error){
+      toast('使用失败：'+error.message,'error');
+      return;
+    }
+    toast('已使用！','success');
+  },
+  
+  // ========== 随机推荐方法 ==========
+  getRandomDishes(count=3,filterFn=null){
+    let dishes=[...this._dishes];
+    if(filterFn)dishes=dishes.filter(filterFn);
+    // 洗牌
+    for(let i=dishes.length-1;i>0;i--){
+      const j=Math.floor(Math.random()*(i+1));
+      [dishes[i],dishes[j]]=[dishes[j],dishes[i]];
+    }
+    return dishes.slice(0,count);
+  },
+  
+  // ========== 历史记录相关方法 ==========
+  getOrderHistory(days=30){
+    const orders=this._orders.filter(o=>!o.cancelled);
+    if(days<=0)return orders;
+    const cutoff=Date.now()-days*864e5;
+    return orders.filter(o=>{
+      if(!o.created_at)return false;
+      return new Date(o.created_at).getTime()>cutoff;
+    });
+  },
+  
+  getRecentDishes(){
+    // 获取最近常吃的菜
+    const dishCount={};
+    const orders=this._orders.filter(o=>!o.cancelled);
+    orders.forEach(o=>{
+      const items=typeof o.items==='string'?JSON.parse(o.items):o.items;
+      (items||[]).forEach(i=>{
+        dishCount[i.did]=(dishCount[i.did]||0)+1;
+      });
+    });
+    // 按次数排序
+    const sorted=Object.entries(dishCount).sort((a,b)=>b[1]-a[1]);
+    return sorted.map(([id,count])=>({
+      dish:this.getDish(id),
+      count
+    })).filter(item=>item.dish);
+  },
+  
+  getNotEatenRecently(days=14){
+    // 获取好久没吃的菜
+    const lastEaten={};
+    const orders=this._orders.filter(o=>!o.cancelled);
+    const today=new Date();
+    
+    orders.forEach(o=>{
+      const items=typeof o.items==='string'?JSON.parse(o.items):o.items;
+      const orderDate=o.order_date?new Date(o.order_date):new Date(o.created_at);
+      (items||[]).forEach(i=>{
+        if(!lastEaten[i.did]||orderDate>new Date(lastEaten[i.did])){
+          lastEaten[i.did]=orderDate.toISOString();
+        }
+      });
+    });
+    
+    const cutoff=new Date(today.getTime()-days*864e5);
+    const result=[];
+    
+    this._dishes.forEach(d=>{
+      const last=lastEaten[d.id];
+      if(!last||new Date(last)<cutoff){
+        result.push({
+          dish:d,
+          lastEaten:last?new Date(last):null,
+          daysSince:last?Math.floor((today-new Date(last))/864e5):null
+        });
+      }
+    });
+    
+    return result;
   }
 };
 
@@ -3528,20 +4194,54 @@ async function renderCurrentPage(){
 }
 function renderPage(page,tab){
   const app=$('#app');
-  if(page==='role-select'){app.innerHTML=pgRoleSelect();return}
-  if(page==='wife'){
-    if(tab==='waiting'){app.innerHTML=pgWifeWaiting();return}
-    if(tab==='calendar'){app.innerHTML=pgCalendar('wife');return}
-    app.innerHTML=pgWifeHome();
+  if(page==='role-select'){app.innerHTML=pgRoleSelect()}
+  else if(page==='wife'){
+    if(tab==='waiting')app.innerHTML=pgWifeWaiting();
+    else if(tab==='calendar')app.innerHTML=pgCalendar('wife');
+    else app.innerHTML=pgWifeHome();
   }else if(page==='hubby'){
-    if(tab==='manage'){app.innerHTML=pgHubbyManage();return}
-    if(tab==='shopping'){app.innerHTML=pgHubbyShopping();return}
-    if(tab==='achievements'){app.innerHTML=pgHubbyAchievements();return}
-    if(tab==='stats'){app.innerHTML=pgHubbyStats();return}
-    if(tab==='calendar'){app.innerHTML=pgCalendar('hubby');return}
-    if(tab==='settings'){app.innerHTML=pgSettings();return}
-    app.innerHTML=pgHubbyHome();
+    if(tab==='manage')app.innerHTML=pgHubbyManage();
+    else if(tab==='shopping')app.innerHTML=pgHubbyShopping();
+    else if(tab==='achievements')app.innerHTML=pgHubbyAchievements();
+    else if(tab==='stats')app.innerHTML=pgHubbyStats();
+    else if(tab==='calendar')app.innerHTML=pgCalendar('hubby');
+    else if(tab==='settings')app.innerHTML=pgSettings();
+    else app.innerHTML=pgHubbyHome();
   }else{app.innerHTML=pgRoleSelect()}
+  refreshLazyLoad();
+  
+  // 检查是否需要自动显示小馋猫爱吃
+  if(page==='wife' && !tab && localStorage.getItem('pp_show_wife_loves')==='1'){
+    localStorage.removeItem('pp_show_wife_loves');
+    setTimeout(()=>{
+      // 模拟点击 show-wife-loves
+      const wifeLoveTag = '小馋猫爱吃';
+      const loveDishes = DB.dishes().filter(dish => {
+        const tags=DB._getDishTags(dish);
+        return tags.includes(wifeLoveTag);
+      });
+      const list = $('#dish-list');
+      if (list) {
+        if (loveDishes.length > 0) {
+          list.innerHTML = `<div class="text-sm text-primary-400 font-bold mb-4 mt-2 flex items-center gap-2 anim-fade">
+            <span class="text-2xl">🐱</span> 小馋猫爱吃
+          </div>
+          <div class="grid grid-cols-3 gap-3">
+            ${loveDishes.map((dish, i) => dishCard(dish, true, i + 1)).join('')}
+          </div>`;
+        } else {
+          list.innerHTML = `<div class="text-center text-gray-400 py-24 anim-fade">
+            <div class="text-6xl mb-5 opacity-30">🐱</div>
+            <p class="text-lg">小馋猫还没有爱吃的菜</p>
+            <p class="text-sm mt-2 opacity-60">快去添加吧～</p>
+          </div>`;
+        }
+      }
+      const currentCat = $('#current-cat');
+      if (currentCat) currentCat.textContent = '小馋猫爱吃';
+      refreshLazyLoad();
+    },100);
+  }
 }
 function initRouter(){
   const hash=window.location.hash.slice(1)||'';
@@ -3714,6 +4414,13 @@ function hubbySidebar(activeTab='home'){
         <div class="sidebar-section">
           <div class="sidebar-section-title">
             <i class="fa-solid fa-bolt"></i> 快捷操作
+          </div>
+          
+          <div class="sidebar-menu-item" data-action="show-wife-loves">
+            <div class="menu-icon">
+              <i class="fa-solid fa-cat"></i>
+            </div>
+            <span class="menu-label">小馋猫爱吃</span>
           </div>
           
           <div class="sidebar-menu-item" data-action="switch-role">
@@ -4178,14 +4885,24 @@ function showRecommendationModal(scenarioId){
           <i class="fa-solid fa-star text-yellow-400"></i>
           为你推荐
         </h4>
-        ${totalPrice>0?`<span class="text-sm text-gray-400">约 ¥${totalPrice}</span>`:''}
+        ${totalPrice>0?`<span class="text-sm text-gray-400">共 ${totalPrice}亲亲 😘</span>`:''}
       </div>
       
       <div class="space-y-2">
-        ${combo.mains.length>0?combo.mains.map((d,i)=>`
+        ${combo.mains.length>0?combo.mains.map((d,i)=>{
+          const imgUrl=getDishImageUrl(d);
+          const useImage=!!imgUrl;
+          const emoji=DISH_EMOJIS[d.name]||'🍽️';
+          let iconHtml='';
+          if(useImage){
+            iconHtml=`<img src="${imgUrl}" class="w-full h-full object-cover rounded-xl" alt="${d.name}" onerror="this.parentElement.innerHTML='<div class=\\'w-full h-full flex items-center justify-center text-xl\\'>${emoji}</div>'">`;
+          }else{
+            iconHtml=`<span class="text-xl">${emoji}</span>`;
+          }
+          return `
           <div class="list-item-pro anim-fade stagger-${(i%10)+1}" style="background:rgba(255,255,255,0.8)">
-            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center text-xl">
-              ${d.emoji||'🍽️'}
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center overflow-hidden shrink-0">
+              ${iconHtml}
             </div>
             <div class="flex-1">
               <p class="text-sm font-medium text-gray-700">${d.name}</p>
@@ -4195,12 +4912,22 @@ function showRecommendationModal(scenarioId){
               <i class="fa-solid fa-plus"></i>
             </button>
           </div>
-        `).join(''):''}
+        `;}).join(''):''}
         
-        ${combo.soups.length>0?combo.soups.map((d,i)=>`
+        ${combo.soups.length>0?combo.soups.map((d,i)=>{
+          const imgUrl=getDishImageUrl(d);
+          const useImage=!!imgUrl;
+          const emoji=DISH_EMOJIS[d.name]||'🍲';
+          let iconHtml='';
+          if(useImage){
+            iconHtml=`<img src="${imgUrl}" class="w-full h-full object-cover rounded-xl" alt="${d.name}" onerror="this.parentElement.innerHTML='<div class=\\'w-full h-full flex items-center justify-center text-xl\\'>${emoji}</div>'">`;
+          }else{
+            iconHtml=`<span class="text-xl">${emoji}</span>`;
+          }
+          return `
           <div class="list-item-pro anim-fade stagger-${((i+combo.mains.length)%10)+1}" style="background:rgba(255,255,255,0.8)">
-            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-50 to-cyan-50 flex items-center justify-center text-xl">
-              ${d.emoji||'🍲'}
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-50 to-cyan-50 flex items-center justify-center overflow-hidden shrink-0">
+              ${iconHtml}
             </div>
             <div class="flex-1">
               <p class="text-sm font-medium text-gray-700">${d.name}</p>
@@ -4210,12 +4937,22 @@ function showRecommendationModal(scenarioId){
               <i class="fa-solid fa-plus"></i>
             </button>
           </div>
-        `).join(''):''}
+        `;}).join(''):''}
         
-        ${combo.staples.length>0?combo.staples.map((d,i)=>`
+        ${combo.staples.length>0?combo.staples.map((d,i)=>{
+          const imgUrl=getDishImageUrl(d);
+          const useImage=!!imgUrl;
+          const emoji=DISH_EMOJIS[d.name]||'🍚';
+          let iconHtml='';
+          if(useImage){
+            iconHtml=`<img src="${imgUrl}" class="w-full h-full object-cover rounded-xl" alt="${d.name}" onerror="this.parentElement.innerHTML='<div class=\\'w-full h-full flex items-center justify-center text-xl\\'>${emoji}</div>'">`;
+          }else{
+            iconHtml=`<span class="text-xl">${emoji}</span>`;
+          }
+          return `
           <div class="list-item-pro anim-fade stagger-${((i+combo.mains.length+combo.soups.length)%10)+1}" style="background:rgba(255,255,255,0.8)">
-            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-50 to-yellow-50 flex items-center justify-center text-xl">
-              ${d.emoji||'🍚'}
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-50 to-yellow-50 flex items-center justify-center overflow-hidden shrink-0">
+              ${iconHtml}
             </div>
             <div class="flex-1">
               <p class="text-sm font-medium text-gray-700">${d.name}</p>
@@ -4225,7 +4962,7 @@ function showRecommendationModal(scenarioId){
               <i class="fa-solid fa-plus"></i>
             </button>
           </div>
-        `).join(''):''}
+        `;}).join(''):''}
       </div>
       
       <!-- 一键全部添加 -->
@@ -4263,17 +5000,27 @@ function showRecommendationModal(scenarioId){
       </h4>
       
       <div class="grid grid-cols-2 gap-2">
-        ${allDishes.slice(0,8).map((d,i)=>`
+        ${allDishes.slice(0,8).map((d,i)=>{
+          const imgUrl=getDishImageUrl(d);
+          const useImage=!!imgUrl;
+          const emoji=DISH_EMOJIS[d.name]||'🍽️';
+          let iconHtml='';
+          if(useImage){
+            iconHtml=`<img src="${imgUrl}" class="w-8 h-8 object-cover rounded-lg shrink-0" alt="${d.name}" onerror="this.outerHTML='<span class=\\'text-xl shrink-0\\'>${emoji}</span>'">`;
+          }else{
+            iconHtml=`<span class="text-xl shrink-0">${emoji}</span>`;
+          }
+          return `
           <button class="text-left p-3 rounded-xl bg-white/70 border border-gray-100 hover:bg-white hover:border-gray-200 hover:shadow-md transition-all anim-fade stagger-${(i%10)+1}" data-action="quick-add-dish" data-did="${d.id}">
             <div class="flex items-center gap-2">
-              <span class="text-xl">${d.emoji||'🍽️'}</span>
+              ${iconHtml}
               <div class="flex-1 min-w-0">
                 <p class="text-xs font-medium text-gray-700 truncate">${d.name}</p>
                 <p class="text-[10px] text-gray-400">${d.category}</p>
               </div>
             </div>
           </button>
-        `).join('')}
+        `;}).join('')}
       </div>
     </div>
     `:''}
@@ -4425,6 +5172,11 @@ function pgWifeHome(){
   }
   
   const favCount = dishes.filter(d=>d.is_favorite).length;
+  const wifeLoveTag = '小馋猫爱吃';
+  const wifeLoveCount = dishes.filter(d=>{
+    const tags=DB._getDishTags(d);
+    return tags.includes(wifeLoveTag);
+  }).length;
   const dishCount = dishes.length;
   
   return `<div class="min-h-screen pb-24">
@@ -4490,6 +5242,42 @@ function pgWifeHome(){
             <span class="menu-label">我的收藏</span>
             <span class="menu-badge">${favCount}</span>
           </div>`:''}
+          
+          ${wifeLoveCount>0?`<div class="sidebar-menu-item" data-action="show-wife-loves">
+            <div class="menu-icon">
+              <i class="fa-solid fa-cat"></i>
+            </div>
+            <span class="menu-label">小馋猫爱吃</span>
+            <span class="menu-badge">${wifeLoveCount}</span>
+          </div>`:''}
+          
+          <div class="sidebar-menu-item" data-action="show-shake">
+            <div class="menu-icon">
+              <i class="fa-solid fa-dice"></i>
+            </div>
+            <span class="menu-label">摇一摇</span>
+          </div>
+          
+          <div class="sidebar-menu-item" data-action="show-wishlist">
+            <div class="menu-icon">
+              <i class="fa-solid fa-cloud"></i>
+            </div>
+            <span class="menu-label">心愿单</span>
+          </div>
+          
+          <div class="sidebar-menu-item" data-action="show-history">
+            <div class="menu-icon">
+              <i class="fa-solid fa-clock-rotate-left"></i>
+            </div>
+            <span class="menu-label">历史记录</span>
+          </div>
+          
+          <div class="sidebar-menu-item" data-action="show-rewards">
+            <div class="menu-icon">
+              <i class="fa-solid fa-gift"></i>
+            </div>
+            <span class="menu-label">兑换商店</span>
+          </div>
         </div>
         
         <!-- 智能推荐 -->
@@ -4644,28 +5432,69 @@ const DISH_EMOJIS={
   '火锅':'🍲','烧烤':'🍖','麻辣烫':'🍲','冒菜':'🍲'
 };
 
+const DISH_IMAGE_URLS={};
+
+function getDishImageUrl(dish){
+  if(dish.image_url)return dish.image_url;
+  return DISH_IMAGE_URLS[dish.name]||null;
+}
+
 function dishCard(d,isFav=false,idx=0){
   const wc=DB.dishWeekCount(d.id);const sel=_selDishes.has(d.id);
   const staggerClass=idx>0&&idx<=30?`stagger-${idx}`:'';
   let topRight='';
-  if(wc>=3)topRight=`<span class="absolute top-2 right-2 bg-gradient-to-br from-rose-400 to-pink-400 text-white text-[9px] px-2 py-0.5 rounded-full shadow-lg font-bold anim-pulse">本周${wc}次 🔥</span>`;
-  else if(wc>=2)topRight=`<span class="absolute top-2 right-2 bg-gradient-to-br from-amber-400 to-orange-400 text-white text-[9px] px-2 py-0.5 rounded-full shadow-lg font-bold">本周${wc}次 ✨</span>`;
-  else if(sel)topRight=`<div class="absolute top-2 right-2 w-6 h-6 rounded-full bg-gradient-to-br from-primary-400 to-pink-400 flex items-center justify-center text-white shadow-lg shadow-primary-400/30 anim-pop">
+  if(wc>=3)topRight=`<span class="absolute top-2 right-2 bg-gradient-to-br from-rose-400 to-pink-400 text-white text-[9px] px-2 py-0.5 rounded-full shadow-lg font-bold anim-pulse z-20">本周${wc}次 🔥</span>`;
+  else if(wc>=2)topRight=`<span class="absolute top-2 right-2 bg-gradient-to-br from-amber-400 to-orange-400 text-white text-[9px] px-2 py-0.5 rounded-full shadow-lg font-bold z-20">本周${wc}次 ✨</span>`;
+  else if(sel)topRight=`<div class="absolute top-2 right-2 w-6 h-6 rounded-full bg-gradient-to-br from-primary-400 to-pink-400 flex items-center justify-center text-white shadow-lg shadow-primary-400/30 anim-pop z-20">
     <i class="fa-solid fa-check text-[10px]"></i>
   </div>`;
   const hasRecipe=d.recipe&&d.recipe.trim();
   const catEmoji={'荤菜':'🥩','素菜':'🥬','汤':'🍲','主食':'🍚','全部':'🍽️'};
   const emoji=DISH_EMOJIS[d.name]||catEmoji[d.category]||'🍽️';
-  return `<div class="dish-card relative p-3 text-left ${sel?'sel':''} anim-fade-scale ${staggerClass}" data-did="${d.id}">
-    ${topRight}
-    ${isFav||d.is_favorite?'<span class="absolute top-2 left-2 text-sm anim-float">⭐</span>':''}
-    ${hasRecipe?`<button data-action="show-recipe" data-did="${d.id}" class="absolute bottom-2 right-2 w-6 h-6 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center text-primary-400 shadow-sm border border-primary-100 z-10 active:scale-95 transition-transform hover:scale-110">
-      <i class="fa-solid fa-book-open text-[10px]"></i>
-    </button>`:''}
-    <div class="flex flex-col items-center gap-2">
+  const imgUrl=getDishImageUrl(d);
+  const useImage=!!imgUrl;
+  
+  let mediaHtml='';
+  if(useImage){
+    mediaHtml=`
+      <button data-action="toggle-dish" data-did="${d.id}" class="emoji-container w-16 h-16 rounded-2xl overflow-hidden relative shadow-sm ${sel?'bg-gradient-to-br from-primary-100 to-primary-200':''} active:scale-95 transition-transform">
+        <div class="img-container w-full h-full">
+          <div class="img-skeleton"></div>
+          <img 
+            class="lazy-img w-full h-full" 
+            data-src="${imgUrl}" 
+            alt="${d.name}"
+            style="object-fit:cover;"
+            onerror="this.classList.add('error');const parent=this.parentElement;parent.querySelector('.img-skeleton')?.remove();parent.innerHTML+='<div class=\\'img-fallback\\'><span class=\\'fallback-emoji\\'>${emoji}</span></div>';"
+          >
+        </div>
+      </button>
+    `;
+  }else{
+    mediaHtml=`
       <button data-action="toggle-dish" data-did="${d.id}" class="emoji-container w-16 h-16 rounded-2xl bg-gradient-to-br from-primary-50 to-primary-100 flex items-center justify-center text-3xl shadow-sm ${sel?'bg-gradient-to-br from-primary-100 to-primary-200':''} active:scale-95 transition-transform">
         ${emoji}
       </button>
+    `;
+  }
+  
+  const isFavNow=d.is_favorite;
+  const isInWishlistNow=DB.isInWishlist(d.id);
+  return `<div class="dish-card relative p-3 text-left ${sel?'sel':''} anim-fade-scale ${staggerClass}" data-did="${d.id}">
+    ${topRight}
+    <div class="absolute top-2 left-2 flex gap-1 z-20">
+      <button data-action="toggle-favorite" data-did="${d.id}" class="text-sm active:scale-125 transition-transform hover:scale-110">
+        ${isFavNow?'⭐':'☆'}
+      </button>
+      <button data-action="toggle-wishlist" data-did="${d.id}" class="text-sm active:scale-125 transition-transform hover:scale-110" title="${isInWishlistNow?'已在心愿单':'加入心愿单'}">
+        ${isInWishlistNow?'💭':'☁️'}
+      </button>
+    </div>
+    ${hasRecipe?`<button data-action="show-recipe" data-did="${d.id}" class="absolute bottom-2 right-2 w-6 h-6 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center text-primary-400 shadow-sm border border-primary-100 z-20 active:scale-95 transition-transform hover:scale-110">
+      <i class="fa-solid fa-book-open text-[10px]"></i>
+    </button>`:''}
+    <div class="flex flex-col items-center gap-2">
+      ${mediaHtml}
       <button data-action="toggle-dish" data-did="${d.id}" class="text-center w-full active:opacity-80 transition-opacity">
         <div class="text-sm font-bold leading-tight ${sel?'text-primary-500':'text-gray-800'} truncate mb-1">${d.name}</div>
         <div class="flex items-center justify-center gap-1.5 text-[10px] text-gray-400">
@@ -4674,7 +5503,7 @@ function dishCard(d,isFav=false,idx=0){
           </span>
           <span class="w-1 h-1 rounded-full bg-gray-300"></span>
           <span class="flex items-center gap-0.5">
-            <i class="fa-solid fa-yen-sign text-primary-300"></i> ~${d.cost_estimate}
+            <i class="fa-solid fa-heart text-rose-400"></i> ${d.cost_estimate}亲亲
           </span>
         </div>
       </button>
@@ -5428,6 +6257,8 @@ function pgHubbyManage(){
   // 获取状态 banner
   const hubbyStatusBanner=getStatusBanner(false);
   
+  const catEmoji={'荤菜':'🥩','素菜':'🥬','汤':'🍲','主食':'🍚','全部':'🍽️'};
+  
   return `<div class="min-h-screen pb-24 flex flex-col">
     ${hubbySidebar('manage')}
     <header class="sticky top-0 z-30 bg-white/70 backdrop-blur-xl px-4 pt-4 pb-3">
@@ -5448,11 +6279,37 @@ function pgHubbyManage(){
         <div class="space-y-4">
           ${dishes.map((d,i)=>{
             const colors=categoryColors[d.category]||categoryColors['荤菜'];
+            const imgUrl=getDishImageUrl(d);
+            const useImage=!!imgUrl;
+            const emoji=DISH_EMOJIS[d.name]||catEmoji[d.category]||'🍽️';
+            
+            let iconHtml='';
+            if(useImage){
+              iconHtml=`
+                <div class="icon-container-pro w-14 h-14 rounded-2xl overflow-hidden shrink-0" style="background:${colors.lightBg}">
+                  <div class="img-container w-full h-full">
+                    <div class="img-skeleton"></div>
+                    <img 
+                      class="lazy-img w-full h-full" 
+                      data-src="${imgUrl}" 
+                      alt="${d.name}"
+                      style="object-fit:cover;"
+                      onerror="this.classList.add('error');const parent=this.parentElement;parent.querySelector('.img-skeleton')?.remove();parent.innerHTML+='<div class=\\'img-fallback\\'><span class=\\'fallback-emoji\\'>${emoji}</span></div>';"
+                    >
+                  </div>
+                </div>
+              `;
+            }else{
+              iconHtml=`
+                <div class="icon-container-pro w-14 h-14 rounded-2xl flex items-center justify-center shrink-0" style="background:${colors.lightBg}">
+                  <span class="text-3xl">${emoji}</span>
+                </div>
+              `;
+            }
+            
             return `
               <div class="list-item-ultra anim-fade stagger-${(i%10)+1} float-card">
-                <div class="icon-container-pro w-14 h-14 rounded-2xl flex items-center justify-center shrink-0" style="background:${colors.lightBg}">
-                  <span class="text-3xl">${d.category==='荤菜'?'🥩':d.category==='素菜'?'🥬':d.category==='汤'?'🍲':'🍚'}</span>
-                </div>
+                ${iconHtml}
                 <div class="flex-1">
                   <div class="flex items-center gap-2 flex-wrap">
                     <span class="font-bold text-gray-700 text-lg">${d.name}</span>
@@ -5461,7 +6318,7 @@ function pgHubbyManage(){
                   </div>
                   <div class="flex items-center gap-3 mt-2 text-sm text-gray-500">
                     <span class="flex items-center gap-1"><i class="fa-solid fa-clock"></i>${d.cook_time}分钟</span>
-                    <span class="flex items-center gap-1"><i class="fa-solid fa-yen-sign"></i>~${d.cost_estimate}元</span>
+                    <span class="flex items-center gap-1"><i class="fa-solid fa-heart text-rose-400"></i>${d.cost_estimate}亲亲</span>
                     <span class="flex items-center gap-1"><i class="fa-solid fa-carrot"></i>${(d.ingredients||[]).length}种食材</span>
                   </div>
                 </div>
@@ -5632,14 +6489,14 @@ function pgHubbyStats(){
       
       <div class="grid grid-cols-2 gap-4">
         <div class="stat-card-ultra stat-card-amber float-card anim-fade">
-          <div class="stat-icon-ultra">💰</div>
-          <div class="stat-value-ultra">¥${totalCostAll}</div>
-          <div class="stat-label-ultra">总花费</div>
+          <div class="stat-icon-ultra">💋</div>
+          <div class="stat-value-ultra">${totalCostAll} 亲亲</div>
+          <div class="stat-label-ultra">总获得</div>
         </div>
         <div class="stat-card-ultra float-card anim-fade">
-          <div class="stat-icon-ultra" style="background:linear-gradient(135deg, #FFF5F7, #FCE7F3)">📊</div>
-          <div class="stat-value-ultra gradient-text-primary">¥${avgCostAll}</div>
-          <div class="stat-label-ultra" style="color:#FF6B9D">日均花费</div>
+          <div class="stat-icon-ultra" style="background:linear-gradient(135deg, #FFF5F7, #FCE7F3)">💕</div>
+          <div class="stat-value-ultra gradient-text-primary">${avgCostAll} 亲亲</div>
+          <div class="stat-label-ultra" style="color:#FF6B9D">日均获得</div>
         </div>
       </div>
       
@@ -5670,13 +6527,13 @@ function pgHubbyStats(){
           <div class="stat-label-ultra" style="color:#D97706;font-size:0.625rem">菜品</div>
         </div>
         <div class="stat-card-ultra stat-card-amber float-card anim-fade">
-          <div class="stat-icon-ultra" style="width:40px;height:40px">💰</div>
-          <div class="stat-value-ultra" style="font-size:1.25rem">¥${monthCost}</div>
-          <div class="stat-label-ultra" style="font-size:0.625rem">花费</div>
+          <div class="stat-icon-ultra" style="width:40px;height:40px">💋</div>
+          <div class="stat-value-ultra" style="font-size:1.25rem">${monthCost} 亲亲</div>
+          <div class="stat-label-ultra" style="font-size:0.625rem">获得</div>
         </div>
         <div class="stat-card-ultra float-card anim-fade">
-          <div class="stat-icon-ultra" style="background:linear-gradient(135deg, #FFF5F7, #FCE7F3);width:40px;height:40px">📊</div>
-          <div class="stat-value-ultra gradient-text-primary" style="font-size:1.25rem">¥${monthAvgCost}</div>
+          <div class="stat-icon-ultra" style="background:linear-gradient(135deg, #FFF5F7, #FCE7F3);width:40px;height:40px">💕</div>
+          <div class="stat-value-ultra gradient-text-primary" style="font-size:1.25rem">${monthAvgCost} 亲亲</div>
           <div class="stat-label-ultra" style="color:#FF6B9D;font-size:0.625rem">日均</div>
         </div>
       </div>
@@ -5915,9 +6772,9 @@ function pgCalendar(role){
   const now=new Date();const year=now.getFullYear(),month=now.getMonth();
   const firstDay=new Date(year,month,1).getDay();const daysInMonth=new Date(year,month+1,0).getDate();
   const orders=DB.orders();const today=DB.today();
-  let cells='';for(let i=0;i<firstDay;i++)cells+=`<div class="aspect-square"></div>`;
-  for(let d=1;d<=daysInMonth;d++){const ds=`${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;const o=orders.find(x=>x.order_date===ds);const isToday=ds===today;const hasOrder=o&&!o.cancelled;const cancelled=o&&o.cancelled;let dot='';if(hasOrder){const items=typeof o.items==='string'?JSON.parse(o.items):o.items;dot=`<div class="flex gap-0.5 justify-center mt-0.5">${(items||[]).slice(0,3).map(()=>'<div class="w-1 h-1 rounded-full bg-primary-400"></div>').join('')}</div>`}if(cancelled)dot=`<div class="text-[10px] text-gray-300 mt-0.5">休</div>`;cells+=`<button data-action="cal-day" data-date="${ds}" class="aspect-square flex flex-col items-center justify-center rounded-xl text-sm transition ${isToday?'bg-primary-400 text-white font-bold':'hover:bg-primary-50'} ${!isToday&&hasOrder?'text-gray-800':''} ${!isToday&&!hasOrder&&!cancelled?'text-gray-400':''}">${d}${dot}</button>`}
-  return `<div class="min-h-screen pb-24"><header class="sticky top-0 z-30 bg-primary-50/90 backdrop-blur-lg px-4 pt-4 pb-3"><h1 class="font-display text-xl">${year}年${month+1}月</h1></header><div class="px-4"><div class="grid grid-cols-7 gap-1 mb-2">${['日','一','二','三','四','五','六'].map(w=>`<div class="text-center text-xs text-gray-400 py-1">${w}</div>`).join('')}</div><div class="grid grid-cols-7 gap-1">${cells}</div><div id="cal-detail" class="mt-4"></div></div>${role==='wife'?wifeNav('calendar'):hubbyNav('calendar')}</div>`;
+  let cells='';for(let i=0;i<firstDay;i++)cells+=`<div class="h-10"></div>`;
+  for(let d=1;d<=daysInMonth;d++){const ds=`${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;const o=orders.find(x=>x.order_date===ds);const isToday=ds===today;const hasOrder=o&&!o.cancelled;const cancelled=o&&o.cancelled;let dot='';if(hasOrder){const items=typeof o.items==='string'?JSON.parse(o.items):o.items;dot=`<div class="flex gap-0.5 justify-center mt-0.5">${(items||[]).slice(0,3).map(()=>'<div class="w-1 h-1 rounded-full bg-primary-400"></div>').join('')}</div>`}if(cancelled)dot=`<div class="text-[10px] text-gray-300 mt-0.5">休</div>`;cells+=`<button data-action="cal-day" data-date="${ds}" class="h-10 flex flex-col items-center justify-center rounded-lg text-sm transition ${isToday?'bg-primary-400 text-white font-bold':'hover:bg-primary-50'} ${!isToday&&hasOrder?'text-gray-800':''} ${!isToday&&!hasOrder&&!cancelled?'text-gray-400':''}">${d}${dot}</button>`}
+  return `<div class="min-h-screen pb-24"><header class="sticky top-0 z-30 bg-primary-50/90 backdrop-blur-lg px-4 pt-2 pb-2"><h1 class="font-display text-lg">${year}年${month+1}月</h1></header><div class="px-4"><div class="grid grid-cols-7 gap-1 mb-1">${['日','一','二','三','四','五','六'].map(w=>`<div class="text-center text-xs text-gray-400 py-0.5">${w}</div>`).join('')}</div><div class="grid grid-cols-7 gap-1">${cells}</div><div id="cal-detail" class="mt-3"></div></div>${role==='wife'?wifeNav('calendar'):hubbyNav('calendar')}</div>`;
 }
 
 /* ============================================================
@@ -5999,32 +6856,43 @@ function pgHubbyAchievements(){
         </div>
         
         <div class="grid grid-cols-2 gap-4">
-          ${unlocked.map((a,i)=>`
-          <div class="card-pro card-amber float-card anim-fade stagger-${(i%10)+1} ripple-effect" style="color:#F59E0B">
+          ${unlocked.map((a,i)=>{
+            const readIds=JSON.parse(localStorage.getItem('readAchievements')||'[]');
+            const isRead=readIds.includes(a.id);
+            return `
+          <div class="card-pro ${isRead?'':`card-amber float-card anim-fade stagger-${(i%10)+1} ripple-effect`}" style="${isRead?'':'color:#F59E0B'}">
             <div class="text-center p-4">
               <!-- 炫酷大图标容器 -->
               <div class="big-icon-ultra mx-auto mb-4" style="width:80px;height:80px">
+                ${isRead?'':`
                 <div class="glow-layer-1" style="background:radial-gradient(circle, rgba(251,191,36,0.4), transparent 70%)"></div>
                 <div class="glow-layer-2" style="background:radial-gradient(circle, rgba(245,158,11,0.3), transparent 70%)"></div>
                 <div class="ring-1" style="border-color:rgba(251,191,36,0.4)"></div>
                 <div class="ring-2" style="border-color:rgba(245,158,11,0.25)"></div>
                 <div class="ring-3" style="border-color:rgba(251,191,36,0.15)"></div>
+                `}
                 <div class="inner-icon w-16 h-16" style="background:linear-gradient(135deg, #FFFBEB, #FEF3C7)">
-                  <span class="text-3xl anim-pulse">${a.icon}</span>
+                  <span class="text-3xl ${isRead?'':'anim-pulse'}">${a.icon}</span>
                 </div>
               </div>
               
-              <div class="text-sm font-bold text-amber-700 mb-1">${a.name}</div>
-              ${a.description?`<div class="text-xs text-amber-500 leading-relaxed">${a.description}</div>`:''}
+              <div class="text-sm font-bold ${isRead?'text-gray-700':'text-amber-700'} mb-1">${a.name}</div>
+              ${a.description?`<div class="text-xs ${isRead?'text-gray-500':'text-amber-500'} leading-relaxed">${a.description}</div>`:''}
               
               <!-- 已解锁标记 -->
               <div class="mt-3 flex items-center justify-center gap-1.5">
+                ${isRead?`
+                <div class="w-2 h-2 rounded-full bg-gradient-to-br from-green-400 to-emerald-400"></div>
+                <span class="badge-pro badge-green text-xs">已解锁</span>
+                `:`
                 <div class="status-dot-animated bg-gradient-to-br from-green-400 to-emerald-400" style="width:8px;height:8px"></div>
                 <span class="badge-pro badge-green text-xs">已解锁</span>
+                <button data-action="read-achievement" data-aid="${a.id}" class="ml-2 px-2 py-0.5 bg-gradient-to-r from-amber-400 to-orange-400 text-white text-xs rounded-full shadow-sm active:scale-95 transition-transform">确认</button>
+                `}
               </div>
             </div>
           </div>
-          `).join('')}
+          `;}).join('')}
         </div>
       </div>
       `:''}
@@ -6578,10 +7446,101 @@ function pgSettings(){
 /* ============================================================
    模态框
    ============================================================ */
-function showConfirmModal(){if(!_selDishes.size){toast('还没选菜哦','warn');return}const dishes=DB.getDishesByIds([..._selDishes]);const total=dishes.reduce((s,d)=>s+(d.cost_estimate||0),0);showModal(`<div class="p-5"><div class="flex items-center justify-between mb-4"><h3 class="font-display text-lg">确认下单</h3><button data-action="close-modal" class="text-gray-400 p-1"><i class="fa-solid fa-xmark"></i></button></div><div class="flex flex-wrap gap-2 mb-3">${dishes.map(d=>`<span class="bg-primary-50 text-gray-800 px-3 py-1 rounded-full text-sm">${d.name}</span>`).join('')}</div><div class="text-xs text-gray-400 mb-4">${dishes.length}道菜 · 预估~${total}元</div><div class="mb-4"><label class="text-xs text-gray-400 block mb-1">备注（可选）</label><textarea id="order-remark" rows="2" placeholder="少油、不要香菜、想吃辣的..." class="w-full border border-primary-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-primary-400 resize-none"></textarea></div><button data-action="submit-order" class="w-full py-3.5 bg-gradient-to-r from-primary-400 to-primary-600 text-white rounded-2xl font-medium text-base active:scale-[.97] transition-transform relative z-50">召唤小跟班做饭</button></div>`)}
+function showConfirmModal(){if(!_selDishes.size){toast('还没选菜哦','warn');return}const dishes=DB.getDishesByIds([..._selDishes]);const total=dishes.reduce((s,d)=>s+(d.cost_estimate||0),0);showModal(`<div class="p-5"><div class="flex items-center justify-between mb-4"><h3 class="font-display text-lg">确认下单</h3><button data-action="close-modal" class="text-gray-400 p-1"><i class="fa-solid fa-xmark"></i></button></div><div class="flex flex-wrap gap-2 mb-3">${dishes.map(d=>`<span class="bg-primary-50 text-gray-800 px-3 py-1 rounded-full text-sm">${d.name}</span>`).join('')}</div><div class="text-xs text-gray-400 mb-4">${dishes.length}道菜 · 共 ${total}亲亲 😘</div><div class="mb-4"><label class="text-xs text-gray-400 block mb-1">备注（可选）</label><textarea id="order-remark" rows="2" placeholder="少油、不要香菜、想吃辣的..." class="w-full border border-primary-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-primary-400 resize-none"></textarea></div><button data-action="submit-order" class="w-full py-3.5 bg-gradient-to-r from-primary-400 to-primary-600 text-white rounded-2xl font-medium text-base active:scale-[.97] transition-transform relative z-50">召唤小跟班做饭</button></div>`)}
 function showCancelModal(oid){showModal(`<div class="p-5"><div class="flex items-center justify-between mb-4"><h3 class="font-display text-lg">今天做不了</h3><button data-action="close-modal" class="text-gray-400 p-1"><i class="fa-solid fa-xmark"></i></button></div><div class="space-y-2 mb-4">${CANCEL_REASONS.map(r=>`<button data-action="do-cancel" data-oid="${oid}" data-reason="${encodeURIComponent(r.text)}" class="w-full flex items-center gap-3 p-3 bg-primary-50 rounded-xl text-left active:bg-primary-50 transition"><i class="fa-solid ${r.icon} text-primary-400 w-5 text-center"></i><span class="text-sm">${r.text}</span></button>`).join('')}<div class="flex items-center gap-2 p-3"><i class="fa-solid fa-pen text-primary-400 w-5 text-center"></i><input type="text" id="cancel-custom" placeholder="其他原因..." class="flex-1 text-sm border-b border-primary-200 focus:outline-none focus:border-primary-400 pb-1 bg-transparent"><button data-action="do-cancel-custom" data-oid="${oid}" class="text-primary-400 text-sm font-medium shrink-0">确定</button></div></div></div>`)}
 function showNoCookModal(){showModal(`<div class="p-5"><div class="flex items-center justify-between mb-4"><h3 class="font-display text-lg">今天不做饭</h3><button data-action="close-modal" class="text-gray-400 p-1"><i class="fa-solid fa-xmark"></i></button></div><div class="space-y-2"><button data-action="save-no-cook" data-reason="${encodeURIComponent('不在家吃')}" class="w-full flex items-center gap-3 p-3 bg-primary-50 rounded-xl active:bg-primary-50"><i class="fa-solid fa-house-circle-xmark text-primary-400 w-6 text-center"></i><span class="text-sm">不在家吃</span></button><button data-action="save-no-cook" data-reason="${encodeURIComponent('小跟班自己解决')}" class="w-full flex items-center gap-3 p-3 bg-primary-50 rounded-xl active:bg-primary-50"><i class="fa-solid fa-bowl-rice text-primary-400 w-6 text-center"></i><span class="text-sm">小跟班自己解决</span></button><div class="flex items-center gap-2 p-3"><i class="fa-solid fa-pen text-primary-400 w-6 text-center"></i><input id="no-cook-custom" placeholder="写一下..." class="flex-1 text-sm border-b border-primary-200 focus:outline-none focus:border-primary-400 pb-1 bg-transparent"><button data-action="save-no-cook-custom" class="text-primary-400 text-sm font-medium">确定</button></div></div></div>`)}
-function showDishModal(did){const d=did?DB.getDish(did):null;const isEdit=!!d;showModal(`<div class="p-5"><div class="flex items-center justify-between mb-4"><h3 class="font-display text-lg">${isEdit?'编辑菜品':'添加菜品'}</h3><button data-action="close-modal" class="text-gray-400 p-1"><i class="fa-solid fa-xmark"></i></button></div><div class="space-y-3"><div><label class="text-xs text-gray-400 block mb-1">菜名</label><input id="dm-name" value="${d?d.name:''}" class="w-full border border-primary-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-primary-400" placeholder="如：红烧排骨"></div><div class="grid grid-cols-2 gap-3"><div><label class="text-xs text-gray-400 block mb-1">分类</label><select id="dm-cat" class="w-full border border-primary-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-primary-400 bg-white">${['荤菜','素菜','汤','主食'].map(c=>`<option ${d&&d.category===c?'selected':''}>${c}</option>`).join('')}</select></div><div><label class="text-xs text-gray-400 block mb-1">烹饪时间(分钟)</label><input id="dm-time" type="number" value="${d?d.cook_time:15}" class="w-full border border-primary-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-primary-400"></div></div><div><label class="text-xs text-gray-400 block mb-1">预估菜价(元)</label><input id="dm-cost" type="number" value="${d?d.cost_estimate:10}" class="w-full border border-primary-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-primary-400"></div><div><label class="text-xs text-gray-400 block mb-1">食材（每行一种）</label><textarea id="dm-ing" rows="3" class="w-full border border-primary-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-primary-400 resize-none" placeholder="排骨500g&#10;葱姜蒜&#10;生抽老抽">${d?(d.ingredients||[]).join('\n'):''}</textarea></div><div><label class="text-xs text-gray-400 block mb-1">做法步骤（可选，每行一步）</label><textarea id="dm-recipe" rows="5" class="w-full border border-primary-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-primary-400 resize-none" placeholder="1. 排骨冷水下锅焯水，去血沫后捞出洗净&#10;2. 锅中放油，加冰糖小火炒出糖色&#10;3. 放入排骨翻炒上色，加葱姜蒜、生抽老抽">${d?d.recipe||'':''}</textarea></div><label class="flex items-center gap-2"><input id="dm-fav" type="checkbox" ${d&&d.is_favorite?'checked':''} class="w-4 h-4 rounded accent-primary-400"><span class="text-sm">设为常吃（置顶显示）</span></label><button data-action="save-dish" data-did="${did||''}" class="w-full py-3 bg-primary-400 text-white rounded-xl font-medium active:scale-95 transition-transform">${isEdit?'保存修改':'添加菜品'}</button></div></div>`)}
+function showDishModal(did){
+  const d=did?DB.getDish(did):null;
+  const isEdit=!!d;
+  const curImg=d?.image_url||'';
+  
+  showModal(`
+    <div class="p-5">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="font-display text-lg">${isEdit?'编辑菜品':'添加菜品'}</h3>
+        <button data-action="close-modal" class="text-gray-400 p-1">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="space-y-3">
+        <div>
+          <label class="text-xs text-gray-400 block mb-1">菜名</label>
+          <input id="dm-name" value="${d?d.name:''}" class="w-full border border-primary-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-primary-400" placeholder="如：红烧排骨">
+        </div>
+        
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-xs text-gray-400 block mb-1">分类</label>
+            <select id="dm-cat" class="w-full border border-primary-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-primary-400 bg-white">
+              ${['荤菜','素菜','汤','主食'].map(c=>`<option ${d&&d.category===c?'selected':''}>${c}</option>`).join('')}
+            </select>
+          </div>
+          <div>
+            <label class="text-xs text-gray-400 block mb-1">烹饪时间(分钟)</label>
+            <input id="dm-time" type="number" value="${d?d.cook_time:15}" class="w-full border border-primary-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-primary-400">
+          </div>
+        </div>
+        
+        <div>
+          <label class="text-xs text-gray-400 block mb-1">亲亲值（越高越值得亲亲😘）</label>
+          <input id="dm-cost" type="number" value="${d?d.cost_estimate:10}" class="w-full border border-primary-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-primary-400">
+        </div>
+        
+        <div>
+          <label class="text-xs text-gray-400 block mb-1">图片 URL（可选，填入后显示图片）</label>
+          <input id="dm-img" value="${curImg}" class="w-full border border-primary-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-primary-400" placeholder="如：https://.../food.jpg">
+          <div id="dm-img-preview" class="mt-2 ${curImg?'':'hidden'}">
+            <div class="text-[10px] text-gray-400 mb-1">预览：</div>
+            <div class="w-16 h-16 rounded-xl overflow-hidden border border-primary-100">
+              <img id="dm-preview-img" src="${curImg}" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='<div class=\\'w-full h-full flex items-center justify-center text-gray-300 text-xs\\'>加载失败</div>'">
+            </div>
+          </div>
+        </div>
+        
+        <div>
+          <label class="text-xs text-gray-400 block mb-1">食材（每行一种）</label>
+          <textarea id="dm-ing" rows="3" class="w-full border border-primary-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-primary-400 resize-none" placeholder="排骨500g&#10;葱姜蒜&#10;生抽老抽">${d?(d.ingredients||[]).join('\n'):''}</textarea>
+        </div>
+        
+        <div>
+          <label class="text-xs text-gray-400 block mb-1">做法步骤（可选，每行一步）</label>
+          <textarea id="dm-recipe" rows="5" class="w-full border border-primary-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-primary-400 resize-none" placeholder="1. 排骨冷水下锅焯水，去血沫后捞出洗净&#10;2. 锅中放油，加冰糖小火炒出糖色&#10;3. 放入排骨翻炒上色，加葱姜蒜、生抽老抽">${d?d.recipe||'':''}</textarea>
+        </div>
+        
+        <div>
+          <label class="text-xs text-gray-400 block mb-1">标签（多个用逗号分隔，如：小馋猫爱吃,快手,下饭）</label>
+          <input id="dm-tags" value="${d?(DB._getDishTags(d).join(', ')):''}" class="w-full border border-primary-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-primary-400" placeholder="如：小馋猫爱吃, 快手, 下饭">
+        </div>
+        
+        <label class="flex items-center gap-2">
+          <input id="dm-fav" type="checkbox" ${d&&d.is_favorite?'checked':''} class="w-4 h-4 rounded accent-primary-400">
+          <span class="text-sm">设为常吃（置顶显示）</span>
+        </label>
+        
+        <button data-action="save-dish" data-did="${did||''}" class="w-full py-3 bg-primary-400 text-white rounded-xl font-medium active:scale-95 transition-transform">
+          ${isEdit?'保存修改':'添加菜品'}
+        </button>
+      </div>
+    </div>
+  `);
+  
+  setTimeout(() => {
+    const imgInput = $('#dm-img');
+    const previewDiv = $('#dm-img-preview');
+    const previewImg = $('#dm-preview-img');
+    if (imgInput) {
+      imgInput.addEventListener('input', () => {
+        const val = imgInput.value.trim();
+        if (val && previewDiv && previewImg) {
+          previewDiv.classList.remove('hidden');
+          previewImg.src = val;
+        } else if (previewDiv) {
+          previewDiv.classList.add('hidden');
+        }
+      });
+    }
+  }, 50);
+}
 function showTplModal(tid){const t=tid?DB.templates().find(x=>x.id===tid):null;const isEdit=!!t;const dishes=DB.dishes();const selItems=new Set(t?(typeof t.items==='string'?JSON.parse(t.items):t.items):[]);window._tmSel=selItems;showModal(`<div class="p-5"><div class="flex items-center justify-between mb-4"><h3 class="font-display text-lg">${isEdit?'编辑模板':'添加模板'}</h3><button data-action="close-modal" class="text-gray-400 p-1"><i class="fa-solid fa-xmark"></i></button></div><div class="space-y-3"><div class="grid grid-cols-2 gap-3"><div><label class="text-xs text-gray-400 block mb-1">模板名称</label><input id="tm-name" value="${t?t.name:''}" class="w-full border border-primary-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-primary-400" placeholder="如：简单餐"></div><div><label class="text-xs text-gray-400 block mb-1">描述</label><input id="tm-desc" value="${t?t.description:''}" class="w-full border border-primary-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-primary-400" placeholder="如：两菜一汤"></div></div><div><label class="text-xs text-gray-400 block mb-2">选择菜品（点击选择）</label><div class="max-h-48 overflow-y-auto grid grid-cols-2 gap-2" id="tm-dishes">${dishes.map(d=>`<button data-action="tm-toggle" data-did="${d.id}" class="text-left text-xs p-2 rounded-lg border ${selItems.has(d.id)?'bg-primary-50 border-primary-400 text-primary-500':'border-primary-200 text-gray-600'}">${d.name}</button>`).join('')}</div></div><button data-action="save-tpl" data-tid="${tid||''}" class="w-full py-3 bg-primary-400 text-white rounded-xl font-medium active:scale-95 transition-transform">${isEdit?'保存修改':'添加模板'}</button></div></div>`)}
 function showDayDetail(date){const el=$('#cal-detail');if(!el)return;const o=DB.orders().find(x=>x.order_date===date);if(!o){el.innerHTML=`<div class="bg-white rounded-xl border border-primary-50 p-4 text-center text-gray-400 text-sm">${fmtDate(date)} 周${weekDay(date)} — 休息</div>`;return}const items=typeof o.items==='string'?JSON.parse(o.items):o.items;const dishes=DB.getDishesByIds((items||[]).map(i=>i.did));el.innerHTML=`<div class="bg-white rounded-xl border border-primary-50 p-4 anim-fade"><div class="text-sm font-medium mb-2">${fmtDate(date)} 周${weekDay(date)}</div>${o.cancelled?`<div class="text-sm text-gray-400">${o.cancel_reason}</div>`:`<div class="flex flex-wrap gap-1.5 mb-2">${dishes.map(d=>`<span class="text-xs bg-primary-50 px-2 py-0.5 rounded">${d.name}</span>`).join('')}</div><div class="flex items-center gap-2 text-xs text-gray-400"><span class="status-dot ${o.status}"></span>${STATUS_LABELS[o.status]}${o.rating?(o.rating==='good'?'<span class="text-green-500 ml-1">好吃</span>':o.rating==='ok'?'<span class="text-amber-500 ml-1">一般</span>':'<span class="text-red-400 ml-1">别做了</span>'):''}</div>${o.remark?`<div class="text-xs text-primary-500 mt-1">${o.remark}</div>`:''}`}</div>`}
 /* ============================================================
@@ -6647,7 +7606,7 @@ function updateDishStars(did, score) {
   }
 }
 
-function showRecipeModal(did){const d=DB.getDish(did);if(!d||!d.recipe||!d.recipe.trim())return;const catEmoji={'荤菜':'🥩','素菜':'🥬','汤':'🍲','主食':'🍚','全部':'🍽️'};const emoji=DISH_EMOJIS[d.name]||catEmoji[d.category]||'🍽️';const steps=d.recipe.split('\n').filter(s=>s.trim());const wc=DB.dishWeekCount(d.id);let weekBadge='';if(wc>=3)weekBadge=`<span class="bg-gradient-to-br from-rose-400 to-pink-400 text-white text-xs px-2.5 py-1 rounded-full shadow-lg font-bold">本周${wc}次 🔥</span>`;else if(wc>=2)weekBadge=`<span class="bg-gradient-to-br from-amber-400 to-orange-400 text-white text-xs px-2.5 py-1 rounded-full shadow-lg font-bold">本周${wc}次 ✨</span>`;showModal(`<div class="p-5"><div class="flex items-center justify-between mb-4"><h3 class="font-display text-lg">${d.name}</h3><button data-action="close-modal" class="text-gray-400 p-1"><i class="fa-solid fa-xmark"></i></button></div><div class="flex items-center gap-3 mb-4"><div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary-50 to-primary-100 flex items-center justify-center text-3xl shadow-sm">${emoji}</div><div class="flex-1"><div class="flex items-center gap-2 mb-1.5">${d.is_favorite?'<span class="text-base">⭐</span>':''}<span class="text-sm font-bold text-gray-800">${d.category}</span>${weekBadge}</div><div class="flex items-center gap-3 text-xs text-gray-400"><span class="flex items-center gap-1"><i class="fa-solid fa-clock text-primary-300"></i> ${d.cook_time}分钟</span><span class="flex items-center gap-1"><i class="fa-solid fa-yen-sign text-primary-300"></i> ~${d.cost_estimate}元</span></div></div></div>${(d.ingredients||[]).length?`<div class="mb-4"><div class="text-xs text-gray-400 mb-2 font-medium">食材</div><div class="flex flex-wrap gap-1.5">${(d.ingredients||[]).map(i=>`<span class="text-xs bg-primary-50 text-gray-600 px-2.5 py-1 rounded-lg">${i}</span>`).join('')}</div></div>`:''}<div><div class="text-xs text-gray-400 mb-2 font-medium">做法步骤</div><div class="space-y-3">${steps.map((s,i)=>`<div class="flex items-start gap-3"><div class="w-6 h-6 shrink-0 rounded-full bg-gradient-to-br from-primary-400 to-pink-400 flex items-center justify-center text-white text-xs font-bold shadow-sm">${i+1}</div><div class="flex-1 text-sm text-gray-700 leading-relaxed pt-0.5">${s}</div></div>`).join('')}</div></div></div>`)}
+function showRecipeModal(did){const d=DB.getDish(did);if(!d||!d.recipe||!d.recipe.trim())return;const catEmoji={'荤菜':'🥩','素菜':'🥬','汤':'🍲','主食':'🍚','全部':'🍽️'};const emoji=DISH_EMOJIS[d.name]||catEmoji[d.category]||'🍽️';const steps=d.recipe.split('\n').filter(s=>s.trim());const wc=DB.dishWeekCount(d.id);let weekBadge='';if(wc>=3)weekBadge=`<span class="bg-gradient-to-br from-rose-400 to-pink-400 text-white text-xs px-2.5 py-1 rounded-full shadow-lg font-bold">本周${wc}次 🔥</span>`;else if(wc>=2)weekBadge=`<span class="bg-gradient-to-br from-amber-400 to-orange-400 text-white text-xs px-2.5 py-1 rounded-full shadow-lg font-bold">本周${wc}次 ✨</span>`;showModal(`<div class="p-5"><div class="flex items-center justify-between mb-4"><h3 class="font-display text-lg">${d.name}</h3><button data-action="close-modal" class="text-gray-400 p-1"><i class="fa-solid fa-xmark"></i></button></div><div class="flex items-center gap-3 mb-4"><div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary-50 to-primary-100 flex items-center justify-center text-3xl shadow-sm">${emoji}</div><div class="flex-1"><div class="flex items-center gap-2 mb-1.5">${d.is_favorite?'<span class="text-base">⭐</span>':''}<span class="text-sm font-bold text-gray-800">${d.category}</span>${weekBadge}</div><div class="flex items-center gap-3 text-xs text-gray-400"><span class="flex items-center gap-1"><i class="fa-solid fa-clock text-primary-300"></i> ${d.cook_time}分钟</span><span class="flex items-center gap-1"><i class="fa-solid fa-heart text-rose-400"></i> ${d.cost_estimate}亲亲</span></div></div></div>${(d.ingredients||[]).length?`<div class="mb-4"><div class="text-xs text-gray-400 mb-2 font-medium">食材</div><div class="flex flex-wrap gap-1.5">${(d.ingredients||[]).map(i=>`<span class="text-xs bg-primary-50 text-gray-600 px-2.5 py-1 rounded-lg">${i}</span>`).join('')}</div></div>`:''}<div><div class="text-xs text-gray-400 mb-2 font-medium">做法步骤</div><div class="space-y-3">${steps.map((s,i)=>`<div class="flex items-start gap-3"><div class="w-6 h-6 shrink-0 rounded-full bg-gradient-to-br from-primary-400 to-pink-400 flex items-center justify-center text-white text-xs font-bold shadow-sm">${i+1}</div><div class="flex-1 text-sm text-gray-700 leading-relaxed pt-0.5">${s}</div></div>`).join('')}</div></div></div>`)}
 
 function renderSelectedDishesList(){
   const dishes=DB.getDishesByIds([..._selDishes]);
@@ -6659,7 +7618,7 @@ function renderSelectedDishesList(){
         <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-100 to-primary-200 flex items-center justify-center text-xl">${emoji}</div>
         <div>
           <div class="text-sm font-bold text-gray-800">${d.name}</div>
-          <div class="text-xs text-gray-400">${d.category} · ${d.cook_time}分 · ~${d.cost_estimate}元</div>
+          <div class="text-xs text-gray-400">${d.category} · ${d.cook_time}分 · ${d.cost_estimate}亲亲</div>
         </div>
       </div>
       <button data-action="remove-selected-dish" data-did="${d.id}" class="w-8 h-8 rounded-lg bg-white hover:bg-rose-50 flex items-center justify-center text-gray-400 hover:text-rose-500 transition-all active:scale-95 shadow-sm">
@@ -6748,6 +7707,7 @@ document.addEventListener('click', async e => {
           b.className = b.className.replace(/bg-primary-400 text-white border-primary-400/g, 'border-primary-200 text-gray-600');
         }
       });
+      refreshLazyLoad();
       break;
     }
     
@@ -6794,6 +7754,7 @@ document.addEventListener('click', async e => {
       if (overlay) overlay.classList.remove('show');
       document.body.style.overflow = '';
       
+      refreshLazyLoad();
       break;
     }
     
@@ -6993,6 +7954,8 @@ document.addEventListener('click', async e => {
       if (o) {
         await DB.updateOrder(o.id, {rating: d.r});
         toast(d.r === 'good' ? '谢谢老婆!' : d.r === 'ok' ? '下次改进!' : '好吧...', d.r === 'good' ? 'success' : 'info');
+        // 评价后检查成就
+        DB.checkAchievements();
         if (d.r === 'good') showConfetti();
         setTimeout(() => go('wife/home'), 1500);
       }
@@ -7013,6 +7976,8 @@ document.addEventListener('click', async e => {
       if (o) {
         await DB.updateOrder(o.id, {status: d.st});
         toast(STATUS_LABELS[d.st], 'success');
+        // 状态更新后自动检查成就
+        DB.checkAchievements();
         renderCurrentPage();
       }
       break;
@@ -7085,9 +8050,12 @@ document.addEventListener('click', async e => {
       const cat = $('#dm-cat')?.value;
       const time = parseInt($('#dm-time')?.value) || 15;
       const cost = parseInt($('#dm-cost')?.value) || 10;
+      const imgUrl = ($('#dm-img')?.value || '').trim();
       const ing = ($('#dm-ing')?.value || '').split('\n').map(s => s.trim()).filter(Boolean);
       const recipe = ($('#dm-recipe')?.value || '').trim();
       const fav = $('#dm-fav')?.checked || false;
+      const tagsStr = ($('#dm-tags')?.value || '').trim();
+      const tags = tagsStr ? tagsStr.split(/[,，]/).map(s=>s.trim()).filter(Boolean) : [];
       const existing = d.did ? DB.getDish(d.did) : null;
       const dishObj = {
         id: d.did || uid(),
@@ -7096,13 +8064,30 @@ document.addEventListener('click', async e => {
         ingredients: ing,
         cook_time: time,
         cost_estimate: cost,
+        image_url: imgUrl,
         is_favorite: fav,
-        recipe
+        recipe,
+        tags
       };
       if (existing) dishObj._exists = true;
       await DB.saveDish(dishObj);
       closeModal();
       toast(d.did ? '已保存' : '已添加', 'success');
+      renderCurrentPage();
+      break;
+    }
+      
+    case 'toggle-favorite': {
+      const dish=DB.getDish(d.did);
+      if(!dish)break;
+      const newFav=!dish.is_favorite;
+      await DB.saveDish({
+        id:dish.id,
+        is_favorite:newFav,
+        _exists:true
+      });
+      dish.is_favorite=newFav;
+      toast(newFav?'⭐ 已收藏':'已取消收藏','success');
       renderCurrentPage();
       break;
     }
@@ -7207,7 +8192,19 @@ document.addEventListener('click', async e => {
     case 'check-achievements':
       DB.checkAchievements();
       toast('已检查成就', 'success');
+      renderCurrentPage();
       break;
+      
+    case 'read-achievement': {
+      const aid=d.aid;
+      const readIds=JSON.parse(localStorage.getItem('readAchievements')||'[]');
+      if(!readIds.includes(aid)){
+        readIds.push(aid);
+        localStorage.setItem('readAchievements',JSON.stringify(readIds));
+      }
+      renderCurrentPage();
+      break;
+    }
       
     case 'add-shopping-list':
       showShoppingListModal(null);
@@ -7483,7 +8480,7 @@ document.addEventListener('click', async e => {
           list.innerHTML = `<div class="text-center text-gray-400 py-24 anim-fade">
             <div class="text-6xl mb-5 opacity-30">⭐</div>
             <p class="text-lg">还没有收藏</p>
-            <p class="text-sm mt-2 opacity-60">长按菜品卡片可以收藏哦～</p>
+            <p class="text-sm mt-2 opacity-60">点击菜品卡片上的星星可以收藏哦～</p>
           </div>`;
         }
       }
@@ -7492,6 +8489,285 @@ document.addEventListener('click', async e => {
       const currentCat = $('#current-cat');
       if (currentCat) currentCat.textContent = '我的收藏';
       
+      refreshLazyLoad();
+      break;
+    }
+    
+    case 'show-wife-loves': {
+      // 关闭所有可能的侧边栏
+      const sidebar = $('#sidebar');
+      const overlay = $('#sidebar-overlay');
+      if (sidebar) sidebar.classList.remove('show');
+      if (overlay) overlay.classList.remove('show');
+      
+      const hubbySidebar = $('#hubby-sidebar');
+      const hubbyOverlay = $('#hubby-sidebar-overlay');
+      if (hubbySidebar) hubbySidebar.classList.remove('show');
+      if (hubbyOverlay) hubbyOverlay.classList.remove('show');
+      
+      document.body.style.overflow = '';
+      
+      // 获取当前角色
+      const role = localStorage.getItem('pp_role') || 'wife';
+      
+      // 如果是小跟班，先切换到老婆页面
+      if (role === 'hubby') {
+        localStorage.setItem('pp_role', 'wife');
+        go('wife/home');
+        // 等页面切换后再显示？或者先存个标记
+        localStorage.setItem('pp_show_wife_loves', '1');
+        break;
+      }
+      
+      // 老婆页面：直接显示
+      const wifeLoveTag = '小馋猫爱吃';
+      const loveDishes = DB.dishes().filter(dish => {
+        const tags=DB._getDishTags(dish);
+        return tags.includes(wifeLoveTag);
+      });
+      const list = $('#dish-list');
+      if (list) {
+        if (loveDishes.length > 0) {
+          list.innerHTML = `<div class="text-sm text-primary-400 font-bold mb-4 mt-2 flex items-center gap-2 anim-fade">
+            <span class="text-2xl">🐱</span> 小馋猫爱吃
+          </div>
+          <div class="grid grid-cols-3 gap-3">
+            ${loveDishes.map((dish, i) => dishCard(dish, true, i + 1)).join('')}
+          </div>`;
+        } else {
+          list.innerHTML = `<div class="text-center text-gray-400 py-24 anim-fade">
+            <div class="text-6xl mb-5 opacity-30">🐱</div>
+            <p class="text-lg">小馋猫还没有爱吃的菜</p>
+            <p class="text-sm mt-2 opacity-60">快去添加吧～</p>
+          </div>`;
+        }
+      }
+      
+      const currentCat = $('#current-cat');
+      if (currentCat) currentCat.textContent = '小馋猫爱吃';
+      
+      refreshLazyLoad();
+      break;
+    }
+    
+    // ========== 新功能事件处理 ==========
+    
+    case 'show-shake': {
+      // 关闭侧边栏
+      const sidebar = $('#sidebar');
+      const overlay = $('#sidebar-overlay');
+      if (sidebar) sidebar.classList.remove('show');
+      if (overlay) overlay.classList.remove('show');
+      document.body.style.overflow = '';
+      
+      showShakeModal();
+      break;
+    }
+    
+    case 'do-shake': {
+      doShake();
+      break;
+    }
+    
+    case 'show-wishlist': {
+      // 关闭侧边栏
+      const sidebar = $('#sidebar');
+      const overlay = $('#sidebar-overlay');
+      if (sidebar) sidebar.classList.remove('show');
+      if (overlay) overlay.classList.remove('show');
+      document.body.style.overflow = '';
+      
+      showWishlistModal();
+      break;
+    }
+    
+    case 'add-to-wishlist': {
+      const did = d.did;
+      const reason = prompt('为什么想吃这个？（可选）') || '';
+      await DB.addToWishlist(did, reason);
+      break;
+    }
+    
+    case 'remove-from-wishlist': {
+      const wid = d.wid;
+      await DB.removeFromWishlist(wid);
+      // 如果模态框还开着，更新它
+      const wishlistList = $('#wishlist-list');
+      if (wishlistList) {
+        const wishlist = DB.wishlist();
+        if (wishlist.length === 0) {
+          closeModal();
+        } else {
+          wishlistList.innerHTML = renderWishlistList();
+        }
+      }
+      break;
+    }
+    
+    case 'order-from-wishlist': {
+      const did = d.did;
+      if (!_selDishes.has(did)) {
+        _selDishes.add(did);
+        celebrateSelect();
+      }
+      refreshSelBar();
+      toast('已加入选择！', 'success');
+      closeModal();
+      break;
+    }
+    
+    case 'toggle-wishlist': {
+      const did = d.did;
+      const dish = DB.getDish(did);
+      const isIn = DB.isInWishlist(did);
+      
+      if (isIn) {
+        // 已在心愿单，询问是否移除
+        const wishlistItem = DB.wishlist().find(w => w.dish_id === did);
+        if (wishlistItem) {
+          await DB.removeFromWishlist(wishlistItem.id);
+        }
+      } else {
+        // 不在心愿单，添加
+        const reason = prompt(`为什么想吃「${dish?.name || '这道菜'}」？（可选）`) || '';
+        await DB.addToWishlist(did, reason);
+      }
+      
+      // 刷新页面以更新按钮状态
+      renderCurrentPage();
+      break;
+    }
+    
+    case 'show-history': {
+      // 关闭侧边栏
+      const sidebar = $('#sidebar');
+      const overlay = $('#sidebar-overlay');
+      if (sidebar) sidebar.classList.remove('show');
+      if (overlay) overlay.classList.remove('show');
+      document.body.style.overflow = '';
+      
+      showHistoryModal();
+      break;
+    }
+    
+    case 'reorder-history': {
+      const oid = d.oid;
+      const o = DB.orders().find(x => x.id === oid);
+      if (o) {
+        const items = typeof o.items === 'string' ? JSON.parse(o.items) : o.items;
+        _selDishes = new Set((items || []).map(i => i.did));
+        refreshSelBar();
+        toast('已选好昨天的菜！可修改后提交', 'info');
+      }
+      closeModal();
+      break;
+    }
+    
+    case 'show-rewards': {
+      // 关闭侧边栏
+      const sidebar = $('#sidebar');
+      const overlay = $('#sidebar-overlay');
+      if (sidebar) sidebar.classList.remove('show');
+      if (overlay) overlay.classList.remove('show');
+      document.body.style.overflow = '';
+      
+      showRewardsModal();
+      break;
+    }
+    
+    case 'redeem-reward': {
+      const rid = d.rid;
+      await DB.redeemReward(rid);
+      // 如果模态框还开着，更新它
+      const rewardsList = $('#rewards-list');
+      if (rewardsList) {
+        rewardsList.innerHTML = renderRewardsList();
+      }
+      break;
+    }
+    
+    // ========== 摇一摇相关 ==========
+    case 'add-all-shake': {
+      if (_currentShakeDishes && _currentShakeDishes.length > 0) {
+        _currentShakeDishes.forEach(dish => {
+          if (!_selDishes.has(dish.id)) {
+            _selDishes.add(dish.id);
+          }
+        });
+        celebrateSelect();
+        refreshSelBar();
+        toast('已全部加入选择！', 'success');
+      }
+      closeModal();
+      break;
+    }
+    
+    // ========== 历史记录相关 ==========
+    case 'switch-history-tab': {
+      const tab = d.tab;
+      const content = $('#history-content');
+      const data = window._historyData;
+      
+      // 更新按钮状态
+      document.querySelectorAll('[data-action="switch-history-tab"]').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.dataset.tab === tab) {
+          btn.classList.add('active');
+        }
+      });
+      
+      if (content && data) {
+        content.innerHTML = renderHistoryTab(tab, data.orders, data.recentDishes, data.notEaten);
+      }
+      break;
+    }
+    
+    // ========== 倒计时相关 ==========
+    case 'set-countdown': {
+      const minutes = parseInt(d.minutes);
+      const timeEl = $('#countdown-time');
+      if (timeEl) {
+        timeEl.textContent = `${String(minutes).padStart(2, '0')}:00`;
+      }
+      
+      // 更新按钮状态
+      document.querySelectorAll('[data-action="set-countdown"]').forEach(btn => {
+        btn.classList.remove('btn-primary');
+        btn.classList.add('btn-secondary');
+        if (btn.dataset.minutes === d.minutes) {
+          btn.classList.remove('btn-secondary');
+          btn.classList.add('btn-primary');
+        }
+      });
+      break;
+    }
+    
+    case 'start-countdown': {
+      const timeEl = $('#countdown-time');
+      let minutes = 10;
+      if (timeEl) {
+        const parts = timeEl.textContent.split(':');
+        minutes = parseInt(parts[0]) || 10;
+      }
+      startCountdown(minutes);
+      break;
+    }
+    
+    case 'stop-countdown': {
+      stopCountdown();
+      closeModal();
+      toast('已取消倒计时', 'info');
+      break;
+    }
+    
+    case 'read-achievement': {
+      const aid = d.aid;
+      const readIds = JSON.parse(localStorage.getItem('readAchievements') || '[]');
+      if (!readIds.includes(aid)) {
+        readIds.push(aid);
+        localStorage.setItem('readAchievements', JSON.stringify(readIds));
+      }
+      renderCurrentPage();
       break;
     }
       
@@ -7501,7 +8777,7 @@ document.addEventListener('click', async e => {
   }
 });
 
-function refreshSelBar(){const bar=$('#sel-bar');if(!bar)return;const count=_selDishes.size;bar.style.display=count>0?'block':'none';const ce=$('#sel-count');if(ce)ce.textContent=count;const co=$('#sel-cost');if(co){const dishes=DB.getDishesByIds([..._selDishes]);const total=dishes.reduce((s,d)=>s+(d.cost_estimate||0),0);co.textContent=`~${total}元`}}
+function refreshSelBar(){const bar=$('#sel-bar');if(!bar)return;const count=_selDishes.size;bar.style.display=count>0?'block':'none';const ce=$('#sel-count');if(ce)ce.textContent=count;const co=$('#sel-cost');if(co){const dishes=DB.getDishesByIds([..._selDishes]);const total=dishes.reduce((s,d)=>s+(d.cost_estimate||0),0);co.textContent=`${total}亲亲`}}
 
 /* 自动刷新等待页文案 */
 setInterval(()=>{const m=$('#status-msg');if(m&&currentPage==='wife/waiting'){const o=DB.todayOrder();if(o){const msgs=STATUS_MSGS[o.status];if(msgs)m.textContent=pick(msgs.wife||msgs)}}},4000);
@@ -7555,6 +8831,1402 @@ setTimeout(() => {
     }, 500);
   }
 }, 100);
+
+/* ============================================================
+   新增工具函数 1：全局加载遮罩
+   ============================================================ */
+let _loadingOverlay = null;
+function showLoading(text = '加载中...') {
+  if (_loadingOverlay) return;
+  _loadingOverlay = document.createElement('div');
+  _loadingOverlay.className = 'loading-overlay';
+  _loadingOverlay.innerHTML = `
+    <div class="loading-spinner"></div>
+    <span class="loading-text">${text}</span>
+  `;
+  document.body.appendChild(_loadingOverlay);
+}
+function hideLoading() {
+  if (!_loadingOverlay) return;
+  _loadingOverlay.classList.add('hidden');
+  setTimeout(() => {
+    if (_loadingOverlay) {
+      _loadingOverlay.remove();
+      _loadingOverlay = null;
+    }
+  }, 300);
+}
+
+/* ============================================================
+   新增工具函数 2：错误状态 HTML
+   ============================================================ */
+function errorStateHTML(options = {}) {
+  const {
+    icon = '😢',
+    title = '出了点小问题',
+    message = '请检查网络连接后重试',
+    showRetry = true,
+    retryText = '重试一下',
+    retryAction = null
+  } = options;
+  
+  return `
+    <div class="error-container">
+      <span class="error-icon">${icon}</span>
+      <h3 class="error-title">${title}</h3>
+      <p class="error-message">${message}</p>
+      ${showRetry ? `
+        <button class="btn-retry" ${retryAction ? `data-action="${retryAction}"` : ''}>
+          <i class="fa-solid fa-rotate-right"></i>
+          ${retryText}
+        </button>
+      ` : ''}
+    </div>
+  `;
+}
+
+/* ============================================================
+   新增工具函数 3：空状态 HTML
+   ============================================================ */
+function emptyStateHTML(options = {}) {
+  const {
+    icon = '🍽️',
+    title = '这里空空如也',
+    desc = '快来添加点什么吧～',
+    actionText = null,
+    action = null
+  } = options;
+  
+  return `
+    <div class="empty-state">
+      <span class="empty-icon">${icon}</span>
+      <h3 class="empty-title">${title}</h3>
+      <p class="empty-desc">${desc}</p>
+      ${actionText ? `
+        <div class="empty-action">
+          <button class="btn-primary px-6 py-3 rounded-xl text-white font-medium" ${action ? `data-action="${action}"` : ''}>
+            ${actionText}
+          </button>
+        </div>
+      ` : ''}
+    </div>
+  `;
+}
+
+/* ============================================================
+   新增工具函数 4：手势支持
+   ============================================================ */
+let _gestureStartX = 0;
+let _gestureStartY = 0;
+let _gestureCurrentX = 0;
+let _gestureCurrentY = 0;
+let _isSwipeDetected = false;
+const SWIPE_THRESHOLD = 50;
+
+function initGestures() {
+  document.addEventListener('touchstart', (e) => {
+    _gestureStartX = e.touches[0].clientX;
+    _gestureStartY = e.touches[0].clientY;
+    _gestureCurrentX = _gestureStartX;
+    _gestureCurrentY = _gestureStartY;
+    _isSwipeDetected = false;
+  }, { passive: true });
+  
+  document.addEventListener('touchmove', (e) => {
+    _gestureCurrentX = e.touches[0].clientX;
+    _gestureCurrentY = e.touches[0].clientY;
+  }, { passive: true });
+  
+  document.addEventListener('touchend', (e) => {
+    if (_isSwipeDetected) return;
+    
+    const deltaX = _gestureCurrentX - _gestureStartX;
+    const deltaY = _gestureCurrentY - _gestureStartY;
+    const absX = Math.abs(deltaX);
+    const absY = Math.abs(deltaY);
+    
+    if (absX < 10 && absY < 10) return;
+    
+    if (absX > absY) {
+      if (absX > SWIPE_THRESHOLD) {
+        _isSwipeDetected = true;
+        if (deltaX > 0) {
+          onSwipeRight();
+        } else {
+          onSwipeLeft();
+        }
+      }
+    } else {
+      if (absY > SWIPE_THRESHOLD) {
+        _isSwipeDetected = true;
+        if (deltaY > 0) {
+          onSwipeDown();
+        } else {
+          onSwipeUp();
+        }
+      }
+    }
+  }, { passive: true });
+}
+
+function onSwipeRight() {
+  const hash = window.location.hash;
+  if (hash && hash !== '#wife/home' && hash !== '#hubby/home') {
+    history.back();
+  }
+}
+function onSwipeLeft() {}
+function onSwipeDown() {
+  const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+  if (scrollTop <= 0) {
+    onPullToRefresh();
+  }
+}
+function onSwipeUp() {}
+
+let _isRefreshing = false;
+function onPullToRefresh() {
+  if (_isRefreshing) return;
+  _isRefreshing = true;
+  toast('正在刷新...', 'info');
+  
+  setTimeout(async () => {
+    if (typeof DB !== 'undefined' && DB.refresh) {
+      await DB.refresh();
+    }
+    renderCurrentPage();
+    _isRefreshing = false;
+    toast('刷新完成！', 'success');
+  }, 800);
+}
+
+initGestures();
+
+/* ============================================================
+   新增工具函数 5：通知功能（声音/震动）
+   ============================================================ */
+let _audioCtx = null;
+function getAudioContext() {
+  if (!_audioCtx) {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    if (AudioContext) {
+      _audioCtx = new AudioContext();
+    }
+  }
+  return _audioCtx;
+}
+
+function playNotificationSound(type = 'default') {
+  const ctx = getAudioContext();
+  if (!ctx) return;
+  
+  if (ctx.state === 'suspended') {
+    ctx.resume();
+  }
+  
+  const oscillator = ctx.createOscillator();
+  const gainNode = ctx.createGain();
+  
+  oscillator.connect(gainNode);
+  gainNode.connect(ctx.destination);
+  
+  const now = ctx.currentTime;
+  
+  switch(type) {
+    case 'success':
+      oscillator.frequency.setValueAtTime(880, now);
+      oscillator.frequency.setValueAtTime(1100, now + 0.1);
+      gainNode.gain.setValueAtTime(0.3, now);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+      oscillator.start(now);
+      oscillator.stop(now + 0.3);
+      break;
+      
+    case 'error':
+      oscillator.frequency.setValueAtTime(200, now);
+      oscillator.frequency.setValueAtTime(150, now + 0.1);
+      gainNode.gain.setValueAtTime(0.3, now);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+      oscillator.start(now);
+      oscillator.stop(now + 0.3);
+      break;
+      
+    case 'newOrder':
+      oscillator.type = 'sine';
+      oscillator.frequency.setValueAtTime(523, now);
+      oscillator.frequency.setValueAtTime(659, now + 0.1);
+      oscillator.frequency.setValueAtTime(784, now + 0.2);
+      oscillator.frequency.setValueAtTime(1047, now + 0.3);
+      gainNode.gain.setValueAtTime(0.25, now);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
+      oscillator.start(now);
+      oscillator.stop(now + 0.5);
+      break;
+      
+    default:
+      oscillator.frequency.setValueAtTime(600, now);
+      gainNode.gain.setValueAtTime(0.2, now);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
+      oscillator.start(now);
+      oscillator.stop(now + 0.2);
+  }
+}
+
+function vibrate(pattern = [100, 50, 100]) {
+  if ('vibrate' in navigator) {
+    try {
+      navigator.vibrate(pattern);
+    } catch(e) {}
+  }
+}
+
+function notifyNewOrder() {
+  playNotificationSound('newOrder');
+  vibrate([100, 50, 100, 50, 200]);
+  
+  if ('Notification' in window) {
+    if (Notification.permission === 'granted') {
+      new Notification('盼盼老婆请点菜', {
+        body: '老婆点了新订单！快去看看～',
+        icon: '💕'
+      });
+    } else if (Notification.permission !== 'denied') {
+      Notification.requestPermission();
+    }
+  }
+}
+
+/* ============================================================
+   新增工具函数 6：IndexedDB 离线存储
+   ============================================================ */
+const IDB_NAME = 'pp-menu-db';
+const IDB_VERSION = 1;
+let _idb = null;
+
+function openIDB() {
+  return new Promise((resolve, reject) => {
+    if (_idb) {
+      resolve(_idb);
+      return;
+    }
+    
+    const req = indexedDB.open(IDB_NAME, IDB_VERSION);
+    
+    req.onerror = () => reject(req.error);
+    req.onsuccess = () => {
+      _idb = req.result;
+      resolve(_idb);
+    };
+    
+    req.onupgradeneeded = (e) => {
+      const db = e.target.result;
+      
+      if (!db.objectStoreNames.contains('dishes')) {
+        db.createObjectStore('dishes', { keyPath: 'id' });
+      }
+      if (!db.objectStoreNames.contains('orders')) {
+        db.createObjectStore('orders', { keyPath: 'id' });
+      }
+      if (!db.objectStoreNames.contains('settings')) {
+        db.createObjectStore('settings', { keyPath: 'key' });
+      }
+      if (!db.objectStoreNames.contains('reviews')) {
+        db.createObjectStore('reviews', { keyPath: 'id' });
+      }
+      if (!db.objectStoreNames.contains('special_dates')) {
+        db.createObjectStore('special_dates', { keyPath: 'id' });
+      }
+      if (!db.objectStoreNames.contains('shopping_lists')) {
+        db.createObjectStore('shopping_lists', { keyPath: 'id' });
+      }
+      if (!db.objectStoreNames.contains('achievements')) {
+        db.createObjectStore('achievements', { keyPath: 'id' });
+      }
+    };
+  });
+}
+
+async function idbPut(storeName, data) {
+  try {
+    const db = await openIDB();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction(storeName, 'readwrite');
+      const store = tx.objectStore(storeName);
+      const req = store.put(data);
+      req.onsuccess = () => resolve(true);
+      req.onerror = () => reject(req.error);
+    });
+  } catch(e) {
+    console.warn('IDB put failed:', e);
+    return false;
+  }
+}
+
+async function idbGet(storeName, key) {
+  try {
+    const db = await openIDB();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction(storeName, 'readonly');
+      const store = tx.objectStore(storeName);
+      const req = store.get(key);
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => reject(req.error);
+    });
+  } catch(e) {
+    console.warn('IDB get failed:', e);
+    return null;
+  }
+}
+
+async function idbGetAll(storeName) {
+  try {
+    const db = await openIDB();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction(storeName, 'readonly');
+      const store = tx.objectStore(storeName);
+      const req = store.getAll();
+      req.onsuccess = () => resolve(req.result || []);
+      req.onerror = () => reject(req.error);
+    });
+  } catch(e) {
+    console.warn('IDB getAll failed:', e);
+    return [];
+  }
+}
+
+async function idbDelete(storeName, key) {
+  try {
+    const db = await openIDB();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction(storeName, 'readwrite');
+      const store = tx.objectStore(storeName);
+      const req = store.delete(key);
+      req.onsuccess = () => resolve(true);
+      req.onerror = () => reject(req.error);
+    });
+  } catch(e) {
+    console.warn('IDB delete failed:', e);
+    return false;
+  }
+}
+
+async function idbClear(storeName) {
+  try {
+    const db = await openIDB();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction(storeName, 'readwrite');
+      const store = tx.objectStore(storeName);
+      const req = store.clear();
+      req.onsuccess = () => resolve(true);
+      req.onerror = () => reject(req.error);
+    });
+  } catch(e) {
+    console.warn('IDB clear failed:', e);
+    return false;
+  }
+}
+
+async function cacheToIDB() {
+  if (typeof DB === 'undefined' || !DB._ready) return;
+  
+  try {
+    const dishes = DB.dishes();
+    for (const d of dishes) {
+      await idbPut('dishes', d);
+    }
+    
+    const settingsKeys = [
+      'role', 'anni', 'no_cook', 'noCookReason',
+      'currentStatus', 'statusStartDate', 'statusEndDate'
+    ];
+    for (const key of settingsKeys) {
+      const val = localStorage.getItem('pp_' + key);
+      if (val !== null) {
+        await idbPut('settings', { key, value: val });
+      }
+    }
+    
+    console.log('已缓存到 IndexedDB');
+  } catch(e) {
+    console.warn('缓存失败:', e);
+  }
+}
+
+setInterval(cacheToIDB, 30000);
+
+/* ============================================================
+   新增工具函数 7：数据导出/导入
+   ============================================================ */
+function exportAllData() {
+  if (typeof DB === 'undefined') {
+    toast('数据还没准备好', 'warn');
+    return;
+  }
+  
+  const exportData = {
+    version: 1,
+    exportedAt: new Date().toISOString(),
+    localStorage: {},
+    dishes: DB.dishes(),
+    orders: DB.orders(),
+    reviews: DB.reviews(),
+    specialDates: DB.specialDates(),
+    shoppingLists: DB.shoppingLists(),
+    achievements: DB.getAchievements(),
+    unlockedAchievements: DB.getUnlockedAchievements()
+  };
+  
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (key && key.startsWith('pp_')) {
+      exportData.localStorage[key] = localStorage.getItem(key);
+    }
+  }
+  
+  const json = JSON.stringify(exportData, null, 2);
+  const blob = new Blob([json], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `盼盼老婆点菜数据_${new Date().toISOString().split('T')[0]}.json`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  
+  toast('数据导出成功！', 'success');
+  playNotificationSound('success');
+}
+
+async function importAllData(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = async (e) => {
+      try {
+        const data = JSON.parse(e.target.result);
+        
+        if (!data.version || !data.exportedAt) {
+          reject(new Error('无效的备份文件'));
+          return;
+        }
+        
+        showLoading('正在导入数据...');
+        
+        if (data.localStorage) {
+          for (const [key, val] of Object.entries(data.localStorage)) {
+            localStorage.setItem(key, val);
+          }
+        }
+        
+        if (data.dishes && DB.upsertDish) {
+          for (const d of data.dishes) {
+            await DB.upsertDish(d);
+          }
+        }
+        
+        hideLoading();
+        toast('数据导入成功！请刷新页面', 'success');
+        playNotificationSound('success');
+        vibrate([100, 50, 100]);
+        
+        resolve(true);
+      } catch(err) {
+        hideLoading();
+        toast('导入失败：' + err.message, 'error');
+        playNotificationSound('error');
+        reject(err);
+      }
+    };
+    reader.onerror = () => {
+      toast('读取文件失败', 'error');
+      reject(reader.error);
+    };
+    reader.readAsText(file);
+  });
+}
+
+function showImportModal() {
+  showModal(`
+    <div class="p-5">
+      <h3 class="text-xl font-bold text-gray-800 mb-4">📥 导入数据</h3>
+      <p class="text-sm text-gray-500 mb-4">选择之前导出的备份文件</p>
+      
+      <div class="border-2 border-dashed border-rose-200 rounded-xl p-6 text-center mb-4 hover:border-rose-400 transition-colors">
+        <input type="file" id="import-file-input" accept=".json" class="hidden">
+        <label for="import-file-input" class="cursor-pointer">
+          <div class="text-4xl mb-2">📁</div>
+          <p class="text-sm text-gray-600">点击选择文件</p>
+          <p class="text-xs text-gray-400 mt-1">支持 .json 格式</p>
+        </label>
+      </div>
+      
+      <div class="flex gap-3">
+        <button data-action="close-modal" class="flex-1 py-3 rounded-xl bg-gray-100 text-gray-600 font-medium">
+          取消
+        </button>
+      </div>
+    </div>
+  `);
+  
+  setTimeout(() => {
+    const input = $('#import-file-input');
+    if (input) {
+      input.addEventListener('change', async (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          closeModal();
+          await importAllData(file);
+        }
+      });
+    }
+  }, 100);
+}
+
+/* ============================================================
+   图片优化工具函数
+   ============================================================ */
+
+// WebP 支持检测
+let _supportsWebP = null;
+async function checkWebPSupport() {
+  if (_supportsWebP !== null) return _supportsWebP;
+  
+  return new Promise((resolve) => {
+    const webP = new Image();
+    webP.onload = webP.onerror = function() {
+      _supportsWebP = webP.height === 2;
+      resolve(_supportsWebP);
+    };
+    webP.src = 'data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAACyAgCdASoCAAIALmk0mk0iIiIiIgBoSygABc6WWgAA/veff/0PP8bA//LwYAAA';
+  });
+}
+
+// 获取图片 URL（处理 WebP 降级）
+function getImageUrl(baseUrl, options = {}) {
+  if (!baseUrl) return null;
+  
+  const { preferWebP = true } = options;
+  
+  if (preferWebP && _supportsWebP) {
+    if (!baseUrl.toLowerCase().endsWith('.webp')) {
+      const webpUrl = baseUrl.replace(/\.(jpg|jpeg|png|gif)$/i, '.webp');
+      return webpUrl;
+    }
+  }
+  
+  return baseUrl;
+}
+
+// 生成懒加载图片 HTML
+function lazyImgHTML(options = {}) {
+  const {
+    src,
+    alt = '',
+    width,
+    height,
+    className = '',
+    fallbackEmoji = '🍽️',
+    showSkeleton = true,
+    objectFit = 'cover'
+  } = options;
+  
+  if (!src) {
+    return `
+      <div class="img-container ${className}" style="${width ? `width:${width}px;` : ''}${height ? `height:${height}px;` : ''}">
+        <div class="img-fallback">
+          <span class="fallback-emoji">${fallbackEmoji}</span>
+        </div>
+      </div>
+    `;
+  }
+  
+  return `
+    <div class="img-container ${className}" style="${width ? `width:${width}px;` : ''}${height ? `height:${height}px;` : ''}">
+      ${showSkeleton ? '<div class="img-skeleton"></div>' : ''}
+      <img 
+        class="lazy-img" 
+        data-src="${src}" 
+        alt="${alt}"
+        style="object-fit:${objectFit};"
+        onerror="this.classList.add('error');this.parentElement.querySelector('.img-skeleton')?.remove();this.parentElement.innerHTML += '<div class=\\'img-fallback\\'><span class=\\'fallback-emoji\\'>${fallbackEmoji}</span></div>';"
+      >
+    </div>
+  `;
+}
+
+// 懒加载观察器
+let _lazyObserver = null;
+
+function initLazyLoad() {
+  if ('IntersectionObserver' in window) {
+    if (!_lazyObserver) {
+      _lazyObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const img = entry.target;
+            const src = img.dataset.src;
+            
+            if (src) {
+              img.onload = function() {
+                this.classList.add('loaded');
+                const skeleton = this.parentElement?.querySelector('.img-skeleton');
+                if (skeleton) {
+                  skeleton.style.opacity = '0';
+                  skeleton.style.transition = 'opacity .3s ease';
+                  setTimeout(() => skeleton.remove(), 300);
+                }
+              };
+              img.src = src;
+            }
+            
+            observer.unobserve(img);
+          }
+        });
+      }, {
+        rootMargin: '100px 0px',
+        threshold: 0.01
+      });
+    }
+    
+    // 观察所有未加载的懒加载图片
+    document.querySelectorAll('img.lazy-img:not([src])').forEach(img => {
+      _lazyObserver.observe(img);
+    });
+  } else {
+    // 降级方案：直接加载所有图片
+    document.querySelectorAll('img.lazy-img[data-src]').forEach(img => {
+      const src = img.dataset.src;
+      if (src) {
+        img.onload = function() {
+          this.classList.add('loaded');
+          this.parentElement?.querySelector('.img-skeleton')?.remove();
+        };
+        img.src = src;
+      }
+    });
+  }
+}
+
+// 手动触发懒加载检查（在页面渲染后调用）
+function refreshLazyLoad() {
+  setTimeout(initLazyLoad, 50);
+}
+
+// ========== 功能1：摇一摇随机推荐 ==========
+let _shakeCount = 0;
+let _currentShakeDishes = [];
+
+function showShakeModal() {
+  _shakeCount = 0;
+  _currentShakeDishes = [];
+  showModal(`
+    <div class="p-5">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="font-display text-lg">🎲 想吃什么？摇一摇！</h3>
+        <button data-action="close-modal" class="text-gray-400 p-1">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      
+      <div id="shake-container" class="text-center py-6">
+        <!-- 炫酷大骰子图标 -->
+        <div class="big-icon-ultra inline-flex mb-6" style="background:linear-gradient(135deg, #FF6B9D, #FF8FB8);">
+          <div class="glow-layer-1" style="background:radial-gradient(circle, rgba(255,107,157,0.6), transparent 70%);"></div>
+          <div class="glow-layer-2" style="background:radial-gradient(circle, rgba(255,143,184,0.5), transparent 60%);"></div>
+          <div class="ring-1" style="border-color:rgba(255,107,157,0.5);"></div>
+          <div class="ring-2" style="border-color:rgba(255,143,184,0.4);"></div>
+          <div class="ring-3" style="border-color:rgba(255,107,157,0.25);"></div>
+          <div id="shake-icon" class="inner-icon w-24 h-24 text-5xl cursor-pointer" 
+               style="background:linear-gradient(135deg, #FF6B9D, #FF8FB8);"
+               data-action="do-shake">
+            🎲
+          </div>
+        </div>
+        
+        <p class="text-gray-500 text-sm mb-2">点击骰子或摇一摇手机</p>
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/60 backdrop-blur-sm">
+          <span class="text-xs text-gray-400">已摇</span>
+          <span id="shake-times" class="text-lg font-bold text-primary-400">0</span>
+          <span class="text-xs text-gray-400">次</span>
+        </div>
+      </div>
+      
+      <div id="shake-result" class="hidden">
+        <div class="fancy-divider mb-4"><span>✨ 为你推荐 ✨</span></div>
+        <div id="shake-dishes" class="space-y-3"></div>
+        <div class="flex gap-3 mt-4">
+          <button data-action="do-shake" class="flex-1 py-3 btn-secondary rounded-xl font-medium">
+            <i class="fa-solid fa-rotate-right mr-1"></i> 换一批
+          </button>
+          <button data-action="add-all-shake" class="flex-1 py-3 btn-primary rounded-xl font-medium">
+            <i class="fa-solid fa-plus mr-1"></i> 全选
+          </button>
+        </div>
+      </div>
+    </div>
+  `);
+  
+  // 添加摇一摇传感器支持
+  if (window.DeviceMotionEvent) {
+    let lastShake = 0;
+    const shakeThreshold = 15;
+    let lastX = 0, lastY = 0, lastZ = 0;
+    
+    window.addEventListener('devicemotion', (e) => {
+      const now = Date.now();
+      if (now - lastShake < 1000) return;
+      
+      const acc = e.accelerationIncludingGravity;
+      if (!acc) return;
+      
+      const x = acc.x || 0;
+      const y = acc.y || 0;
+      const z = acc.z || 0;
+      
+      const deltaX = Math.abs(x - lastX);
+      const deltaY = Math.abs(y - lastY);
+      const deltaZ = Math.abs(z - lastZ);
+      
+      if (deltaX > shakeThreshold || deltaY > shakeThreshold || deltaZ > shakeThreshold) {
+        lastShake = now;
+        doShake();
+      }
+      
+      lastX = x;
+      lastY = y;
+      lastZ = z;
+    });
+  }
+}
+
+function doShake() {
+  const icon = $('#shake-icon');
+  const result = $('#shake-result');
+  const dishesContainer = $('#shake-dishes');
+  const timesEl = $('#shake-times');
+  
+  if (!icon) return;
+  
+  // 动画效果
+  icon.style.animation = 'none';
+  icon.offsetHeight;
+  icon.style.animation = 'wiggle 0.5s ease-in-out 3';
+  
+  // 震动反馈
+  vibrate([50, 50, 50]);
+  
+  // 随机选3道菜
+  const allDishes = DB.dishes();
+  if (allDishes.length === 0) {
+    toast('还没有菜品哦，先添加一些吧～', 'info');
+    return;
+  }
+  
+  // 排除上一批的菜（如果有的话）
+  let candidates = allDishes;
+  if (_currentShakeDishes.length > 0 && allDishes.length > 3) {
+    const lastIds = new Set(_currentShakeDishes.map(d => d.id));
+    candidates = allDishes.filter(d => !lastIds.has(d.id));
+    if (candidates.length < 3) candidates = allDishes;
+  }
+  
+  // 随机选择
+  _currentShakeDishes = DB.getRandomDishes(3, null, candidates);
+  _shakeCount++;
+  
+  if (timesEl) timesEl.textContent = _shakeCount;
+  
+  // 显示结果
+  if (result) result.classList.remove('hidden');
+  
+  if (dishesContainer) {
+    dishesContainer.innerHTML = _currentShakeDishes.map((dish, i) => `
+      <div class="list-item-pro bg-white/60 anim-fade stagger-${i + 1}">
+        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-primary-50 to-primary-100 flex items-center justify-center text-2xl shrink-0">
+          ${DISH_EMOJIS[dish.name] || '🍽️'}
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="font-medium text-sm text-gray-800">${dish.name}</div>
+          <div class="text-xs text-gray-400">${dish.category} · ${dish.cook_time || 15}分钟 · ${dish.cost_estimate || 10}亲亲</div>
+        </div>
+        <button data-action="quick-add-dish" data-did="${dish.id}" class="w-10 h-10 rounded-xl bg-primary-400 text-white flex items-center justify-center shrink-0">
+          <i class="fa-solid fa-plus"></i>
+        </button>
+      </div>
+    `).join('');
+  }
+  
+  // 播放成功音效
+  playNotificationSound('success');
+}
+
+// ========== 功能2：心愿单 ==========
+function showWishlistModal() {
+  const wishlist = DB.wishlist();
+  
+  showModal(`
+    <div class="p-5">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="font-display text-lg">💭 老婆的心愿单</h3>
+        <button data-action="close-modal" class="text-gray-400 p-1">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      
+      <div id="wishlist-list">
+        ${wishlist.length === 0 ? `
+          <div class="empty-state-pro">
+            <span class="empty-icon-pro">💭</span>
+            <h3 class="empty-title-pro">心愿单是空的</h3>
+            <p class="empty-desc-pro">看到想吃的菜，点击加入心愿单吧～</p>
+          </div>
+        ` : renderWishlistList()}
+      </div>
+    </div>
+  `);
+}
+
+function renderWishlistList() {
+  const wishlist = DB.wishlist();
+  
+  return wishlist.map((item, i) => {
+    const dish = DB.getDish(item.dish_id);
+    if (!dish) return '';
+    
+    return `
+      <div class="list-item-pro bg-white/60 mb-3 anim-fade stagger-${(i % 10) + 1}">
+        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-primary-50 to-primary-100 flex items-center justify-center text-2xl shrink-0">
+          ${DISH_EMOJIS[dish.name] || '🍽️'}
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="font-medium text-sm text-gray-800">${dish.name}</div>
+          ${item.reason ? `<div class="text-xs text-primary-400 mt-0.5">💭 ${item.reason}</div>` : ''}
+          ${item.remind_date ? `<div class="text-xs text-amber-500 mt-0.5"><i class="fa-solid fa-clock"></i> 提醒：${item.remind_date}</div>` : ''}
+        </div>
+        <div class="flex gap-2 shrink-0">
+          <button data-action="order-from-wishlist" data-did="${dish.id}" class="w-9 h-9 rounded-lg bg-green-100 text-green-600 flex items-center justify-center">
+            <i class="fa-solid fa-plus"></i>
+          </button>
+          <button data-action="remove-from-wishlist" data-wid="${item.id}" class="w-9 h-9 rounded-lg bg-red-50 text-red-400 flex items-center justify-center">
+            <i class="fa-solid fa-trash"></i>
+          </button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// ========== 功能3：历史记录 ==========
+function showHistoryModal() {
+  const orders = DB.getOrderHistory(30);
+  const recentDishes = DB.getRecentDishes();
+  const notEaten = DB.getNotEatenRecently(14);
+  
+  showModal(`
+    <div class="p-5">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="font-display text-lg">📜 点菜历史</h3>
+        <button data-action="close-modal" class="text-gray-400 p-1">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      
+      <!-- 炫酷统计卡片 -->
+      <div class="grid grid-cols-3 gap-3 mb-4">
+        <div class="stat-card-ultra float-card text-center anim-fade stagger-1">
+          <div class="stat-icon-ultra mx-auto" style="background:linear-gradient(135deg, #FF6B9D, #FF8FB8);">
+            📋
+          </div>
+          <div class="stat-value-ultra text-primary-400">${orders.length}</div>
+          <div class="stat-label-ultra">近30天订单</div>
+        </div>
+        <div class="stat-card-ultra stat-card-amber float-card text-center anim-fade stagger-2">
+          <div class="stat-icon-ultra mx-auto">
+            ❤️
+          </div>
+          <div class="stat-value-ultra">${recentDishes.length}</div>
+          <div class="stat-label-ultra">常吃菜品</div>
+        </div>
+        <div class="stat-card-ultra stat-card-green float-card text-center anim-fade stagger-3">
+          <div class="stat-icon-ultra mx-auto">
+            🎉
+          </div>
+          <div class="stat-value-ultra">${notEaten.length}</div>
+          <div class="stat-label-ultra">好久没吃</div>
+        </div>
+      </div>
+      
+      <!-- Tab 切换 -->
+      <div class="btn-group-pro mb-4">
+        <button data-action="switch-history-tab" data-tab="orders" class="active">历史订单</button>
+        <button data-action="switch-history-tab" data-tab="frequent">常吃的</button>
+        <button data-action="switch-history-tab" data-tab="missed">好久没吃</button>
+      </div>
+      
+      <div id="history-content" class="max-h-64 overflow-y-auto">
+        ${renderHistoryTab('orders', orders, recentDishes, notEaten)}
+      </div>
+    </div>
+  `);
+  
+  window._historyData = { orders, recentDishes, notEaten };
+}
+
+function renderHistoryTab(tab, orders, recentDishes, notEaten) {
+  switch(tab) {
+    case 'orders':
+      if (orders.length === 0) {
+        return `
+          <div class="empty-state">
+            <span class="empty-icon">📜</span>
+            <h3 class="empty-title">还没有订单记录</h3>
+          </div>
+        `;
+      }
+      return orders.slice(0, 10).map((o, i) => {
+        const items = typeof o.items === 'string' ? JSON.parse(o.items) : o.items;
+        const dishes = DB.getDishesByIds((items || []).map(i => i.did));
+        return `
+          <div class="list-item-pro bg-white/60 mb-2 anim-fade">
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2 mb-1">
+                <span class="text-xs text-gray-400">${fmtDate(o.order_date)}</span>
+                <span class="status-dot ${o.status}"></span>
+              </div>
+              <div class="text-sm text-gray-700 truncate">
+                ${dishes.map(d => d.name).join('、') || '未知菜品'}
+              </div>
+              ${o.whisper ? `<div class="text-xs text-primary-400 mt-1">💬 悄悄话：${o.whisper}</div>` : ''}
+            </div>
+            <button data-action="reorder-history" data-oid="${o.id}" class="w-10 h-10 rounded-xl bg-primary-100 text-primary-400 flex items-center justify-center shrink-0">
+              <i class="fa-solid fa-rotate-right"></i>
+            </button>
+          </div>
+        `;
+      }).join('');
+      
+    case 'frequent':
+      if (recentDishes.length === 0) {
+        return `
+          <div class="empty-state">
+            <span class="empty-icon">❤️</span>
+            <h3 class="empty-title">还没有常吃的菜</h3>
+          </div>
+        `;
+      }
+      return recentDishes.slice(0, 10).map((item, i) => {
+        const dish = item.dish;
+        return `
+          <div class="list-item-pro bg-white/60 mb-2">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-50 to-orange-50 flex items-center justify-center text-xl shrink-0 font-bold text-amber-500">
+              ${i + 1}
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="font-medium text-sm text-gray-800">${dish.name}</div>
+              <div class="text-xs text-gray-400">吃过 ${item.count} 次</div>
+            </div>
+            <button data-action="quick-add-dish" data-did="${dish.id}" class="w-9 h-9 rounded-lg bg-primary-100 text-primary-400 flex items-center justify-center shrink-0">
+              <i class="fa-solid fa-plus"></i>
+            </button>
+          </div>
+        `;
+      }).join('');
+      
+    case 'missed':
+      if (notEaten.length === 0) {
+        return `
+          <div class="empty-state">
+            <span class="empty-icon">🎉</span>
+            <h3 class="empty-title">所有菜都吃过啦！</h3>
+          </div>
+        `;
+      }
+      return notEaten.slice(0, 10).map((item, i) => {
+        const dish = item.dish;
+        return `
+          <div class="list-item-pro bg-white/60 mb-2">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-green-50 to-emerald-50 flex items-center justify-center text-xl shrink-0">
+              ${item.daysSince ? `${item.daysSince}天` : '🆕'}
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="font-medium text-sm text-gray-800">${dish.name}</div>
+              <div class="text-xs text-gray-400">${item.lastEaten ? `上次吃：${fmtDate(item.lastEaten.toISOString().slice(0, 10))}` : '还没吃过呢'}</div>
+            </div>
+            <button data-action="quick-add-dish" data-did="${dish.id}" class="w-9 h-9 rounded-lg bg-green-100 text-green-600 flex items-center justify-center shrink-0">
+              <i class="fa-solid fa-plus"></i>
+            </button>
+          </div>
+        `;
+      }).join('');
+      
+    default:
+      return '';
+  }
+}
+
+// ========== 功能4：悄悄话（扩展确认下单模态框） ==========
+// 这个功能需要修改 showConfirmModal 函数，添加悄悄话输入框
+// 同时需要修改 DB.addOrder 支持 whisper 字段
+
+// ========== 功能5：兑换商店 ==========
+function showRewardsModal() {
+  const rewards = DB.rewards();
+  const totalKisses = DB.getTotalKisses();
+  const usedKisses = DB.getUsedKisses();
+  const available = DB.getAvailableKisses();
+  
+  showModal(`
+    <div class="p-5">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="font-display text-lg">🎁 亲亲兑换商店</h3>
+        <button data-action="close-modal" class="text-gray-400 p-1">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      
+      <!-- 炫酷亲亲余额卡片 -->
+      <div class="stat-card-ultra float-card mb-4 anim-fade">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-4">
+            <div class="big-icon-ultra" style="background:linear-gradient(135deg, #FF6B9D, #FF8FB8);">
+              <div class="glow-layer-1" style="background:radial-gradient(circle, rgba(255,107,157,0.6), transparent 70%);"></div>
+              <div class="glow-layer-2" style="background:radial-gradient(circle, rgba(255,143,184,0.5), transparent 60%);"></div>
+              <div class="ring-1" style="border-color:rgba(255,107,157,0.4);"></div>
+              <div class="inner-icon w-14 h-14 text-2xl" style="background:linear-gradient(135deg, #FF6B9D, #FF8FB8);">
+                😘
+              </div>
+            </div>
+            <div>
+              <div class="text-xs text-gray-400 mb-1">可用亲亲</div>
+              <div class="number-display">${available}</div>
+            </div>
+          </div>
+          <div class="text-right">
+            <div class="flex items-center gap-3">
+              <div>
+                <div class="text-xs text-gray-400 mb-1">累计获得</div>
+                <div class="text-lg font-bold text-primary-400">${totalKisses}</div>
+              </div>
+              <div>
+                <div class="text-xs text-gray-400 mb-1">已用</div>
+                <div class="text-lg font-bold text-gray-500">${usedKisses}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div id="rewards-list">
+        ${rewards.length === 0 ? `
+          <div class="empty-state-pro">
+            <span class="empty-icon-pro">🎁</span>
+            <h3 class="empty-title-pro">商店还没有商品</h3>
+          </div>
+        ` : renderRewardsList()}
+      </div>
+      
+      <!-- 兑换记录 -->
+      <div class="fancy-divider mt-4 mb-3"><span>兑换记录</span></div>
+      ${renderRedemptionHistory()}
+    </div>
+  `);
+}
+
+function renderRewardsList() {
+  const rewards = DB.rewards();
+  const available = DB.getAvailableKisses();
+  
+  return rewards.map((reward, i) => {
+    const canRedeem = available >= reward.cost;
+    return `
+      <div class="list-item-pro bg-white/60 mb-2 anim-fade stagger-${(i % 10) + 1} ${!canRedeem ? 'opacity-60 grayscale-[30%]' : ''}">
+        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-50 to-orange-100 flex items-center justify-center text-3xl shrink-0 shadow-sm">
+          ${reward.icon || '🎁'}
+        </div>
+        <div class="flex-1 min-w-0 ml-3">
+          <div class="font-bold text-sm text-gray-800">${reward.name}</div>
+          ${reward.description ? `<div class="text-xs text-gray-400 mt-0.5">${reward.description}</div>` : ''}
+        </div>
+        <div class="text-right shrink-0">
+          <div class="text-lg font-black text-amber-500 mb-1">${reward.cost} <span class="text-sm">😘</span></div>
+          <button 
+            data-action="redeem-reward" 
+            data-rid="${reward.id}"
+            class="px-4 py-1.5 text-xs font-bold rounded-xl transition-all ${canRedeem 
+              ? 'bg-gradient-to-r from-primary-400 to-pink-400 text-white shadow-lg shadow-primary-200 hover:shadow-xl hover:scale-105' 
+              : 'bg-gray-100 text-gray-400'}"
+            ${!canRedeem ? 'disabled' : ''}
+          >
+            ${canRedeem ? '✨ 兑换' : '亲亲不够'}
+          </button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderRedemptionHistory() {
+  const redemptions = DB.redemptions().slice(0, 5);
+  if (redemptions.length === 0) {
+    return `
+      <div class="text-center py-4">
+        <span class="text-2xl opacity-30">📭</span>
+        <p class="text-xs text-gray-400 mt-2">还没有兑换记录</p>
+      </div>
+    `;
+  }
+  
+  return redemptions.map((r, i) => {
+    const reward = DB._rewards.find(rw => rw.id === r.reward_id);
+    const isUsed = r.is_used;
+    return `
+      <div class="list-item-pro bg-white/40 py-2 px-3 mb-1.5 anim-fade stagger-${(i % 10) + 1}">
+        <div class="flex items-center gap-2">
+          <span class="text-xl">${reward?.icon || '🎁'}</span>
+          <span class="text-sm font-medium text-gray-600">${reward?.name || '未知奖励'}</span>
+        </div>
+        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold ${isUsed 
+          ? 'bg-green-100 text-green-600' 
+          : 'bg-amber-100 text-amber-600'}">
+          ${isUsed ? '✓ 已使用' : '⏳ 待使用'}
+        </span>
+      </div>
+    `;
+  }).join('');
+}
+
+// ========== 功能6：特殊日子专属菜单 ==========
+function getSpecialDayDishes() {
+  const todaySpecial = DB.getTodaySpecialDate();
+  const anniInfo = DB.getAnniInfo();
+  
+  let specialType = null;
+  let specialName = '';
+  let specialIcon = '🎉';
+  
+  if (anniInfo && anniInfo.isAnniToday) {
+    specialType = 'anniversary';
+    specialName = '纪念日快乐！';
+    specialIcon = '💕';
+  } else if (todaySpecial) {
+    specialType = todaySpecial.id;
+    specialName = todaySpecial.name;
+    specialIcon = todaySpecial.icon;
+  }
+  
+  if (!specialType) return null;
+  
+  // 推荐适合庆祝的菜品
+  const dishes = DB.dishes();
+  const tags = DB._getDishTags;
+  
+  // 优先推荐：硬菜、宴客、经典、营养
+  const scored = dishes.map(d => {
+    let score = 0;
+    const dishTags = tags(d);
+    if (dishTags.includes('硬菜')) score += 20;
+    if (dishTags.includes('宴客')) score += 15;
+    if (dishTags.includes('经典')) score += 10;
+    if (dishTags.includes('营养')) score += 5;
+    if (d.is_favorite) score += 10;
+    return { dish, score };
+  });
+  
+  scored.sort((a, b) => b.score - a.score);
+  
+  return {
+    type: specialType,
+    name: specialName,
+    icon: specialIcon,
+    recommended: scored.slice(0, 6).map(s => s.dish)
+  };
+}
+
+// ========== 功能7：点菜倒计时 ==========
+let _countdownTimer = null;
+let _countdownEndTime = null;
+
+function showCountdownModal() {
+  showModal(`
+    <div class="p-5">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="font-display text-lg">⏰ 点菜倒计时</h3>
+        <button data-action="close-modal" class="text-gray-400 p-1" onclick="stopCountdown()">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      
+      <div id="countdown-display" class="text-center py-4">
+        <!-- 炫酷大时间显示 -->
+        <div class="big-icon-ultra inline-flex mb-6" style="background:linear-gradient(135deg, #FF6B9D, #FF8FB8);">
+          <div class="glow-layer-1" style="background:radial-gradient(circle, rgba(255,107,157,0.6), transparent 70%);"></div>
+          <div class="glow-layer-2" style="background:radial-gradient(circle, rgba(255,143,184,0.5), transparent 60%);"></div>
+          <div class="ring-1" style="border-color:rgba(255,107,157,0.5);"></div>
+          <div class="ring-2" style="border-color:rgba(255,143,184,0.4);"></div>
+          <div class="ring-3" style="border-color:rgba(255,107,157,0.25);"></div>
+          <div id="countdown-time" class="inner-icon w-32 h-32 text-4xl font-black" 
+               style="background:linear-gradient(135deg, #FF6B9D, #FF8FB8); color:white;">
+            10:00
+          </div>
+        </div>
+        
+        <p class="text-gray-500 text-sm mb-6">超时自动推荐套餐</p>
+        
+        <!-- 时间选择按钮 -->
+        <div class="btn-group-pro mb-6">
+          <button data-action="set-countdown" data-minutes="5">5分钟</button>
+          <button data-action="set-countdown" data-minutes="10" class="active">10分钟</button>
+          <button data-action="set-countdown" data-minutes="15">15分钟</button>
+          <button data-action="set-countdown" data-minutes="30">30分钟</button>
+        </div>
+        
+        <div class="flex gap-3">
+          <button data-action="start-countdown" class="flex-1 py-3 btn-primary rounded-xl font-medium">
+            <i class="fa-solid fa-play mr-1"></i> 开始倒计时
+          </button>
+          <button data-action="stop-countdown" class="flex-1 py-3 btn-secondary rounded-xl font-medium">
+            <i class="fa-solid fa-stop mr-1"></i> 取消
+          </button>
+        </div>
+      </div>
+    </div>
+  `);
+}
+
+function startCountdown(minutes = 10) {
+  stopCountdown();
+  
+  _countdownEndTime = Date.now() + minutes * 60 * 1000;
+  
+  // 震动和音效
+  vibrate([100]);
+  playNotificationSound('success');
+  
+  // 更新显示
+  updateCountdownDisplay();
+  
+  // 启动定时器
+  _countdownTimer = setInterval(() => {
+    updateCountdownDisplay();
+  }, 1000);
+  
+  toast(`已设置 ${minutes} 分钟倒计时！`, 'success');
+}
+
+function updateCountdownDisplay() {
+  if (!_countdownEndTime) return;
+  
+  const now = Date.now();
+  const remaining = Math.max(0, _countdownEndTime - now);
+  
+  const minutes = Math.floor(remaining / 60000);
+  const seconds = Math.floor((remaining % 60000) / 1000);
+  
+  const timeEl = $('#countdown-time');
+  const bigIcon = timeEl?.closest('.big-icon-ultra');
+  const innerIcon = timeEl;
+  
+  if (timeEl) {
+    timeEl.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    
+    // 最后30秒变红
+    if (remaining < 30000 && remaining > 0) {
+      // 更新整个大图标容器为红色
+      if (bigIcon) {
+        bigIcon.style.background = 'linear-gradient(135deg, #EF4444, #F87171)';
+        // 更新发光层
+        const glow1 = bigIcon.querySelector('.glow-layer-1');
+        const glow2 = bigIcon.querySelector('.glow-layer-2');
+        const rings = bigIcon.querySelectorAll('[class*="ring-"]');
+        if (glow1) glow1.style.background = 'radial-gradient(circle, rgba(239,68,68,0.6), transparent 70%)';
+        if (glow2) glow2.style.background = 'radial-gradient(circle, rgba(248,113,113,0.5), transparent 60%)';
+        rings.forEach(r => r.style.borderColor = 'rgba(239,68,68,0.5)');
+      }
+      // 更新内部图标
+      if (innerIcon) {
+        innerIcon.style.background = 'linear-gradient(135deg, #EF4444, #F87171)';
+      }
+      
+      // 最后10秒添加闪烁动画
+      if (remaining < 10000) {
+        if (bigIcon) {
+          bigIcon.style.animation = 'pulseSoft 0.5s ease-in-out infinite';
+        }
+      }
+    }
+    
+    // 每秒震动（最后10秒）
+    if (remaining < 10000 && remaining > 0) {
+      vibrate([50]);
+    }
+  }
+  
+  // 时间到
+  if (remaining <= 0) {
+    stopCountdown();
+    onCountdownEnd();
+  }
+}
+
+function stopCountdown() {
+  if (_countdownTimer) {
+    clearInterval(_countdownTimer);
+    _countdownTimer = null;
+  }
+  _countdownEndTime = null;
+}
+
+function onCountdownEnd() {
+  // 时间到！自动推荐
+  closeModal();
+  
+  // 震动和音效
+  vibrate([200, 100, 200]);
+  playNotificationSound('newOrder');
+  
+  // 撒花
+  try { showConfetti(30); } catch(e) {}
+  
+  // 生成推荐套餐
+  const combo = DB.generateComboForScenario('simple');
+  if (combo && combo.all.length > 0) {
+    combo.all.forEach(dish => {
+      if (!_selDishes.has(dish.id)) {
+        _selDishes.add(dish.id);
+      }
+    });
+    refreshSelBar();
+    toast('⏰ 时间到！已为你自动推荐套餐～', 'success');
+  } else {
+    // 随机选几道菜
+    const randomDishes = DB.getRandomDishes(3);
+    randomDishes.forEach(dish => {
+      if (!_selDishes.has(dish.id)) {
+        _selDishes.add(dish.id);
+      }
+    });
+    refreshSelBar();
+    toast('⏰ 时间到！随机帮你选了几道菜～', 'success');
+  }
+}
+
+// 扩展 getRandomDishes 支持自定义候选池
+DB.getRandomDishes = function(count = 3, filterFn = null, candidates = null) {
+  let dishes = candidates || [...this._dishes];
+  if (filterFn) dishes = dishes.filter(filterFn);
+  
+  // Fisher-Yates 洗牌
+  for (let i = dishes.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [dishes[i], dishes[j]] = [dishes[j], dishes[i]];
+  }
+  
+  return dishes.slice(0, count);
+};
+
+// 初始化 WebP 检测
+checkWebPSupport();
 </script>
 </body>
 </html>
