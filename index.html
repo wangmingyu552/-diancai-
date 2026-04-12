@@ -2915,6 +2915,287 @@ button{cursor:pointer;-webkit-user-select:none;user-select:none;border:none;back
     inset 0 1px 0 white;
   font-family:monospace;
 }
+
+/* ============================================
+   暗黑模式样式 - 专业炫酷版
+   ============================================ */
+.dark-mode {
+  color-scheme: dark;
+}
+
+.dark-mode body {
+  background: #0f0f1a !important;
+}
+
+.dark-mode .bg-gradient-couple {
+  background:
+    radial-gradient(ellipse at 20% 20%, rgba(255,107,157,0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, rgba(168,85,247,0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 40% 60%, rgba(59,130,246,0.08) 0%, transparent 50%),
+    linear-gradient(135deg, #1a1a2e 0%, #16213e 25%, #0f0f23 50%, #1a1a2e 75%, #0f0f1a 100%) !important;
+}
+
+.dark-mode .glass-ultra {
+  background: rgba(30,30,50,0.6) !important;
+  border-color: rgba(255,255,255,0.08) !important;
+}
+
+.dark-mode .glass-card {
+  background: rgba(30,30,50,0.8) !important;
+  border-color: rgba(255,255,255,0.1) !important;
+}
+
+.dark-mode .card-pro {
+  background: rgba(30,30,50,0.85) !important;
+  border-color: rgba(255,255,255,0.08) !important;
+  box-shadow:
+    0 20px 60px rgba(0,0,0,0.4),
+    0 8px 24px rgba(0,0,0,0.3),
+    inset 0 1px 0 rgba(255,255,255,0.05) !important;
+}
+
+.dark-mode .card-pro::before {
+  background: linear-gradient(135deg, rgba(255,107,157,0.08), rgba(168,85,247,0.05), rgba(59,130,246,0.04)) !important;
+}
+
+.dark-mode .dish-card {
+  background: rgba(30,30,50,0.75) !important;
+  border-color: rgba(255,255,255,0.08) !important;
+}
+
+.dark-mode .dish-card:hover {
+  box-shadow:
+    0 20px 60px rgba(255,107,157,0.15),
+    0 8px 24px rgba(0,0,0,0.3) !important;
+}
+
+.dark-mode .dish-card.sel {
+  background: linear-gradient(135deg, rgba(255,107,157,0.15), rgba(168,85,247,0.1)) !important;
+  border-color: rgba(255,107,157,0.4) !important;
+}
+
+.dark-mode .list-item-pro {
+  background: rgba(30,30,50,0.6) !important;
+}
+
+.dark-mode .list-item-pro:hover {
+  background: rgba(40,40,65,0.7) !important;
+}
+
+.dark-mode .list-item-pro.active {
+  background: linear-gradient(135deg, rgba(255,107,157,0.12), rgba(168,85,247,0.08)) !important;
+  border-color: rgba(255,107,157,0.25) !important;
+}
+
+.dark-mode .sidebar {
+  background: linear-gradient(180deg, rgba(20,20,35,0.98), rgba(30,30,50,0.95)) !important;
+  border-color: rgba(255,255,255,0.06) !important;
+}
+
+.dark-mode .sidebar-menu-item:hover {
+  background: rgba(255,107,157,0.08) !important;
+}
+
+.dark-mode .sidebar-menu-item.active {
+  background: linear-gradient(135deg, rgba(255,107,157,0.15), rgba(168,85,247,0.1)) !important;
+  border-color: rgba(255,107,157,0.25) !important;
+}
+
+.dark-mode .sidebar-menu-item.active .menu-label {
+  color: #FF8FB8 !important;
+}
+
+.dark-mode .modal-mask {
+  background: rgba(0,0,0,0.6) !important;
+}
+
+.dark-mode .modal-mask .bg-white {
+  background: linear-gradient(180deg, #1e1e30, #1a1a2e) !important;
+}
+
+.dark-mode input,
+.dark-mode textarea,
+.dark-mode select {
+  background: rgba(40,40,60,0.8) !important;
+  border-color: rgba(255,255,255,0.12) !important;
+  color: #e5e5e5 !important;
+}
+
+.dark-mode input:focus,
+.dark-mode textarea:focus,
+.dark-mode select:focus {
+  background: rgba(50,50,75,0.9) !important;
+  border-color: rgba(255,107,157,0.4) !important;
+  box-shadow: 0 0 0 6px rgba(255,107,157,0.15) !important;
+}
+
+.dark-mode input::placeholder,
+.dark-mode textarea::placeholder {
+  color: rgba(255,255,255,0.3) !important;
+}
+
+.dark-mode .cat-btn:not(.active) {
+  background: rgba(40,40,60,0.7) !important;
+  border-color: rgba(255,255,255,0.1) !important;
+  color: #aaa !important;
+}
+
+.dark-mode .cat-btn:not(.active):hover {
+  background: rgba(50,50,75,0.8) !important;
+  border-color: rgba(255,107,157,0.25) !important;
+}
+
+.dark-mode .btn-secondary {
+  background: rgba(40,40,60,0.8) !important;
+  border-color: rgba(255,255,255,0.15) !important;
+  color: #ccc !important;
+}
+
+.dark-mode .btn-secondary:hover {
+  background: rgba(55,55,80,0.9) !important;
+  border-color: rgba(255,107,157,0.3) !important;
+}
+
+.dark-mode .empty-title-pro,
+.dark-mode .empty-state-pro h3 {
+  color: #aaa !important;
+}
+
+.dark-mode .empty-desc-pro,
+.dark-mode .empty-state-pro p {
+  color: #666 !important;
+}
+
+.dark-mode .text-gray-400,
+.dark-mode .text-gray-500,
+.dark-mode .text-gray-600 {
+  color: rgba(255,255,255,0.5) !important;
+}
+
+.dark-mode .text-gray-700,
+.dark-mode .text-gray-800 {
+  color: rgba(255,255,255,0.8) !important;
+}
+
+.dark-mode .font-medium,
+.dark-mode .font-bold {
+  color: rgba(255,255,255,0.9) !important;
+}
+
+.dark-mode .progress-bar-pro {
+  background: rgba(255,255,255,0.08) !important;
+}
+
+.dark-mode .stat-card {
+  background: rgba(30,30,50,0.7) !important;
+}
+
+.dark-mode .badge-primary,
+.dark-mode .badge-amber,
+.dark-mode .badge-green,
+.dark-mode .badge-purple,
+.dark-mode .badge-blue {
+  background: rgba(255,255,255,0.08) !important;
+}
+
+.dark-mode .card-green {
+  background: rgba(34,197,94,0.1) !important;
+  border-color: rgba(34,197,94,0.2) !important;
+}
+
+.dark-mode .card-amber {
+  background: rgba(251,191,36,0.1) !important;
+  border-color: rgba(251,191,36,0.2) !important;
+}
+
+.dark-mode .menu-icon {
+  background: rgba(255,107,157,0.15) !important;
+}
+
+.dark-mode .sidebar-menu-item.active .menu-icon {
+  background: linear-gradient(135deg, #FF6B9D, #A855F7) !important;
+}
+
+.dark-mode .toggle-pro {
+  background: rgba(255,255,255,0.15) !important;
+}
+
+.dark-mode .toggle-pro::before {
+  box-shadow:
+    0 4px 12px rgba(0,0,0,0.4),
+    inset 0 1px 0 rgba(255,255,255,0.6) !important;
+}
+
+.dark-mode .btn-group-pro {
+  background: rgba(30,30,50,0.6) !important;
+  border-color: rgba(255,255,255,0.08) !important;
+}
+
+.dark-mode .btn-group-pro button {
+  color: #aaa !important;
+}
+
+.dark-mode .btn-group-pro button.active {
+  color: white !important;
+}
+
+.dark-mode .sel-bar {
+  background: linear-gradient(135deg, rgba(20,20,35,0.98), rgba(30,30,50,0.95)) !important;
+  border-color: rgba(255,255,255,0.08) !important;
+}
+
+.dark-mode .sidebar-section-title {
+  color: rgba(255,255,255,0.4) !important;
+}
+
+.dark-mode .menu-label {
+  color: #ccc !important;
+}
+
+.dark-mode .sidebar-title {
+  color: #e5e5e5 !important;
+}
+
+.dark-mode .divider-pro::before,
+.dark-mode .divider-pro::after,
+.dark-mode .fancy-divider::before,
+.dark-mode .fancy-divider::after {
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent) !important;
+}
+
+.dark-mode .number-display,
+.dark-mode .gradient-text-primary {
+  filter: brightness(1.2) !important;
+}
+
+/* 暗黑模式滚动条 */
+.dark-mode ::-webkit-scrollbar-track {
+  background: rgba(255,255,255,0.03) !important;
+}
+
+.dark-mode ::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.15) !important;
+}
+
+.dark-mode ::-webkit-scrollbar-thumb:hover {
+  background: rgba(255,255,255,0.25) !important;
+}
+
+/* 暗黑模式选择框下拉 */
+.dark-mode select option {
+  background: #1e1e30 !important;
+  color: #e5e5e5 !important;
+}
+
+/* 暗黑模式桌面端装饰 */
+@media(min-width:1280px) {
+  .dark-mode body::before,
+  .dark-mode body::after {
+    background:
+      radial-gradient(ellipse at 80% 30%, rgba(255,107,157,0.1) 0%, transparent 50%),
+      radial-gradient(ellipse at 60% 80%, rgba(168,85,247,0.08) 0%, transparent 50%) !important;
+  }
+}
 </style>
 </head>
 <body class="bg-gradient-couple min-h-screen" style="color:#2D2D2D;font-family:'Noto Sans SC',sans-serif;margin:0">
@@ -2965,6 +3246,13 @@ const DB={
   _reviews:[],_shoppingLists:[],_specialDates:[],_achievements:[],
   _wishlist:[],_rewards:[],_redemptions:[],
   _countdownSettings:[],_specialDateMenus:[],
+  // 功能1-9新表缓存
+  _weeklyPlans:[],_weeklyPlanDays:[],
+  _inventoryFull:[],_inventoryLogs:[],
+  _dailyNutrition:[],_nutritionGoals:[],
+  _globalSettings:{},_backups:[],
+  _dishSimilarity:[],_tasteProfiles:[],
+  _servingMultipliers:[],_recipeCollections:[],
   _ready:false,
   _subscribed:false,
 
@@ -2989,7 +3277,20 @@ const DB={
         sb.from('achievements').select('*'),
         sb.from('wishlist').select('*').order('created_at',{ascending:false}),
         sb.from('rewards').select('*'),
-        sb.from('redemptions').select('*').order('redeemed_at',{ascending:false})
+        sb.from('redemptions').select('*').order('redeemed_at',{ascending:false}),
+        // 功能1-9新表
+        sb.from('weekly_plans').select('*').order('week_start',{ascending:false}),
+        sb.from('weekly_plan_days').select('*'),
+        sb.from('inventory_full').select('*'),
+        sb.from('inventory_logs').select('*').order('created_at',{ascending:false}),
+        sb.from('daily_nutrition').select('*').order('date',{ascending:false}),
+        sb.from('nutrition_goals').select('*'),
+        sb.from('global_settings').select('*'),
+        sb.from('backups').select('*').order('created_at',{ascending:false}),
+        sb.from('dish_similarity').select('*'),
+        sb.from('taste_profiles').select('*'),
+        sb.from('serving_multipliers').select('*'),
+        sb.from('recipe_collections').select('*').order('created_at',{ascending:false})
       ]);
       
       // 处理 dishes
@@ -3054,6 +3355,67 @@ const DB={
         this._redemptions=results[11].value.data||[];
       }else{this._redemptions=[]}
       
+      // 功能1：处理 weekly_plans
+      if(results[12].status==='fulfilled'&&!results[12].value.error){
+        this._weeklyPlans=results[12].value.data||[];
+      }else{this._weeklyPlans=[]}
+      
+      // 处理 weekly_plan_days
+      if(results[13].status==='fulfilled'&&!results[13].value.error){
+        this._weeklyPlanDays=results[13].value.data||[];
+      }else{this._weeklyPlanDays=[]}
+      
+      // 功能2：处理 inventory_full
+      if(results[14].status==='fulfilled'&&!results[14].value.error){
+        this._inventoryFull=results[14].value.data||[];
+      }else{this._inventoryFull=[]}
+      
+      // 处理 inventory_logs
+      if(results[15].status==='fulfilled'&&!results[15].value.error){
+        this._inventoryLogs=results[15].value.data||[];
+      }else{this._inventoryLogs=[]}
+      
+      // 功能4：处理 daily_nutrition
+      if(results[16].status==='fulfilled'&&!results[16].value.error){
+        this._dailyNutrition=results[16].value.data||[];
+      }else{this._dailyNutrition=[]}
+      
+      // 处理 nutrition_goals
+      if(results[17].status==='fulfilled'&&!results[17].value.error){
+        this._nutritionGoals=results[17].value.data||[];
+      }else{this._nutritionGoals=[]}
+      
+      // 功能5：处理 global_settings
+      if(results[18].status==='fulfilled'&&!results[18].value.error){
+        this._globalSettings={};
+        (results[18].value.data||[]).forEach(r=>{this._globalSettings[r.key]=r});
+      }else{this._globalSettings={}}
+      
+      // 功能6：处理 backups
+      if(results[19].status==='fulfilled'&&!results[19].value.error){
+        this._backups=results[19].value.data||[];
+      }else{this._backups=[]}
+      
+      // 功能7：处理 dish_similarity
+      if(results[20].status==='fulfilled'&&!results[20].value.error){
+        this._dishSimilarity=results[20].value.data||[];
+      }else{this._dishSimilarity=[]}
+      
+      // 处理 taste_profiles
+      if(results[21].status==='fulfilled'&&!results[21].value.error){
+        this._tasteProfiles=results[21].value.data||[];
+      }else{this._tasteProfiles=[]}
+      
+      // 功能8：处理 serving_multipliers
+      if(results[22].status==='fulfilled'&&!results[22].value.error){
+        this._servingMultipliers=results[22].value.data||[];
+      }else{this._servingMultipliers=[]}
+      
+      // 功能9：处理 recipe_collections
+      if(results[23].status==='fulfilled'&&!results[23].value.error){
+        this._recipeCollections=results[23].value.data||[];
+      }else{this._recipeCollections=[]}
+      
       this._ready=true;
       this._subscribe();
     }catch(e){console.error('数据加载失败:',e)}
@@ -3112,6 +3474,64 @@ const DB={
     ch.on('postgres_changes',{event:'*',schema:'public',table:'redemptions'},async()=>{
       const{data}=await sb.from('redemptions').select('*').order('redeemed_at',{ascending:false});
       this._redemptions=data||[];renderCurrentPage();
+    });
+    // 功能1：订阅 weekly_plans
+    ch.on('postgres_changes',{event:'*',schema:'public',table:'weekly_plans'},async()=>{
+      const{data}=await sb.from('weekly_plans').select('*').order('week_start',{ascending:false});
+      this._weeklyPlans=data||[];renderCurrentPage();
+    });
+    ch.on('postgres_changes',{event:'*',schema:'public',table:'weekly_plan_days'},async()=>{
+      const{data}=await sb.from('weekly_plan_days').select('*');
+      this._weeklyPlanDays=data||[];renderCurrentPage();
+    });
+    // 功能2：订阅 inventory_full
+    ch.on('postgres_changes',{event:'*',schema:'public',table:'inventory_full'},async()=>{
+      const{data}=await sb.from('inventory_full').select('*');
+      this._inventoryFull=data||[];renderCurrentPage();
+    });
+    // 订阅 inventory_logs
+    ch.on('postgres_changes',{event:'*',schema:'public',table:'inventory_logs'},async()=>{
+      const{data}=await sb.from('inventory_logs').select('*').order('created_at',{ascending:false});
+      this._inventoryLogs=data||[];renderCurrentPage();
+    });
+    // 功能4：订阅 daily_nutrition
+    ch.on('postgres_changes',{event:'*',schema:'public',table:'daily_nutrition'},async()=>{
+      const{data}=await sb.from('daily_nutrition').select('*').order('date',{ascending:false});
+      this._dailyNutrition=data||[];renderCurrentPage();
+    });
+    ch.on('postgres_changes',{event:'*',schema:'public',table:'nutrition_goals'},async()=>{
+      const{data}=await sb.from('nutrition_goals').select('*');
+      this._nutritionGoals=data||[];renderCurrentPage();
+    });
+    // 功能5：订阅 global_settings
+    ch.on('postgres_changes',{event:'*',schema:'public',table:'global_settings'},async()=>{
+      const{data}=await sb.from('global_settings').select('*');
+      this._globalSettings={};(data||[]).forEach(r=>{this._globalSettings[r.key]=r});
+      renderCurrentPage();
+    });
+    // 功能6：订阅 backups
+    ch.on('postgres_changes',{event:'*',schema:'public',table:'backups'},async()=>{
+      const{data}=await sb.from('backups').select('*').order('created_at',{ascending:false});
+      this._backups=data||[];renderCurrentPage();
+    });
+    // 功能7：订阅 dish_similarity
+    ch.on('postgres_changes',{event:'*',schema:'public',table:'dish_similarity'},async()=>{
+      const{data}=await sb.from('dish_similarity').select('*');
+      this._dishSimilarity=data||[];renderCurrentPage();
+    });
+    ch.on('postgres_changes',{event:'*',schema:'public',table:'taste_profiles'},async()=>{
+      const{data}=await sb.from('taste_profiles').select('*');
+      this._tasteProfiles=data||[];renderCurrentPage();
+    });
+    // 功能8：订阅 serving_multipliers
+    ch.on('postgres_changes',{event:'*',schema:'public',table:'serving_multipliers'},async()=>{
+      const{data}=await sb.from('serving_multipliers').select('*');
+      this._servingMultipliers=data||[];renderCurrentPage();
+    });
+    // 功能9：订阅 recipe_collections
+    ch.on('postgres_changes',{event:'*',schema:'public',table:'recipe_collections'},async()=>{
+      const{data}=await sb.from('recipe_collections').select('*').order('created_at',{ascending:false});
+      this._recipeCollections=data||[];renderCurrentPage();
     });
     ch.subscribe((status)=>{
       if(status==='SUBSCRIBED')console.log('实时连接已建立');
@@ -4017,6 +4437,661 @@ const DB={
     });
     
     return result;
+  },
+
+  // ========== 功能1：周菜单计划相关方法 ==========
+  weeklyPlans(){return this._weeklyPlans},
+  weeklyPlanDays(){return this._weeklyPlanDays},
+  
+  getWeekStart(date=new Date()){
+    const d=new Date(date);
+    const day=d.getDay();
+    const diff=d.getDate()-day+(day===0?-6:1);
+    const monday=new Date(d.setDate(diff));
+    return monday.toISOString().split('T')[0];
+  },
+  
+  getWeekEnd(weekStart){
+    const d=new Date(weekStart);
+    d.setDate(d.getDate()+6);
+    return d.toISOString().split('T')[0];
+  },
+  
+  getDaysForWeek(weekStart){
+    const days=[];
+    const dayNames=['周一','周二','周三','周四','周五','周六','周日'];
+    for(let i=0;i<7;i++){
+      const d=new Date(weekStart);
+      d.setDate(d.getDate()+i);
+      days.push({
+        index:i,
+        date:d.toISOString().split('T')[0],
+        name:dayNames[i],
+        isToday:d.toISOString().split('T')[0]===this.today()
+      });
+    }
+    return days;
+  },
+  
+  getPlanForWeek(weekStart){
+    return this._weeklyPlans.find(p=>p.week_start===weekStart);
+  },
+  
+  getDaysForPlan(planId){
+    return this._weeklyPlanDays.filter(d=>d.plan_id===planId);
+  },
+  
+  getDayMeals(planId,dayIndex,mealType=null){
+    let days=this._weeklyPlanDays.filter(d=>d.plan_id===planId&&d.day_index===dayIndex);
+    if(mealType)days=days.filter(d=>d.meal_type===mealType);
+    return days;
+  },
+  
+  async createWeeklyPlan(weekStart,name='',notes=''){
+    const plan={
+      id:'wp'+Date.now(),
+      week_start:weekStart,
+      week_end:this.getWeekEnd(weekStart),
+      name:name||'',
+      notes:notes||'',
+      is_active:false,
+      created_at:new Date().toISOString(),
+      updated_at:new Date().toISOString()
+    };
+    const{error}=await sb.from('weekly_plans').insert(plan);
+    if(error){
+      toast('创建周计划失败：'+error.message,'error');
+      return null;
+    }
+    toast('周计划已创建！📅','success');
+    return plan;
+  },
+  
+  async updateWeeklyPlan(id,patch){
+    patch.updated_at=new Date().toISOString();
+    const{error}=await sb.from('weekly_plans').update(patch).eq('id',id);
+    if(error){
+      toast('更新周计划失败：'+error.message,'error');
+      return false;
+    }
+    return true;
+  },
+  
+  async deleteWeeklyPlan(id){
+    await sb.from('weekly_plan_days').delete().eq('plan_id',id);
+    await sb.from('weekly_plans').delete().eq('id',id);
+    toast('周计划已删除','info');
+  },
+  
+  async setDayMeal(planId,dayIndex,mealType,dishId,notes=''){
+    const existing=this._weeklyPlanDays.find(d=>
+      d.plan_id===planId&&(d.day_index===dayIndex||d.day_of_week===dayIndex)&&d.meal_type===mealType
+    );
+    
+    // 获取周计划信息来计算日期
+    const plan=this._weeklyPlans.find(p=>p.id===planId);
+    let dateStr=null;
+    if(plan&&plan.week_start){
+      const d=new Date(plan.week_start);
+      d.setDate(d.getDate()+dayIndex);
+      dateStr=d.toISOString().split('T')[0];
+    }
+    
+    if(existing){
+      const{error}=await sb.from('weekly_plan_days').update({
+        dish_id:dishId,
+        dish_ids:[dishId],
+        notes:notes,
+        updated_at:new Date().toISOString()
+      }).eq('id',existing.id);
+      if(error){
+        toast('更新菜品失败：'+error.message,'error');
+        return false;
+      }
+    }else{
+      const dayMeal={
+        id:'wpd'+Date.now(),
+        plan_id:planId,
+        day_index:dayIndex,
+        day_of_week:dayIndex,
+        meal_type:mealType,
+        dish_id:dishId,
+        dish_ids:[dishId],
+        date:dateStr,
+        notes:notes,
+        created_at:new Date().toISOString(),
+        updated_at:new Date().toISOString()
+      };
+      const{error}=await sb.from('weekly_plan_days').insert(dayMeal);
+      if(error){
+        toast('添加菜品失败：'+error.message,'error');
+        return false;
+      }
+    }
+    return true;
+  },
+  
+  async removeDayMeal(id){
+    await sb.from('weekly_plan_days').delete().eq('id',id);
+  },
+  
+  async activatePlan(id){
+    await sb.from('weekly_plans').update({is_active:false});
+    await sb.from('weekly_plans').update({is_active:true,updated_at:new Date().toISOString()}).eq('id',id);
+    toast('已激活本周计划！✨','success');
+  },
+  
+  getActivePlan(){
+    return this._weeklyPlans.find(p=>p.is_active);
+  },
+  
+  getTodayMeals(){
+    const activePlan=this.getActivePlan();
+    if(!activePlan)return [];
+    const today=new Date();
+    const weekStart=this.getWeekStart(today);
+    if(activePlan.week_start!==weekStart)return [];
+    const dayIndex=today.getDay()===0?6:today.getDay()-1;
+    return this.getDaysForPlan(activePlan.id).filter(d=>d.day_index===dayIndex);
+  },
+
+  // ========== 功能2：库存管理增强版相关方法 ==========
+  inventoryFull(){return this._inventoryFull},
+  inventoryLogs(){return this._inventoryLogs},
+  
+  async addInventoryItem(item){
+    const newItem={
+      id:'inv'+Date.now(),
+      name:item.name,
+      category:item.category||'其他',
+      quantity:item.quantity||1,
+      unit:item.unit||'份',
+      expiry_date:item.expiry_date||null,
+      location:item.location||'冰箱',
+      notes:item.notes||'',
+      min_stock:item.min_stock||0,
+      created_at:new Date().toISOString(),
+      updated_at:new Date().toISOString()
+    };
+    const{error}=await sb.from('inventory_full').insert(newItem);
+    if(error){
+      toast('添加食材失败：'+error.message,'error');
+      return null;
+    }
+    toast('食材已添加！🥬','success');
+    return newItem;
+  },
+  
+  async updateInventoryItem(id,patch){
+    patch.updated_at=new Date().toISOString();
+    const{error}=await sb.from('inventory_full').update(patch).eq('id',id);
+    if(error){
+      toast('更新食材失败：'+error.message,'error');
+      return false;
+    }
+    return true;
+  },
+  
+  async deleteInventoryItem(id){
+    await sb.from('inventory_full').delete().eq('id',id);
+    toast('食材已删除','info');
+  },
+  
+  async useInventoryItem(id,amount=1){
+    const item=this._inventoryFull.find(i=>i.id===id);
+    if(!item)return false;
+    const newQty=Math.max(0,(item.quantity||0)-amount);
+    await this.updateInventoryItem(id,{quantity:newQty});
+    
+    const log={
+      id:'log'+Date.now(),
+      inventory_id:id,
+      action:'use',
+      quantity:amount,
+      notes:'使用了'+amount+item.unit,
+      created_at:new Date().toISOString()
+    };
+    await sb.from('inventory_logs').insert(log);
+    
+    if(newQty<=(item.min_stock||0)){
+      toast('⚠️ '+item.name+' 库存不足！','warn');
+    }
+    return true;
+  },
+  
+  getLowStockItems(){
+    return this._inventoryFull.filter(i=>(i.quantity||0)<=(i.min_stock||0));
+  },
+  
+  getExpiringSoon(days=3){
+    const today=new Date();
+    const cutoff=new Date(today.getTime()+days*864e5);
+    return this._inventoryFull.filter(i=>{
+      if(!i.expiry_date)return false;
+      const expiry=new Date(i.expiry_date);
+      return expiry<=cutoff&&expiry>=today;
+    });
+  },
+
+  // ========== 功能4：营养分析相关方法 ==========
+  dailyNutrition(){return this._dailyNutrition},
+  nutritionGoals(){return this._nutritionGoals},
+  
+  getNutritionForDate(date){
+    return this._dailyNutrition.find(n=>n.date===date);
+  },
+  
+  getGoalForRole(role){
+    return this._nutritionGoals.find(g=>g.role===role&&g.is_active!==false);
+  },
+  
+  calculateDishNutrition(dish){
+    const baseCalories={
+      '荤菜':350,'素菜':120,'汤':180,'主食':250
+    };
+    const baseProtein={
+      '荤菜':25,'素菜':5,'汤':8,'主食':6
+    };
+    const baseCarbs={
+      '荤菜':15,'素菜':20,'汤':12,'主食':50
+    };
+    const baseFat={
+      '荤菜':20,'素菜':5,'汤':10,'主食':3
+    };
+    
+    const cat=dish.category||'素菜';
+    const difficulty=dish.difficulty||'简单';
+    const multiplier=difficulty==='困难'?1.3:difficulty==='中等'?1.1:1;
+    
+    return {
+      calories:Math.round((baseCalories[cat]||200)*multiplier),
+      protein:Math.round((baseProtein[cat]||10)*multiplier*10)/10,
+      carbs:Math.round((baseCarbs[cat]||25)*multiplier*10)/10,
+      fat:Math.round((baseFat[cat]||8)*multiplier*10)/10,
+      fiber:dish.category==='素菜'?8:dish.category==='汤'?3:2
+    };
+  },
+  
+  async addNutritionRecord(date,nutrition){
+    // 只使用数据库表实际有的字段（根据 features_1_to_9_db.sql）
+    const record={
+      id:'dn'+Date.now(),
+      date:date,
+      total_calories:nutrition.total_calories||0,
+      total_protein:nutrition.total_protein||0,
+      total_carbs:nutrition.total_carbs||0,
+      total_fat:nutrition.total_fat||0,
+      total_fiber:nutrition.total_fiber||0,
+      meal_count:nutrition.meal_count||0,
+      notes:nutrition.notes||'',
+      created_at:new Date().toISOString(),
+      updated_at:new Date().toISOString()
+    };
+    // 可选字段：如果数据库有 role 字段就加上
+    if(nutrition.role){
+      record.role=nutrition.role;
+    }
+    const{error}=await sb.from('daily_nutrition').insert(record);
+    if(error){
+      toast('记录营养失败：'+error.message,'error');
+      return null;
+    }
+    return record;
+  },
+  
+  async addOrUpdateNutritionForOrder(order){
+    if(!order)return;
+    
+    // 获取当前分量设置
+    const multiplier = parseFloat(localStorage.getItem('pp_serving_multiplier')) || 1;
+    const servingId = localStorage.getItem('pp_current_serving') || '1人';
+    
+    // 获取订单中的菜品
+    const items=typeof order.items==='string'?JSON.parse(order.items):order.items;
+    const dishIds=(items||[]).map(i=>i.did);
+    const dishes=this.getDishesByIds(dishIds);
+    
+    if(dishes.length===0)return;
+    
+    // 计算这些菜品的总营养（应用分量倍率）
+    let totalCalories=0,totalProtein=0,totalCarbs=0,totalFat=0,totalFiber=0;
+    dishes.forEach(d=>{
+      const n=this.calculateDishNutrition(d);
+      totalCalories+=Math.round(n.calories * multiplier);
+      totalProtein+=Math.round(n.protein * multiplier * 10) / 10;
+      totalCarbs+=Math.round(n.carbs * multiplier * 10) / 10;
+      totalFat+=Math.round(n.fat * multiplier * 10) / 10;
+      totalFiber+=Math.round(n.fiber * multiplier * 10) / 10;
+    });
+    
+    const today=this.today();
+    const existing=this.getNutritionForDate(today);
+    
+    // 分量提示信息
+    const servingNote = multiplier !== 1 ? ` (${servingId} ×${multiplier})` : '';
+    
+    if(existing){
+      // 更新现有记录
+      const updated={
+        total_calories:(existing.total_calories||0)+totalCalories,
+        total_protein:(existing.total_protein||0)+totalProtein,
+        total_carbs:(existing.total_carbs||0)+totalCarbs,
+        total_fat:(existing.total_fat||0)+totalFat,
+        total_fiber:(existing.total_fiber||0)+totalFiber,
+        meal_count:(existing.meal_count||0)+1,
+        updated_at:new Date().toISOString()
+      };
+      const{error}=await sb.from('daily_nutrition').update(updated).eq('id',existing.id);
+      if(!error){
+        toast(`已记录营养：+${totalCalories} kcal${servingNote} 🍽️`,'success');
+      }
+    }else{
+      // 创建新记录（不传 role，因为数据库表可能没有这个字段）
+      await this.addNutritionRecord(today,{
+        total_calories:totalCalories,
+        total_protein:totalProtein,
+        total_carbs:totalCarbs,
+        total_fat:totalFat,
+        total_fiber:totalFiber,
+        meal_count:1
+      });
+      toast(`已记录今日营养：${totalCalories} kcal${servingNote} 🍽️`,'success');
+    }
+  },
+  
+  getWeeklyNutritionSummary(weekStart){
+    const summary={calories:0,protein:0,carbs:0,fat:0,fiber:0,days:0};
+    for(let i=0;i<7;i++){
+      const d=new Date(weekStart);
+      d.setDate(d.getDate()+i);
+      const dateStr=d.toISOString().split('T')[0];
+      const record=this.getNutritionForDate(dateStr);
+      if(record){
+        summary.calories+=record.total_calories||0;
+        summary.protein+=record.total_protein||0;
+        summary.carbs+=record.total_carbs||0;
+        summary.fat+=record.total_fat||0;
+        summary.fiber+=record.total_fiber||0;
+        summary.days++;
+      }
+    }
+    return summary;
+  },
+
+  // ========== 功能5：全局设置/暗黑模式相关方法 ==========
+  globalSettings(){return this._globalSettings},
+  
+  getGlobalSetting(key){
+    return this._globalSettings[key];
+  },
+  
+  async setGlobalSetting(key,value){
+    const setting={
+      key:key,
+      value:value,
+      updated_at:new Date().toISOString()
+    };
+    const{error}=await sb.from('global_settings').upsert(setting,{onConflict:'key'});
+    if(error){
+      console.error('保存设置失败：',error);
+      return false;
+    }
+    this._globalSettings[key]=setting;
+    return true;
+  },
+  
+  isDarkMode(){
+    const setting=this.getGlobalSetting('dark_mode');
+    if(setting)return setting.value===true||setting.value==='true';
+    return localStorage.getItem('pp_dark_mode')==='true';
+  },
+  
+  async toggleDarkMode(){
+    const current=this.isDarkMode();
+    const newValue=!current;
+    await this.setGlobalSetting('dark_mode',newValue);
+    localStorage.setItem('pp_dark_mode',newValue.toString());
+    return newValue;
+  },
+
+  // ========== 功能6：数据备份相关方法 ==========
+  backups(){return this._backups},
+  
+  async createBackup(notes=''){
+    const allData={
+      dishes:this._dishes,
+      orders:this._orders,
+      templates:this._templates,
+      settings:this._settings,
+      reviews:this._reviews,
+      shoppingLists:this._shoppingLists,
+      specialDates:this._specialDates,
+      achievements:this._achievements,
+      wishlist:this._wishlist,
+      weeklyPlans:this._weeklyPlans,
+      weeklyPlanDays:this._weeklyPlanDays,
+      inventoryFull:this._inventoryFull,
+      dailyNutrition:this._dailyNutrition,
+      nutritionGoals:this._nutritionGoals,
+      recipeCollections:this._recipeCollections,
+      exportedAt:new Date().toISOString()
+    };
+    
+    // 基础备份数据（这些字段 SQL 定义里肯定有）
+    const backup={
+      id:'bk'+Date.now(),
+      name:'备份 '+new Date().toLocaleDateString('zh-CN'),
+      data:JSON.stringify(allData),
+      record_count:Object.values(allData).filter(Array.isArray).reduce((s,a)=>s+a.length,0),
+      created_at:new Date().toISOString()
+    };
+    
+    // 可选字段（数据库可能没有，先不插入）
+    // 等 SQL 修复后再用
+    
+    // 先尝试不带 notes 插入
+    let{error}=await sb.from('backups').insert(backup);
+    
+    // 如果失败了，可能是表结构问题，至少下载到本地
+    // 下载到本地（无论数据库成功与否都下载）
+    const blob=new Blob([JSON.stringify(allData,null,2)],{type:'application/json'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url;
+    a.download=`点菜系统备份_${new Date().toISOString().split('T')[0]}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    
+    if(error){
+      console.warn('数据库备份失败，但已下载到本地：', error);
+      toast('已下载到本地！（数据库备份需执行修复 SQL）','info');
+      return backup;
+    }
+    
+    toast('备份已创建并下载！💾','success');
+    return backup;
+  },
+  
+  async deleteBackup(id){
+    await sb.from('backups').delete().eq('id',id);
+    toast('备份已删除','info');
+  },
+
+  // ========== 功能7：智能推荐相关方法 ==========
+  dishSimilarity(){return this._dishSimilarity},
+  tasteProfiles(){return this._tasteProfiles},
+  
+  getTasteProfile(role='wife'){
+    return this._tasteProfiles.find(p=>p.role===role);
+  },
+  
+  async updateTasteProfile(role,preferences){
+    const existing=this._tasteProfiles.find(p=>p.role===role);
+    if(existing){
+      const{error}=await sb.from('taste_profiles').update({
+        preferences:preferences,
+        updated_at:new Date().toISOString()
+      }).eq('id',existing.id);
+      if(error){
+        toast('更新口味失败：'+error.message,'error');
+        return false;
+      }
+    }else{
+      const profile={
+        id:'tp'+Date.now(),
+        role:role,
+        preferences:preferences,
+        created_at:new Date().toISOString(),
+        updated_at:new Date().toISOString()
+      };
+      const{error}=await sb.from('taste_profiles').insert(profile);
+      if(error){
+        toast('创建口味档案失败：'+error.message,'error');
+        return false;
+      }
+    }
+    toast('口味偏好已更新！👅','success');
+    return true;
+  },
+  
+  getSmartRecommendations(role='wife',count=5){
+    const recent=this.getRecentDishes().slice(0,10);
+    const recentIds=new Set(recent.map(r=>r.dish?.id).filter(Boolean));
+    
+    const notEaten=this.getNotEatenRecently(7);
+    const favorites=this._dishes.filter(d=>d.is_favorite);
+    
+    let candidates=[];
+    
+    // 优先推荐收藏但最近没吃的
+    favorites.forEach(d=>{
+      if(!recentIds.has(d.id)){
+        candidates.push({dish:d,score:100});
+      }
+    });
+    
+    // 好久没吃的
+    notEaten.forEach(item=>{
+      const existing=candidates.find(c=>c.dish.id===item.dish.id);
+      if(existing){
+        existing.score+=50;
+      }else{
+        candidates.push({dish:item.dish,score:50+(item.daysSince||0)*2});
+      }
+    });
+    
+    // 随机补充
+    const randomDishes=this.getRandomDishes(10,d=>!recentIds.has(d.id));
+    randomDishes.forEach(d=>{
+      if(!candidates.find(c=>c.dish.id===d.id)){
+        candidates.push({dish:d,score:Math.random()*30});
+      }
+    });
+    
+    candidates.sort((a,b)=>b.score-a.score);
+    return candidates.slice(0,count).map(c=>c.dish);
+  },
+
+  // ========== 功能8：分餐/分量相关方法 ==========
+  servingMultipliers(){return this._servingMultipliers},
+  
+  getServingMultiplier(id){
+    return this._servingMultipliers.find(m=>m.id===id);
+  },
+  
+  getDefaultMultipliers(){
+    return [
+      {id:'1人',name:'1人份',multiplier:1,icon:'👤'},
+      {id:'2人',name:'2人份',multiplier:2,icon:'👫'},
+      {id:'3人',name:'3人份',multiplier:3,icon:'👨‍👩‍👧'},
+      {id:'4人+',name:'4人以上',multiplier:4,icon:'👨‍👩‍👧‍👦'}
+    ];
+  },
+  
+  async saveServingMultiplier(multiplier){
+    const{error}=await sb.from('serving_multipliers').upsert(multiplier,{onConflict:'id'});
+    if(error){
+      toast('保存分量失败：'+error.message,'error');
+      return false;
+    }
+    return true;
+  },
+  
+  adjustRecipeForServings(recipe,multiplier){
+    if(!recipe||multiplier===1)return recipe;
+    // 简单的分量调整逻辑
+    return recipe.split('\n').map(line=>{
+      // 尝试调整数字
+      return line.replace(/(\d+(\.\d+)?)/g,(match)=>{
+        const num=parseFloat(match);
+        if(!isNaN(num)&&num>0){
+          return (num*multiplier).toFixed(num%1===0?0:1);
+        }
+        return match;
+      });
+    }).join('\n');
+  },
+
+  // ========== 功能9：教程收藏相关方法 ==========
+  recipeCollections(){return this._recipeCollections},
+  
+  getCollection(id){
+    return this._recipeCollections.find(c=>c.id===id);
+  },
+  
+  async createCollection(name,description='',icon='📚'){
+    const collection={
+      id:'rc'+Date.now(),
+      name:name,
+      description:description,
+      icon:icon,
+      dish_ids:[],
+      is_public:false,
+      created_at:new Date().toISOString(),
+      updated_at:new Date().toISOString()
+    };
+    const{error}=await sb.from('recipe_collections').insert(collection);
+    if(error){
+      toast('创建收藏夹失败：'+error.message,'error');
+      return null;
+    }
+    toast('收藏夹已创建！📚','success');
+    return collection;
+  },
+  
+  async updateCollection(id,patch){
+    patch.updated_at=new Date().toISOString();
+    const{error}=await sb.from('recipe_collections').update(patch).eq('id',id);
+    if(error){
+      toast('更新收藏夹失败：'+error.message,'error');
+      return false;
+    }
+    return true;
+  },
+  
+  async deleteCollection(id){
+    await sb.from('recipe_collections').delete().eq('id',id);
+    toast('收藏夹已删除','info');
+  },
+  
+  async addDishToCollection(collectionId,dishId){
+    const collection=this._recipeCollections.find(c=>c.id===collectionId);
+    if(!collection)return false;
+    const dishIds=collection.dish_ids||[];
+    if(!dishIds.includes(dishId)){
+      dishIds.push(dishId);
+      await this.updateCollection(collectionId,{dish_ids:dishIds});
+      toast('已添加到收藏夹！❤️','success');
+    }
+    return true;
+  },
+  
+  async removeDishFromCollection(collectionId,dishId){
+    const collection=this._recipeCollections.find(c=>c.id===collectionId);
+    if(!collection)return false;
+    const dishIds=(collection.dish_ids||[]).filter(id=>id!==dishId);
+    await this.updateCollection(collectionId,{dish_ids:dishIds});
+    return true;
   }
 };
 
@@ -5303,6 +6378,85 @@ function pgWifeHome(){
             </div>`).join('')}
           </div>`:''}
         </div>
+        
+        <!-- 高级功能 -->
+        <div class="sidebar-section">
+          <div class="sidebar-section-title">
+            <i class="fa-solid fa-rocket"></i> 高级功能
+          </div>
+          
+          <!-- 功能1：周菜单计划 -->
+          <div class="sidebar-menu-item" data-action="show-weekly-plan">
+            <div class="menu-icon">
+              <i class="fa-solid fa-calendar-week"></i>
+            </div>
+            <span class="menu-label">周菜单计划</span>
+          </div>
+          
+          <!-- 功能2：冰箱库存 -->
+          <div class="sidebar-menu-item" data-action="show-inventory">
+            <div class="menu-icon">
+              <i class="fa-solid fa-snowflake"></i>
+            </div>
+            <span class="menu-label">冰箱库存</span>
+          </div>
+          
+          <!-- 功能3：评分评价 -->
+          <div class="sidebar-menu-item" data-action="show-reviews">
+            <div class="menu-icon">
+              <i class="fa-solid fa-star"></i>
+            </div>
+            <span class="menu-label">评分评价</span>
+          </div>
+          
+          <!-- 功能4：营养分析 -->
+          <div class="sidebar-menu-item" data-action="show-nutrition">
+            <div class="menu-icon">
+              <i class="fa-solid fa-chart-line"></i>
+            </div>
+            <span class="menu-label">营养分析</span>
+          </div>
+          
+          <!-- 功能7：智能推荐 -->
+          <div class="sidebar-menu-item" data-action="show-smart-recommend">
+            <div class="menu-icon">
+              <i class="fa-solid fa-brain"></i>
+            </div>
+            <span class="menu-label">智能推荐</span>
+          </div>
+          
+          <!-- 功能8：分餐分量 -->
+          <div class="sidebar-menu-item" data-action="show-serving">
+            <div class="menu-icon">
+              <i class="fa-solid fa-utensils"></i>
+            </div>
+            <span class="menu-label">分餐分量</span>
+          </div>
+          
+          <!-- 功能9：教程收藏 -->
+          <div class="sidebar-menu-item" data-action="show-recipe-collection">
+            <div class="menu-icon">
+              <i class="fa-solid fa-book"></i>
+            </div>
+            <span class="menu-label">教程收藏</span>
+          </div>
+          
+          <!-- 功能6：数据备份 -->
+          <div class="sidebar-menu-item" data-action="show-backup">
+            <div class="menu-icon">
+              <i class="fa-solid fa-cloud-arrow-down"></i>
+            </div>
+            <span class="menu-label">数据备份</span>
+          </div>
+          
+          <!-- 功能5：暗黑模式切换 -->
+          <div class="sidebar-menu-item" data-action="toggle-dark-mode">
+            <div class="menu-icon">
+              <i class="fa-solid fa-moon"></i>
+            </div>
+            <span class="menu-label">暗黑模式</span>
+          </div>
+        </div>
       </div>
       
       <div class="sidebar-footer">
@@ -5437,6 +6591,35 @@ const DISH_IMAGE_URLS={};
 function getDishImageUrl(dish){
   if(dish.image_url)return dish.image_url;
   return DISH_IMAGE_URLS[dish.name]||null;
+}
+
+function getDishEmoji(dish){
+  const catEmoji={'荤菜':'🥩','素菜':'🥬','汤':'🍲','主食':'🍚','全部':'🍽️'};
+  return DISH_EMOJIS[dish.name]||catEmoji[dish.category]||'🍽️';
+}
+
+function renderDishIcon(dish, size='w-12 h-12', bgClass='bg-gradient-to-br from-purple-50 to-pink-100', emojiSize='text-2xl'){
+  const emoji=getDishEmoji(dish);
+  const imgUrl=getDishImageUrl(dish);
+  
+  if(imgUrl){
+    return `
+      <div class="${size} rounded-xl overflow-hidden shrink-0 shadow-sm">
+        <img src="${imgUrl}" class="w-full h-full object-cover" alt="${dish.name}" 
+          onerror="this.parentElement.innerHTML='<div class=\\'${size} ${bgClass} flex items-center justify-center ${emojiSize}\\'>${emoji}</div>'">
+      </div>
+    `;
+  }else{
+    return `
+      <div class="${size} rounded-xl ${bgClass} flex items-center justify-center ${emojiSize} shrink-0">
+        ${emoji}
+      </div>
+    `;
+  }
+}
+
+function renderSmallDishIcon(dish, size='w-10 h-10'){
+  return renderDishIcon(dish, size, 'bg-gradient-to-br from-primary-50 to-primary-100', 'text-xl');
 }
 
 function dishCard(d,isFav=false,idx=0){
@@ -7606,7 +8789,97 @@ function updateDishStars(did, score) {
   }
 }
 
-function showRecipeModal(did){const d=DB.getDish(did);if(!d||!d.recipe||!d.recipe.trim())return;const catEmoji={'荤菜':'🥩','素菜':'🥬','汤':'🍲','主食':'🍚','全部':'🍽️'};const emoji=DISH_EMOJIS[d.name]||catEmoji[d.category]||'🍽️';const steps=d.recipe.split('\n').filter(s=>s.trim());const wc=DB.dishWeekCount(d.id);let weekBadge='';if(wc>=3)weekBadge=`<span class="bg-gradient-to-br from-rose-400 to-pink-400 text-white text-xs px-2.5 py-1 rounded-full shadow-lg font-bold">本周${wc}次 🔥</span>`;else if(wc>=2)weekBadge=`<span class="bg-gradient-to-br from-amber-400 to-orange-400 text-white text-xs px-2.5 py-1 rounded-full shadow-lg font-bold">本周${wc}次 ✨</span>`;showModal(`<div class="p-5"><div class="flex items-center justify-between mb-4"><h3 class="font-display text-lg">${d.name}</h3><button data-action="close-modal" class="text-gray-400 p-1"><i class="fa-solid fa-xmark"></i></button></div><div class="flex items-center gap-3 mb-4"><div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary-50 to-primary-100 flex items-center justify-center text-3xl shadow-sm">${emoji}</div><div class="flex-1"><div class="flex items-center gap-2 mb-1.5">${d.is_favorite?'<span class="text-base">⭐</span>':''}<span class="text-sm font-bold text-gray-800">${d.category}</span>${weekBadge}</div><div class="flex items-center gap-3 text-xs text-gray-400"><span class="flex items-center gap-1"><i class="fa-solid fa-clock text-primary-300"></i> ${d.cook_time}分钟</span><span class="flex items-center gap-1"><i class="fa-solid fa-heart text-rose-400"></i> ${d.cost_estimate}亲亲</span></div></div></div>${(d.ingredients||[]).length?`<div class="mb-4"><div class="text-xs text-gray-400 mb-2 font-medium">食材</div><div class="flex flex-wrap gap-1.5">${(d.ingredients||[]).map(i=>`<span class="text-xs bg-primary-50 text-gray-600 px-2.5 py-1 rounded-lg">${i}</span>`).join('')}</div></div>`:''}<div><div class="text-xs text-gray-400 mb-2 font-medium">做法步骤</div><div class="space-y-3">${steps.map((s,i)=>`<div class="flex items-start gap-3"><div class="w-6 h-6 shrink-0 rounded-full bg-gradient-to-br from-primary-400 to-pink-400 flex items-center justify-center text-white text-xs font-bold shadow-sm">${i+1}</div><div class="flex-1 text-sm text-gray-700 leading-relaxed pt-0.5">${s}</div></div>`).join('')}</div></div></div>`)}
+function showRecipeModal(did){
+  const d=DB.getDish(did);
+  if(!d||!d.recipe||!d.recipe.trim())return;
+  
+  // 获取当前分量设置
+  const multiplier = parseFloat(localStorage.getItem('pp_serving_multiplier')) || 1;
+  const servingId = localStorage.getItem('pp_current_serving') || '1人';
+  
+  const catEmoji={'荤菜':'🥩','素菜':'🥬','汤':'🍲','主食':'🍚','全部':'🍽️'};
+  const emoji=DISH_EMOJIS[d.name]||catEmoji[d.category]||'🍽️';
+  
+  // 应用分量调整到做法步骤
+  let adjustedRecipe = d.recipe;
+  let adjustedIngredients = d.ingredients || [];
+  
+  if(multiplier !== 1 && DB.adjustRecipeForServings){
+    adjustedRecipe = DB.adjustRecipeForServings(d.recipe, multiplier);
+    // 也调整食材列表（简单处理：如果食材里有数字就调整）
+    adjustedIngredients = (d.ingredients || []).map(ing => {
+      return ing.replace(/(\d+(\.\d+)?)/g, (match) => {
+        const num = parseFloat(match);
+        if(!isNaN(num) && num > 0) {
+          return (num * multiplier).toFixed(num % 1 === 0 ? 0 : 1);
+        }
+        return match;
+      });
+    });
+  }
+  
+  const steps = adjustedRecipe.split('\n').filter(s=>s.trim());
+  const wc=DB.dishWeekCount(d.id);
+  let weekBadge='';
+  if(wc>=3)weekBadge=`<span class="bg-gradient-to-br from-rose-400 to-pink-400 text-white text-xs px-2.5 py-1 rounded-full shadow-lg font-bold">本周${wc}次 🔥</span>`;
+  else if(wc>=2)weekBadge=`<span class="bg-gradient-to-br from-amber-400 to-orange-400 text-white text-xs px-2.5 py-1 rounded-full shadow-lg font-bold">本周${wc}次 ✨</span>`;
+  
+  // 分量提示
+  let servingBadge = '';
+  if(multiplier !== 1) {
+    servingBadge = `<span class="bg-gradient-to-br from-blue-400 to-cyan-400 text-white text-xs px-2.5 py-1 rounded-full shadow-lg font-bold ml-2">${servingId} ×${multiplier}</span>`;
+  }
+  
+  showModal(`
+    <div class="p-5">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="font-display text-lg">${d.name}${servingBadge}</h3>
+        <button data-action="close-modal" class="text-gray-400 p-1">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="flex items-center gap-3 mb-4">
+        <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary-50 to-primary-100 flex items-center justify-center text-3xl shadow-sm">${emoji}</div>
+        <div class="flex-1">
+          <div class="flex items-center gap-2 mb-1.5">
+            ${d.is_favorite?'<span class="text-base">⭐</span>':''}
+            <span class="text-sm font-bold text-gray-800">${d.category}</span>
+            ${weekBadge}
+          </div>
+          <div class="flex items-center gap-3 text-xs text-gray-400">
+            <span class="flex items-center gap-1"><i class="fa-solid fa-clock text-primary-300"></i> ${d.cook_time}分钟</span>
+            <span class="flex items-center gap-1"><i class="fa-solid fa-heart text-rose-400"></i> ${d.cost_estimate}亲亲</span>
+          </div>
+        </div>
+      </div>
+      ${adjustedIngredients.length?`
+        <div class="mb-4">
+          <div class="text-xs text-gray-400 mb-2 font-medium">
+            食材
+            ${multiplier !== 1 ? `<span class="text-blue-400 ml-1">(已按 ${servingId} 调整)</span>` : ''}
+          </div>
+          <div class="flex flex-wrap gap-1.5">
+            ${adjustedIngredients.map(i=>`<span class="text-xs bg-primary-50 text-gray-600 px-2.5 py-1 rounded-lg">${i}</span>`).join('')}
+          </div>
+        </div>
+      `:''}
+      <div>
+        <div class="text-xs text-gray-400 mb-2 font-medium">
+          做法步骤
+          ${multiplier !== 1 ? `<span class="text-blue-400 ml-1">(已按 ${servingId} 调整用量)</span>` : ''}
+        </div>
+        <div class="space-y-3">
+          ${steps.map((s,i)=>`
+            <div class="flex items-start gap-3">
+              <div class="w-6 h-6 shrink-0 rounded-full bg-gradient-to-br from-primary-400 to-pink-400 flex items-center justify-center text-white text-xs font-bold shadow-sm">${i+1}</div>
+              <div class="flex-1 text-sm text-gray-700 leading-relaxed pt-0.5">${s}</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    </div>
+  `);
+}
 
 function renderSelectedDishesList(){
   const dishes=DB.getDishesByIds([..._selDishes]);
@@ -7976,6 +9249,12 @@ document.addEventListener('click', async e => {
       if (o) {
         await DB.updateOrder(o.id, {status: d.st});
         toast(STATUS_LABELS[d.st], 'success');
+        
+        // 如果状态变为 eating（开饭啦），自动记录营养
+        if (d.st === 'eating') {
+          await DB.addOrUpdateNutritionForOrder(o);
+        }
+        
         // 状态更新后自动检查成就
         DB.checkAchievements();
         renderCurrentPage();
@@ -8306,6 +9585,7 @@ document.addEventListener('click', async e => {
         await DB.addReview({
           order_id: d.oid,
           dish_id: did,
+          rating: score,
           score: score,
           comment: ''
         });
@@ -8768,6 +10048,230 @@ document.addEventListener('click', async e => {
         localStorage.setItem('readAchievements', JSON.stringify(readIds));
       }
       renderCurrentPage();
+      break;
+    }
+    
+    // ========== 功能1：周菜单计划 ==========
+    case 'show-weekly-plan': {
+      const sidebar = $('#sidebar');
+      const overlay = $('#sidebar-overlay');
+      if (sidebar) sidebar.classList.remove('show');
+      if (overlay) overlay.classList.remove('show');
+      document.body.style.overflow = '';
+      showWeeklyPlanModal();
+      break;
+    }
+    
+    case 'create-weekly-plan': {
+      const weekStart = DB.getWeekStart();
+      const plan = await DB.createWeeklyPlan(weekStart);
+      if (plan) {
+        closeModal();
+        showWeeklyPlanModal();
+      }
+      break;
+    }
+    
+    case 'activate-weekly-plan': {
+      await DB.activatePlan(d.pid);
+      closeModal();
+      showWeeklyPlanModal();
+      break;
+    }
+    
+    case 'delete-weekly-plan': {
+      if (confirm('确定要删除这个周计划吗？')) {
+        await DB.deleteWeeklyPlan(d.pid);
+        closeModal();
+        showWeeklyPlanModal();
+      }
+      break;
+    }
+    
+    case 'set-day-meal': {
+      showSelectDishForPlanModal(d.pid, parseInt(d.day), d.meal);
+      break;
+    }
+    
+    case 'select-dish-for-plan': {
+      const success = await DB.setDayMeal(d.pid, parseInt(d.day), d.meal, d.did);
+      if (success) {
+        closeModal();
+        showWeeklyPlanModal();
+      }
+      break;
+    }
+    
+    case 'remove-day-meal': {
+      await DB.removeDayMeal(d.wpdId);
+      closeModal();
+      showWeeklyPlanModal();
+      break;
+    }
+    
+    // ========== 功能2：冰箱库存 ==========
+    case 'show-inventory': {
+      const sidebar = $('#sidebar');
+      const overlay = $('#sidebar-overlay');
+      if (sidebar) sidebar.classList.remove('show');
+      if (overlay) overlay.classList.remove('show');
+      document.body.style.overflow = '';
+      showInventoryModal();
+      break;
+    }
+    
+    case 'add-inventory-item': {
+      showAddInventoryModal();
+      break;
+    }
+    
+    case 'save-inventory-item': {
+      const name = $('#inv-name')?.value?.trim();
+      if (!name) {
+        toast('请输入食材名称', 'warn');
+        return;
+      }
+      const item = {
+        name,
+        category: $('#inv-category')?.value || '其他',
+        quantity: parseFloat($('#inv-quantity')?.value) || 1,
+        unit: $('#inv-unit')?.value || '份',
+        expiry_date: $('#inv-expiry')?.value || null,
+        location: $('#inv-location')?.value || '冰箱',
+        min_stock: parseFloat($('#inv-min-stock')?.value) || 0,
+        notes: $('#inv-notes')?.value || ''
+      };
+      if (d.iid) {
+        await DB.updateInventoryItem(d.iid, item);
+      } else {
+        await DB.addInventoryItem(item);
+      }
+      closeModal();
+      showInventoryModal();
+      break;
+    }
+    
+    case 'delete-inventory-item': {
+      if (confirm('确定要删除这个食材吗？')) {
+        await DB.deleteInventoryItem(d.iid);
+        closeModal();
+        showInventoryModal();
+      }
+      break;
+    }
+    
+    case 'use-inventory-item': {
+      await DB.useInventoryItem(d.iid, 1);
+      closeModal();
+      showInventoryModal();
+      break;
+    }
+    
+    // ========== 功能3：评分评价 ==========
+    case 'show-reviews': {
+      const sidebar = $('#sidebar');
+      const overlay = $('#sidebar-overlay');
+      if (sidebar) sidebar.classList.remove('show');
+      if (overlay) overlay.classList.remove('show');
+      document.body.style.overflow = '';
+      showReviewsModal();
+      break;
+    }
+    
+    // ========== 功能4：营养分析 ==========
+    case 'show-nutrition': {
+      const sidebar = $('#sidebar');
+      const overlay = $('#sidebar-overlay');
+      if (sidebar) sidebar.classList.remove('show');
+      if (overlay) overlay.classList.remove('show');
+      document.body.style.overflow = '';
+      showNutritionModal();
+      break;
+    }
+    
+    // ========== 功能5：暗黑模式 ==========
+    case 'toggle-dark-mode': {
+      const sidebar = $('#sidebar');
+      const overlay = $('#sidebar-overlay');
+      if (sidebar) sidebar.classList.remove('show');
+      if (overlay) overlay.classList.remove('show');
+      document.body.style.overflow = '';
+      
+      const isDark = await DB.toggleDarkMode();
+      applyDarkMode(isDark);
+      toast(isDark ? '已切换到暗黑模式 🌙' : '已切换到明亮模式 ☀️', 'success');
+      break;
+    }
+    
+    // ========== 功能6：数据备份 ==========
+    case 'show-backup': {
+      const sidebar = $('#sidebar');
+      const overlay = $('#sidebar-overlay');
+      if (sidebar) sidebar.classList.remove('show');
+      if (overlay) overlay.classList.remove('show');
+      document.body.style.overflow = '';
+      showBackupModal();
+      break;
+    }
+    
+    case 'create-backup': {
+      await DB.createBackup();
+      closeModal();
+      showBackupModal();
+      break;
+    }
+    
+    case 'delete-backup': {
+      if (confirm('确定要删除这个备份吗？')) {
+        await DB.deleteBackup(d.bid);
+        closeModal();
+        showBackupModal();
+      }
+      break;
+    }
+    
+    // ========== 功能7：智能推荐 ==========
+    case 'show-smart-recommend': {
+      const sidebar = $('#sidebar');
+      const overlay = $('#sidebar-overlay');
+      if (sidebar) sidebar.classList.remove('show');
+      if (overlay) overlay.classList.remove('show');
+      document.body.style.overflow = '';
+      showSmartRecommendModal();
+      break;
+    }
+    
+    case 'add-smart-dish': {
+      if (!_selDishes.has(d.did)) {
+        _selDishes.add(d.did);
+        celebrateSelect();
+        refreshSelBar();
+        toast('已加入选择！', 'success');
+      } else {
+        toast('已经选过这道菜啦', 'info');
+      }
+      break;
+    }
+    
+    // ========== 功能8：分餐分量 ==========
+    case 'show-serving': {
+      const sidebar = $('#sidebar');
+      const overlay = $('#sidebar-overlay');
+      if (sidebar) sidebar.classList.remove('show');
+      if (overlay) overlay.classList.remove('show');
+      document.body.style.overflow = '';
+      showServingModal();
+      break;
+    }
+    
+    // ========== 功能9：教程收藏 ==========
+    case 'show-recipe-collection': {
+      const sidebar = $('#sidebar');
+      const overlay = $('#sidebar-overlay');
+      if (sidebar) sidebar.classList.remove('show');
+      if (overlay) overlay.classList.remove('show');
+      document.body.style.overflow = '';
+      showRecipeCollectionModal();
       break;
     }
       
@@ -10224,6 +11728,846 @@ DB.getRandomDishes = function(count = 3, filterFn = null, candidates = null) {
   
   return dishes.slice(0, count);
 };
+
+// ========== 功能1：周菜单计划模态框 ==========
+function showWeeklyPlanModal() {
+  const plans = DB.weeklyPlans();
+  const activePlan = DB.getActivePlan();
+  const thisWeekStart = DB.getWeekStart();
+  const thisWeekPlan = DB.getPlanForWeek(thisWeekStart);
+  
+  showModal(`
+    <div class="p-5">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="font-display text-lg">📅 周菜单计划</h3>
+        <button data-action="close-modal" class="text-gray-400 p-1">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      
+      ${activePlan ? `
+        <div class="card-pro card-green p-4 mb-4">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="text-xl">✨</span>
+            <span class="font-bold text-green-600">当前激活计划</span>
+          </div>
+          <div class="text-sm text-gray-600">
+            ${activePlan.name || `${activePlan.week_start} 至 ${activePlan.week_end}`}
+          </div>
+        </div>
+      ` : ''}
+      
+      <button data-action="create-weekly-plan" class="w-full py-3 btn-primary rounded-xl font-medium mb-4">
+        <i class="fa-solid fa-plus mr-2"></i>创建本周计划
+      </button>
+      
+      <div class="max-h-80 overflow-y-auto">
+        ${plans.length === 0 ? `
+          <div class="empty-state-pro">
+            <span class="empty-icon-pro">📅</span>
+            <h3 class="empty-title-pro">还没有周计划</h3>
+            <p class="empty-desc-pro">点击上方按钮创建第一个周计划吧～</p>
+          </div>
+        ` : plans.map((plan, i) => {
+          const days = DB.getDaysForPlan(plan.id);
+          const isThisWeek = plan.week_start === thisWeekStart;
+          const isActive = plan.is_active;
+          
+          return `
+            <div class="list-item-pro bg-white/60 mb-3 anim-fade stagger-${(i % 10) + 1}">
+              <div class="w-12 h-12 rounded-xl bg-gradient-to-br ${isActive ? 'from-green-50 to-emerald-100' : 'from-primary-50 to-primary-100'} flex items-center justify-center text-2xl shrink-0">
+                ${isActive ? '✨' : '📅'}
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="font-medium text-sm text-gray-800 flex items-center gap-2">
+                  ${plan.name || `${plan.week_start.slice(5)} 周`}
+                  ${isThisWeek ? '<span class="badge-primary text-xs">本周</span>' : ''}
+                  ${isActive ? '<span class="badge-green text-xs">已激活</span>' : ''}
+                </div>
+                <div class="text-xs text-gray-400 mt-0.5">
+                  已安排 ${days.length} 道菜
+                </div>
+              </div>
+              <div class="flex gap-1 shrink-0">
+                ${!isActive ? `
+                  <button data-action="activate-weekly-plan" data-pid="${plan.id}" class="w-8 h-8 rounded-lg bg-green-100 text-green-600 flex items-center justify-center" title="激活">
+                    <i class="fa-solid fa-check"></i>
+                  </button>
+                ` : ''}
+                <button data-action="view-weekly-plan-detail" data-pid="${plan.id}" class="w-8 h-8 rounded-lg bg-primary-100 text-primary-400 flex items-center justify-center" title="查看详情">
+                  <i class="fa-solid fa-eye"></i>
+                </button>
+                <button data-action="delete-weekly-plan" data-pid="${plan.id}" class="w-8 h-8 rounded-lg bg-red-50 text-red-400 flex items-center justify-center" title="删除">
+                  <i class="fa-solid fa-trash"></i>
+                </button>
+              </div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    </div>
+  `);
+  
+  window._weeklyPlansData = { plans };
+}
+
+function showWeeklyPlanDetailModal(planId) {
+  const plan = DB.weeklyPlans().find(p => p.id === planId);
+  if (!plan) return;
+  
+  const days = DB.getDaysForWeek(plan.week_start);
+  const mealTypes = [
+    { key: 'breakfast', name: '早餐', icon: '🌅' },
+    { key: 'lunch', name: '午餐', icon: '☀️' },
+    { key: 'dinner', name: '晚餐', icon: '🌙' }
+  ];
+  
+  showModal(`
+    <div class="p-5">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="font-display text-lg">📋 ${plan.name || '周计划详情'}</h3>
+        <button data-action="close-modal" class="text-gray-400 p-1">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      
+      <div class="text-xs text-gray-400 mb-4">
+        ${plan.week_start} 至 ${plan.week_end}
+      </div>
+      
+      <div class="max-h-96 overflow-y-auto space-y-4">
+        ${days.map((day, dayIdx) => {
+          const dayMeals = DB.getDaysForPlan(planId).filter(d => d.day_index === dayIdx);
+          
+          return `
+            <div class="card-pro p-3 ${day.isToday ? 'ring-2 ring-primary-300' : ''}">
+              <div class="flex items-center justify-between mb-2">
+                <div class="flex items-center gap-2">
+                  <span class="font-bold text-sm ${day.isToday ? 'text-primary-500' : 'text-gray-700'}">
+                    ${day.name}
+                  </span>
+                  <span class="text-xs text-gray-400">${day.date.slice(5)}</span>
+                  ${day.isToday ? '<span class="badge-primary text-xs">今天</span>' : ''}
+                </div>
+              </div>
+              
+              <div class="space-y-2">
+                ${mealTypes.map(meal => {
+                  const existing = dayMeals.find(d => d.meal_type === meal.key);
+                  const dish = existing ? DB.getDish(existing.dish_id) : null;
+                  
+                  return `
+                    <div class="flex items-center gap-2">
+                      <span class="text-sm w-12 shrink-0">${meal.icon}</span>
+                      ${dish ? `
+                        <div class="flex-1 flex items-center gap-2 bg-primary-50 rounded-lg px-3 py-2">
+                          ${renderSmallDishIcon(dish, 'w-8 h-8')}
+                          <span class="text-sm text-gray-700 truncate flex-1">${dish.name}</span>
+                          <button data-action="remove-day-meal" data-wpd-id="${existing.id}" class="w-6 h-6 rounded bg-red-100 text-red-400 flex items-center justify-center shrink-0">
+                            <i class="fa-solid fa-times text-xs"></i>
+                          </button>
+                        </div>
+                      ` : `
+                        <button data-action="set-day-meal" data-pid="${planId}" data-day="${dayIdx}" data-meal="${meal.key}" class="flex-1 flex items-center justify-center gap-1 border-2 border-dashed border-gray-200 rounded-lg px-3 py-2 text-gray-400 text-sm hover:border-primary-300 hover:text-primary-400 transition">
+                          <i class="fa-solid fa-plus text-xs"></i>
+                          添加${meal.name}
+                        </button>
+                      `}
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    </div>
+  `);
+  
+  window._currentPlanId = planId;
+}
+
+function showSelectDishForPlanModal(planId, dayIndex, mealType) {
+  const dishes = DB.dishes();
+  const mealNames = { breakfast: '早餐', lunch: '午餐', dinner: '晚餐' };
+  const dayNames = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
+  
+  showModal(`
+    <div class="p-5">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="font-display text-lg">🍽️ 选择${dayNames[dayIndex]}${mealNames[mealType]}</h3>
+        <button data-action="close-modal" class="text-gray-400 p-1">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      
+      <div class="max-h-80 overflow-y-auto grid grid-cols-2 gap-2">
+        ${dishes.map((dish, i) => `
+          <button data-action="select-dish-for-plan" data-pid="${planId}" data-day="${dayIndex}" data-meal="${mealType}" data-did="${dish.id}" class="list-item-pro bg-white/60 text-left anim-fade stagger-${(i % 10) + 1}">
+            ${renderSmallDishIcon(dish)}
+            <div class="flex-1 min-w-0">
+              <div class="font-medium text-sm text-gray-800 truncate">${dish.name}</div>
+              <div class="text-xs text-gray-400">${dish.category}</div>
+            </div>
+          </button>
+        `).join('')}
+      </div>
+    </div>
+  `);
+}
+
+// ========== 功能2：冰箱库存模态框 ==========
+function showInventoryModal() {
+  const items = DB.inventoryFull() || [];
+  const lowStock = DB.getLowStockItems ? DB.getLowStockItems() : [];
+  const expiring = DB.getExpiringSoon ? DB.getExpiringSoon() : [];
+  
+  showModal(`
+    <div class="p-5">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="font-display text-lg">🧊 冰箱库存</h3>
+        <button data-action="close-modal" class="text-gray-400 p-1">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      
+      ${(lowStock.length > 0 || expiring.length > 0) ? `
+        <div class="mb-4 space-y-2">
+          ${lowStock.length > 0 ? `
+            <div class="card-pro p-3 bg-amber-50/80">
+              <div class="flex items-center gap-2 text-amber-600 text-sm font-medium">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                ${lowStock.length} 种食材库存不足
+              </div>
+            </div>
+          ` : ''}
+          ${expiring.length > 0 ? `
+            <div class="card-pro p-3 bg-red-50/80">
+              <div class="flex items-center gap-2 text-red-500 text-sm font-medium">
+                <i class="fa-solid fa-clock"></i>
+                ${expiring.length} 种食材即将过期
+              </div>
+            </div>
+          ` : ''}
+        </div>
+      ` : ''}
+      
+      <button data-action="add-inventory-item" class="w-full py-3 btn-primary rounded-xl font-medium mb-4">
+        <i class="fa-solid fa-plus mr-2"></i>添加食材
+      </button>
+      
+      <div class="max-h-80 overflow-y-auto">
+        ${items.length === 0 ? `
+          <div class="empty-state-pro">
+            <span class="empty-icon-pro">🧊</span>
+            <h3 class="empty-title-pro">冰箱是空的</h3>
+            <p class="empty-desc-pro">点击上方按钮添加食材吧～</p>
+          </div>
+        ` : items.map((item, i) => {
+          const isLow = (item.quantity || 0) <= (item.min_stock || 0);
+          
+          return `
+            <div class="list-item-pro bg-white/60 mb-3 anim-fade stagger-${(i % 10) + 1}">
+              <div class="w-12 h-12 rounded-xl bg-gradient-to-br ${isLow ? 'from-amber-50 to-orange-100' : 'from-blue-50 to-cyan-100'} flex items-center justify-center text-2xl shrink-0">
+                ${getCategoryEmoji(item.category)}
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="font-medium text-sm text-gray-800 flex items-center gap-2">
+                  ${item.name}
+                  ${isLow ? '<span class="badge-amber text-xs">库存低</span>' : ''}
+                </div>
+                <div class="text-xs text-gray-400 mt-0.5">
+                  ${item.quantity || 0} ${item.unit || '份'} · ${item.location || '冰箱'}
+                  ${item.expiry_date ? ` · 到期: ${item.expiry_date}` : ''}
+                </div>
+              </div>
+              <div class="flex gap-1 shrink-0">
+                <button data-action="use-inventory-item" data-iid="${item.id}" class="w-8 h-8 rounded-lg bg-green-100 text-green-600 flex items-center justify-center" title="使用">
+                  <i class="fa-solid fa-minus"></i>
+                </button>
+                <button data-action="edit-inventory-item" data-iid="${item.id}" class="w-8 h-8 rounded-lg bg-blue-100 text-blue-500 flex items-center justify-center" title="编辑">
+                  <i class="fa-solid fa-pen"></i>
+                </button>
+                <button data-action="delete-inventory-item" data-iid="${item.id}" class="w-8 h-8 rounded-lg bg-red-50 text-red-400 flex items-center justify-center" title="删除">
+                  <i class="fa-solid fa-trash"></i>
+                </button>
+              </div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    </div>
+  `);
+}
+
+function getCategoryEmoji(category) {
+  const emojis = {
+    '蔬菜': '🥬', '肉类': '🥩', '海鲜': '🦐', '蛋奶': '🥚',
+    '主食': '🍚', '调料': '🧂', '水果': '🍎', '饮料': '🥤',
+    '零食': '🍪', '冷冻': '🧊', '其他': '📦'
+  };
+  return emojis[category] || '📦';
+}
+
+function showAddInventoryModal(itemId = null) {
+  const item = itemId ? (DB.inventoryFull() || []).find(i => i.id === itemId) : null;
+  const isEdit = !!item;
+  
+  const categories = ['蔬菜', '肉类', '海鲜', '蛋奶', '主食', '调料', '水果', '饮料', '零食', '冷冻', '其他'];
+  const units = ['份', '个', '斤', '克', '千克', '包', '袋', '瓶', '盒', '罐'];
+  const locations = ['冰箱冷藏', '冰箱冷冻', '橱柜', '餐桌', '其他'];
+  
+  showModal(`
+    <div class="p-5">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="font-display text-lg">${isEdit ? '✏️ 编辑食材' : '➕ 添加食材'}</h3>
+        <button data-action="close-modal" class="text-gray-400 p-1">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      
+      <div class="space-y-3">
+        <div>
+          <label class="text-xs text-gray-400 block mb-1">食材名称 *</label>
+          <input id="inv-name" value="${item?.name || ''}" class="w-full px-3 py-2.5 text-sm" placeholder="如：西红柿">
+        </div>
+        
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-xs text-gray-400 block mb-1">分类</label>
+            <select id="inv-category" class="w-full px-3 py-2.5 text-sm">
+              ${categories.map(c => `<option value="${c}" ${item?.category === c ? 'selected' : ''}>${c}</option>`).join('')}
+            </select>
+          </div>
+          <div>
+            <label class="text-xs text-gray-400 block mb-1">位置</label>
+            <select id="inv-location" class="w-full px-3 py-2.5 text-sm">
+              ${locations.map(l => `<option value="${l}" ${item?.location === l ? 'selected' : ''}>${l}</option>`).join('')}
+            </select>
+          </div>
+        </div>
+        
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-xs text-gray-400 block mb-1">数量</label>
+            <input id="inv-quantity" type="number" value="${item?.quantity || 1}" min="0" step="0.1" class="w-full px-3 py-2.5 text-sm">
+          </div>
+          <div>
+            <label class="text-xs text-gray-400 block mb-1">单位</label>
+            <select id="inv-unit" class="w-full px-3 py-2.5 text-sm">
+              ${units.map(u => `<option value="${u}" ${item?.unit === u ? 'selected' : ''}>${u}</option>`).join('')}
+            </select>
+          </div>
+        </div>
+        
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-xs text-gray-400 block mb-1">过期日期</label>
+            <input id="inv-expiry" type="date" value="${item?.expiry_date || ''}" class="w-full px-3 py-2.5 text-sm">
+          </div>
+          <div>
+            <label class="text-xs text-gray-400 block mb-1">最低库存提醒</label>
+            <input id="inv-min-stock" type="number" value="${item?.min_stock || 0}" min="0" step="0.1" class="w-full px-3 py-2.5 text-sm">
+          </div>
+        </div>
+        
+        <div>
+          <label class="text-xs text-gray-400 block mb-1">备注</label>
+          <input id="inv-notes" value="${item?.notes || ''}" class="w-full px-3 py-2.5 text-sm" placeholder="可选">
+        </div>
+        
+        <button data-action="save-inventory-item" data-iid="${itemId || ''}" class="w-full py-3 btn-primary rounded-xl font-medium">
+          ${isEdit ? '保存修改' : '添加食材'}
+        </button>
+      </div>
+    </div>
+  `);
+}
+
+// ========== 功能4：营养分析模态框 ==========
+function showNutritionModal() {
+  const today = DB.today();
+  const todayNutrition = DB.getNutritionForDate ? DB.getNutritionForDate(today) : null;
+  const goal = DB.getGoalForRole ? DB.getGoalForRole('wife') : null;
+  
+  const defaultGoal = {
+    daily_calories: 2000,
+    daily_protein: 60,
+    daily_carbs: 250,
+    daily_fat: 65,
+    daily_fiber: 25
+  };
+  
+  const g = goal || defaultGoal;
+  const current = todayNutrition || {
+    total_calories: 0,
+    total_protein: 0,
+    total_carbs: 0,
+    total_fat: 0,
+    total_fiber: 0
+  };
+  
+  const nutrients = [
+    { key: 'calories', name: '热量', value: current.total_calories || 0, goal: g.daily_calories, unit: 'kcal', color: 'primary' },
+    { key: 'protein', name: '蛋白质', value: current.total_protein || 0, goal: g.daily_protein, unit: 'g', color: 'blue' },
+    { key: 'carbs', name: '碳水', value: current.total_carbs || 0, goal: g.daily_carbs, unit: 'g', color: 'amber' },
+    { key: 'fat', name: '脂肪', value: current.total_fat || 0, goal: g.daily_fat, unit: 'g', color: 'purple' },
+    { key: 'fiber', name: '膳食纤维', value: current.total_fiber || 0, goal: g.daily_fiber, unit: 'g', color: 'green' }
+  ];
+  
+  showModal(`
+    <div class="p-5">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="font-display text-lg">📊 今日营养</h3>
+        <button data-action="close-modal" class="text-gray-400 p-1">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      
+      <!-- 今日概览 -->
+      <div class="card-pro p-4 mb-4 text-center">
+        <div class="text-3xl font-black gradient-text-primary mb-1">
+          ${Math.round(current.total_calories || 0)}
+        </div>
+        <div class="text-sm text-gray-500">
+          今日已摄入 / 目标 ${g.daily_calories} kcal
+        </div>
+        <div class="progress-bar-pro mt-3">
+          <div class="progress-fill-pro" style="width: ${Math.min(100, ((current.total_calories || 0) / g.daily_calories) * 100)}%"></div>
+        </div>
+      </div>
+      
+      <!-- 各营养素详情 -->
+      <div class="space-y-3 max-h-72 overflow-y-auto">
+        ${nutrients.map((n, i) => {
+          const pct = Math.min(100, (n.value / n.goal) * 100);
+          const colorClass = {
+            primary: '', blue: 'progress-bar-blue progress-fill-blue',
+            amber: 'progress-bar-amber progress-fill-amber',
+            purple: 'progress-bar-purple progress-fill-purple',
+            green: 'progress-bar-green progress-fill-green'
+          };
+          
+          return `
+            <div class="list-item-pro bg-white/60 anim-fade stagger-${i + 1}">
+              <div class="flex-1">
+                <div class="flex items-center justify-between mb-1">
+                  <span class="text-sm font-medium text-gray-700">${n.name}</span>
+                  <span class="text-xs text-gray-400">${Math.round(n.value)} / ${n.goal} ${n.unit}</span>
+                </div>
+                <div class="progress-bar-pro ${colorClass[n.color] || ''}" style="height: 8px;">
+                  <div class="progress-fill-pro ${colorClass[n.color]?.replace('progress-bar-', '') || ''}" style="width: ${pct}%;"></div>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+      
+      <div class="mt-4 text-xs text-gray-400 text-center">
+        💡 点过的菜会自动计算营养哦～
+      </div>
+    </div>
+  `);
+}
+
+// ========== 功能5：暗黑模式相关 ==========
+function applyDarkMode(isDark) {
+  if (isDark) {
+    document.documentElement.classList.add('dark');
+    document.body.classList.add('dark-mode');
+  } else {
+    document.documentElement.classList.remove('dark');
+    document.body.classList.remove('dark-mode');
+  }
+}
+
+// 初始化时检查暗黑模式
+setTimeout(() => {
+  const isDark = DB.isDarkMode ? DB.isDarkMode() : localStorage.getItem('pp_dark_mode') === 'true';
+  if (isDark) {
+    applyDarkMode(true);
+  }
+}, 100);
+
+// ========== 功能6：数据备份模态框 ==========
+function showBackupModal() {
+  const backups = DB.backups() || [];
+  
+  showModal(`
+    <div class="p-5">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="font-display text-lg">💾 数据备份</h3>
+        <button data-action="close-modal" class="text-gray-400 p-1">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      
+      <button data-action="create-backup" class="w-full py-3 btn-primary rounded-xl font-medium mb-4">
+        <i class="fa-solid fa-cloud-arrow-up mr-2"></i>创建新备份
+      </button>
+      
+      <div class="max-h-80 overflow-y-auto">
+        ${backups.length === 0 ? `
+          <div class="empty-state-pro">
+            <span class="empty-icon-pro">💾</span>
+            <h3 class="empty-title-pro">还没有备份</h3>
+            <p class="empty-desc-pro">点击上方按钮备份你的数据吧～</p>
+          </div>
+        ` : backups.map((bk, i) => `
+          <div class="list-item-pro bg-white/60 mb-3 anim-fade stagger-${(i % 10) + 1}">
+            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-50 to-cyan-100 flex items-center justify-center text-2xl shrink-0">
+              💾
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="font-medium text-sm text-gray-800">${bk.name}</div>
+              <div class="text-xs text-gray-400 mt-0.5">
+                ${bk.record_count || 0} 条记录 · ${fmtDateTime(bk.created_at)}
+              </div>
+            </div>
+            <div class="flex gap-1 shrink-0">
+              <button data-action="download-backup" data-bid="${bk.id}" class="w-8 h-8 rounded-lg bg-blue-100 text-blue-500 flex items-center justify-center" title="下载">
+                <i class="fa-solid fa-download"></i>
+              </button>
+              <button data-action="delete-backup" data-bid="${bk.id}" class="w-8 h-8 rounded-lg bg-red-50 text-red-400 flex items-center justify-center" title="删除">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `);
+}
+
+// ========== 功能7：智能推荐模态框 ==========
+function showSmartRecommendModal() {
+  const dishes = DB.dishes();
+  
+  // 简单的推荐逻辑：最近没吃过的 + 收藏的
+  const favorites = dishes.filter(d => d.is_favorite);
+  const recent = DB.getRecentDishes ? DB.getRecentDishes() : [];
+  const recentIds = new Set(recent.map(r => r.dish?.id));
+  
+  const recommendations = [
+    ...favorites.filter(d => !recentIds.has(d.id)),
+    ...dishes.filter(d => !recentIds.has(d.id) && !d.is_favorite)
+  ].slice(0, 12);
+  
+  showModal(`
+    <div class="p-5">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="font-display text-lg">🧠 智能推荐</h3>
+        <button data-action="close-modal" class="text-gray-400 p-1">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      
+      <div class="text-xs text-gray-400 mb-4">
+        💡 基于你的口味和历史记录推荐
+      </div>
+      
+      <div class="max-h-80 overflow-y-auto grid grid-cols-2 gap-2">
+        ${recommendations.length === 0 ? `
+          <div class="col-span-2 empty-state-pro">
+            <span class="empty-icon-pro">🧠</span>
+            <h3 class="empty-title-pro">暂无推荐</h3>
+          </div>
+        ` : recommendations.map((dish, i) => {
+          const isSelected = _selDishes.has(dish.id);
+          
+          return `
+            <button data-action="${isSelected ? '' : 'add-smart-dish'}" data-did="${dish.id}" class="list-item-pro bg-white/60 text-left anim-fade stagger-${(i % 10) + 1} ${isSelected ? 'ring-2 ring-primary-300' : ''}">
+              ${renderSmallDishIcon(dish)}
+              <div class="flex-1 min-w-0">
+                <div class="font-medium text-sm text-gray-800 truncate flex items-center gap-1">
+                  ${dish.name}
+                  ${dish.is_favorite ? '<span class="text-amber-400">⭐</span>' : ''}
+                </div>
+                <div class="text-xs text-gray-400">${dish.category}</div>
+              </div>
+              ${isSelected ? '<i class="fa-solid fa-check text-primary-400"></i>' : ''}
+            </button>
+          `;
+        }).join('')}
+      </div>
+    </div>
+  `);
+}
+
+// ========== 功能3：评分评价模态框 ==========
+function showReviewsModal() {
+  const reviews = DB.reviews ? DB.reviews() : [];
+  const dishes = DB.dishes();
+  
+  // 按菜品分组统计
+  const dishStats = {};
+  reviews.forEach(r => {
+    if (!dishStats[r.dish_id]) {
+      const dish = dishes.find(d => d.id === r.dish_id);
+      dishStats[r.dish_id] = {
+        dish: dish,
+        reviews: [],
+        totalRating: 0,
+        count: 0
+      };
+    }
+    dishStats[r.dish_id].reviews.push(r);
+    if (r.rating) {
+      dishStats[r.dish_id].totalRating += r.rating;
+      dishStats[r.dish_id].count++;
+    }
+  });
+  
+  const statsList = Object.values(dishStats).sort((a, b) => b.count - a.count);
+  
+  function renderStars(rating, max = 5) {
+    let html = '';
+    for (let i = 1; i <= max; i++) {
+      if (i <= rating) {
+        html += '<i class="fa-solid fa-star text-amber-400"></i>';
+      } else if (i - 0.5 <= rating) {
+        html += '<i class="fa-solid fa-star-half-stroke text-amber-400"></i>';
+      } else {
+        html += '<i class="fa-regular fa-star text-gray-300"></i>';
+      }
+    }
+    return html;
+  }
+  
+  showModal(`
+    <div class="p-5">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="font-display text-lg">⭐ 评分评价</h3>
+        <button data-action="close-modal" class="text-gray-400 p-1">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      
+      <div class="text-xs text-gray-400 mb-4">
+        老婆对各菜品的评价统计
+      </div>
+      
+      <div class="max-h-80 overflow-y-auto">
+        ${statsList.length === 0 ? `
+          <div class="empty-state-pro">
+            <span class="empty-icon-pro">⭐</span>
+            <h3 class="empty-title-pro">还没有评价</h3>
+            <p class="empty-desc-pro">吃完饭后给小跟班的手艺打个分吧～</p>
+          </div>
+        ` : statsList.map((stat, i) => {
+          const avgRating = stat.count > 0 ? (stat.totalRating / stat.count).toFixed(1) : '-';
+          const dish = stat.dish;
+          
+          return `
+            <div class="list-item-pro bg-white/60 mb-3 anim-fade stagger-${(i % 10) + 1}">
+              <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-50 to-orange-100 flex items-center justify-center text-2xl shrink-0">
+                ${dish ? (DISH_EMOJIS[dish.name] || '🍽️') : '🍽️'}
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="font-medium text-sm text-gray-800 flex items-center gap-2">
+                  ${dish ? dish.name : '未知菜品'}
+                </div>
+                <div class="flex items-center gap-2 mt-1">
+                  <div class="flex items-center gap-0.5">
+                    ${renderStars(stat.count > 0 ? Math.round(stat.totalRating / stat.count) : 0)}
+                  </div>
+                  <span class="text-xs text-gray-500">${avgRating} / 5</span>
+                  <span class="text-xs text-gray-400">(${stat.count}次)</span>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('')}
+        
+        ${reviews.length > 0 ? `
+          <div class="divider-pro mt-4 mb-3">
+            <span>📝 最新评价</span>
+          </div>
+          
+          ${reviews.slice(0, 5).map((r, i) => {
+            const dish = dishes.find(d => d.id === r.dish_id);
+            return `
+              <div class="list-item-pro bg-white/40 mb-2 anim-fade stagger-${(i % 10) + 1}">
+                <div class="flex-1">
+                  <div class="flex items-center justify-between mb-1">
+                    <span class="text-xs font-medium text-gray-700">${dish ? dish.name : '未知菜品'}</span>
+                    <span class="text-[10px] text-gray-400">${r.created_at ? new Date(r.created_at).toLocaleDateString('zh-CN') : ''}</span>
+                  </div>
+                  ${r.rating ? `<div class="flex items-center gap-0.5 mb-1">${renderStars(r.rating)}</div>` : ''}
+                  ${r.comment ? `<p class="text-xs text-gray-600">${r.comment}</p>` : ''}
+                </div>
+              </div>
+            `;
+          }).join('')}
+        ` : ''}
+      </div>
+    </div>
+  `);
+}
+
+// ========== 功能8：分餐分量模态框 ==========
+function showServingModal() {
+  // 内置默认分量（如果数据库没有就用这个）
+  const builtinMultipliers = [
+    {id:'1人',name:'1人份',multiplier:1,icon:'👤'},
+    {id:'2人',name:'2人份',multiplier:2,icon:'👫'},
+    {id:'3人',name:'3人份',multiplier:3,icon:'👨‍👩‍👧'},
+    {id:'4人+',name:'4人以上',multiplier:4,icon:'👨‍👩‍👧‍👦'}
+  ];
+  
+  // 从数据库获取的分量，需要规范化字段
+  const dbMultipliers = (DB.servingMultipliers ? DB.servingMultipliers() : []).map(m => {
+    // 规范化：数据库用 people_count，前端用 id
+    // 数据库可能没有 icon，给默认值
+    return {
+      id: m.id || (m.people_count ? m.people_count + '人' : 'unknown'),
+      name: m.name || (m.people_count ? m.people_count + '人份' : '未知'),
+      multiplier: parseFloat(m.multiplier) || 1,
+      icon: m.icon || (m.people_count === 1 ? '👤' : m.people_count === 2 ? '👫' : m.people_count === 3 ? '👨‍👩‍👧' : m.people_count >= 4 ? '👨‍👩‍👧‍👦' : '🍽️')
+    };
+  });
+  
+  // 优先用数据库的，如果数据库为空就用内置的
+  const allMultipliers = dbMultipliers.length > 0 ? dbMultipliers : builtinMultipliers;
+  
+  // 当前选中的分量
+  const currentServing = localStorage.getItem('pp_current_serving') || (allMultipliers[0] ? allMultipliers[0].id : '1人');
+  const currentMultiplier = parseFloat(localStorage.getItem('pp_serving_multiplier')) || 1;
+  
+  showModal(`
+    <div class="p-5">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="font-display text-lg">🍽️ 分餐分量</h3>
+        <button data-action="close-modal" class="text-gray-400 p-1">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      
+      <div class="text-xs text-gray-400 mb-4">
+        选择用餐人数，自动调整食材用量
+      </div>
+      
+      <div class="grid grid-cols-2 gap-3 mb-4">
+        ${allMultipliers.map((m, i) => `
+          <button data-action="select-serving" data-serving-id="${m.id}" data-multiplier="${m.multiplier}" 
+            class="list-item-pro bg-white/60 flex-col items-center justify-center gap-2 py-4 anim-fade stagger-${(i % 10) + 1} ${currentServing === m.id ? 'ring-2 ring-primary-300 bg-primary-50/80' : ''}">
+            <span class="text-3xl">${m.icon}</span>
+            <span class="text-sm font-medium text-gray-700">${m.name}</span>
+            ${currentServing === m.id ? '<span class="text-xs text-primary-400 font-medium">当前选中</span>' : ''}
+          </button>
+        `).join('')}
+      </div>
+      
+      <div class="divider-pro">
+        <span>💡 提示</span>
+      </div>
+      
+      <div class="text-xs text-gray-500 leading-relaxed">
+        当前倍率：<span class="font-medium text-primary-400">×${currentMultiplier}</span><br>
+        选择分量后，查看菜品教程时会自动调整食材用量。比如选择"2人份"，所有食材用量都会 ×2 哦～
+      </div>
+    </div>
+  `);
+}
+
+// ========== 功能9：教程收藏模态框 ==========
+function showRecipeCollectionModal() {
+  const collections = DB.recipeCollections ? DB.recipeCollections() : [];
+  const dishesWithRecipes = DB.dishes().filter(d => d.recipe && d.recipe.trim());
+  
+  showModal(`
+    <div class="p-5">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="font-display text-lg">📖 教程收藏</h3>
+        <button data-action="close-modal" class="text-gray-400 p-1">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      
+      <div class="text-xs text-gray-400 mb-4">
+        以下菜品有详细做法教程
+      </div>
+      
+      <div class="max-h-80 overflow-y-auto">
+        ${dishesWithRecipes.length === 0 ? `
+          <div class="empty-state-pro">
+            <span class="empty-icon-pro">📖</span>
+            <h3 class="empty-title-pro">还没有带教程的菜</h3>
+            <p class="empty-desc-pro">编辑菜品时添加做法教程吧～</p>
+          </div>
+        ` : dishesWithRecipes.map((dish, i) => `
+          <button data-action="show-recipe" data-did="${dish.id}" class="list-item-pro bg-white/60 w-full text-left mb-3 anim-fade stagger-${(i % 10) + 1}">
+            ${renderDishIcon(dish)}
+            <div class="flex-1 min-w-0">
+              <div class="font-medium text-sm text-gray-800 flex items-center gap-2">
+                ${dish.name}
+                ${dish.is_favorite ? '<span class="text-amber-400">⭐</span>' : ''}
+              </div>
+              <div class="text-xs text-gray-400 mt-0.5">
+                ${dish.category} · ${dish.cook_time || '?'}分钟
+              </div>
+            </div>
+            <i class="fa-solid fa-chevron-right text-gray-300"></i>
+          </button>
+        `).join('')}
+      </div>
+    </div>
+  `);
+}
+
+// 补充事件处理
+document.addEventListener('click', async (e) => {
+  const btn = e.target.closest('[data-action]');
+  if (!btn) return;
+  
+  const action = btn.dataset.action;
+  const d = btn.dataset;
+  
+  switch(action) {
+    case 'view-weekly-plan-detail':
+      closeModal();
+      showWeeklyPlanDetailModal(d.pid);
+      break;
+      
+    case 'edit-inventory-item':
+      closeModal();
+      showAddInventoryModal(d.iid);
+      break;
+      
+    case 'download-backup':
+      const backups = DB.backups() || [];
+      const bk = backups.find(b => b.id === d.bid);
+      if (bk && bk.data) {
+        const blob = new Blob([bk.data], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${bk.name || 'backup'}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+        toast('备份已下载！', 'success');
+      }
+      break;
+      
+    case 'show-recipe':
+      closeModal();
+      if (typeof showRecipeModal === 'function') {
+        showRecipeModal(d.did);
+      }
+      break;
+      
+    case 'select-serving':
+      const servingId = d.servingId;
+      const multiplier = parseFloat(d.multiplier) || 1;
+      localStorage.setItem('pp_current_serving', servingId);
+      localStorage.setItem('pp_serving_multiplier', multiplier.toString());
+      toast(`已切换到 ${servingId} 🍽️`, 'success');
+      closeModal();
+      showServingModal();
+      break;
+  }
+});
 
 // 初始化 WebP 检测
 checkWebPSupport();
