@@ -24,7 +24,7 @@ tailwind.config={theme:{extend:{colors:{
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 ::-webkit-scrollbar{display:none}
 html,body{height:100%}
-body{overscroll-behavior:none;margin:0}
+body{overscroll-behavior:none;margin:0;position:relative;z-index:1}
 
 /* ============================================
    炫酷动态渐变背景 - 专业升级版
@@ -68,7 +68,7 @@ body{overscroll-behavior:none;margin:0}
 .deco-heart,.deco-star,.deco-sparkle{
   position:fixed;
   pointer-events:none;
-  z-index:1;
+  z-index:0;
   opacity:.6;
   user-select:none;
 }
@@ -214,7 +214,6 @@ body{overscroll-behavior:none;margin:0}
   transition:all .35s cubic-bezier(.34,1.56,.64,1);
   position:relative;
   overflow:hidden;
-  transform-style:preserve-3d;
 }
 .dish-card::before{
   content:'';
@@ -374,6 +373,7 @@ body{overscroll-behavior:none;margin:0}
 .tab-btn{
   transition:all .35s cubic-bezier(.34,1.56,.64,1);
   position:relative;
+  min-height:56px;
 }
 .tab-btn.active{
   color:#FF6B9D;
@@ -392,6 +392,30 @@ body{overscroll-behavior:none;margin:0}
   box-shadow:0 4px 12px rgba(255,107,157,0.4);
 }
 
+/* 确保图标不干扰点击事件 */
+.tab-btn i, .tab-btn .fa-solid {
+  pointer-events: none;
+}
+
+/* 底部导航按钮确保填满区域 */
+nav.fixed button {
+  position: relative;
+  z-index: 1;
+}
+nav.fixed button > * {
+  pointer-events: none;
+}
+
+/* 全局：确保所有带 data-action 的按钮的子元素不干扰点击 */
+[data-action] > * {
+  pointer-events: none;
+}
+[data-action] i,
+[data-action] span,
+[data-action] .fa-solid {
+  pointer-events: none;
+}
+
 /* ============================================
    模态框 - 专业版
    ============================================ */
@@ -399,6 +423,7 @@ body{overscroll-behavior:none;margin:0}
   background:rgba(0,0,0,0.15);
   backdrop-filter:blur(16px);
   -webkit-backdrop-filter:blur(16px);
+  z-index:100;
 }
 
 /* ============================================
@@ -538,6 +563,7 @@ try{sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY)}catch(e){console.
 const DB={
   _dishes:[],_orders:[],_templates:[],_inventory:{},_settings:{},
   _ready:false,
+  _subscribed:false,
 
   async init(){
     if(this._ready)return;
@@ -561,7 +587,8 @@ const DB={
   },
 
   _subscribe(){
-    if(!sb)return;
+    if(!sb || this._subscribed)return;
+    this._subscribed = true;
     const ch=sb.channel('pp-realtime');
     ch.on('postgres_changes',{event:'*',schema:'public',table:'orders'},async()=>{
       const{data}=await sb.from('orders').select('*').order('created_at',{ascending:false});
@@ -666,7 +693,24 @@ function toast(msg,type='info'){
   el.textContent=msg;$('#toast-box').appendChild(el);
   setTimeout(()=>{el.style.opacity='0';el.style.transition='opacity .3s';setTimeout(()=>el.remove(),300)},2500);
 }
-function showModal(html){const m=$('#modal');m.classList.remove('hidden');m.innerHTML=`<div class="modal-mask absolute inset-0 flex items-end sm:items-center justify-center" data-action="close-modal"><div class="bg-white w-full sm:max-w-md sm:rounded-2xl rounded-t-2xl anim-slide max-h-[85vh] overflow-y-auto relative z-50" onclick="event.stopPropagation()">${html}</div></div>`}
+function showModal(html){
+  const m=$('#modal');
+  m.classList.remove('hidden');
+  m.innerHTML=`<div class="modal-mask absolute inset-0 flex items-end sm:items-center justify-center">
+    <div class="bg-white w-full sm:max-w-md sm:rounded-2xl rounded-t-2xl anim-slide max-h-[85vh] overflow-y-auto relative z-50">
+      ${html}
+    </div>
+  </div>`;
+  
+  const mask = m.querySelector('.modal-mask');
+  const content = m.querySelector('.bg-white');
+  
+  mask.addEventListener('click', (e) => {
+    if (e.target === mask) {
+      closeModal();
+    }
+  });
+}
 function closeModal(){$('#modal').classList.add('hidden');$('#modal').innerHTML=''}
 function loadingHTML(){return `<div class="min-h-screen flex flex-col items-center justify-center gap-3"><div class="loading-spinner"></div><p class="text-gray-400 text-sm">加载中...</p></div>`}
 function showConfetti(){
@@ -703,7 +747,7 @@ function createParticles(){
       animation-delay:${delay}s;
       pointer-events:none;
       user-select:none;
-      z-index:1;
+      z-index:0;
     `;
     if(i%2===0)p.style.animationDirection='reverse';
     container.appendChild(p);
@@ -844,11 +888,33 @@ function pgRoleSelect(){
    ============================================================ */
 function wifeNav(tab){
   const tabs=[{id:'home',icon:'fa-hand-pointer',label:'点菜'},{id:'calendar',icon:'fa-calendar-days',label:'历史'}];
-  return `<nav class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-lg border-t border-primary-50 flex bottom-safe z-40">${tabs.map(t=>`<button data-action="wife-tab" data-tab="${t.id}" class="tab-btn flex-1 flex flex-col items-center py-2.5 text-xs ${tab===t.id?'active text-primary-400':'text-gray-400'}"><i class="fa-solid ${t.icon} text-lg mb-0.5"></i>${t.label}</button>`).join('')}<button data-action="switch-role" class="flex-1 flex flex-col items-center py-2.5 text-xs text-gray-400"><i class="fa-solid fa-right-left text-lg mb-0.5"></i>切换</button></nav>`;
+  return `<nav class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-lg border-t border-primary-50 flex bottom-safe z-40">
+    ${tabs.map(t=>`
+      <button data-action="wife-tab" data-tab="${t.id}" class="tab-btn flex-1 flex flex-col items-center justify-center py-3 px-2 text-xs ${tab===t.id?'active text-primary-400':'text-gray-400'}">
+        <i class="fa-solid ${t.icon} text-lg mb-1"></i>
+        <span>${t.label}</span>
+      </button>
+    `).join('')}
+    <button data-action="switch-role" class="flex-1 flex flex-col items-center justify-center py-3 px-2 text-xs text-gray-400">
+      <i class="fa-solid fa-right-left text-lg mb-1"></i>
+      <span>切换</span>
+    </button>
+  </nav>`;
 }
 function hubbyNav(tab){
   const tabs=[{id:'home',icon:'fa-bell',label:'接单'},{id:'manage',icon:'fa-book',label:'菜谱'},{id:'stats',icon:'fa-chart-pie',label:'统计'},{id:'settings',icon:'fa-gear',label:'设置'}];
-  return `<nav class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-lg border-t border-primary-50 flex bottom-safe z-40">${tabs.map(t=>`<button data-action="hubby-tab" data-tab="${t.id}" class="tab-btn flex-1 flex flex-col items-center py-2.5 text-xs ${tab===t.id?'active text-primary-400':'text-gray-400'}"><i class="fa-solid ${t.icon} text-lg mb-0.5"></i>${t.label}</button>`).join('')}<button data-action="switch-role" class="flex-1 flex flex-col items-center py-2.5 text-xs text-gray-400"><i class="fa-solid fa-right-left text-lg mb-0.5"></i>切换</button></nav>`;
+  return `<nav class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-lg border-t border-primary-50 flex bottom-safe z-40">
+    ${tabs.map(t=>`
+      <button data-action="hubby-tab" data-tab="${t.id}" class="tab-btn flex-1 flex flex-col items-center justify-center py-3 px-2 text-xs ${tab===t.id?'active text-primary-400':'text-gray-400'}">
+        <i class="fa-solid ${t.icon} text-lg mb-1"></i>
+        <span>${t.label}</span>
+      </button>
+    `).join('')}
+    <button data-action="switch-role" class="flex-1 flex flex-col items-center justify-center py-3 px-2 text-xs text-gray-400">
+      <i class="fa-solid fa-right-left text-lg mb-1"></i>
+      <span>切换</span>
+    </button>
+  </nav>`;
 }
 
 /* ============================================================
@@ -931,7 +997,7 @@ function renderDishGrid(dishes){
 const DISH_EMOJIS={
   // 荤菜
   '红烧排骨':'🍖','糖醋排骨':'🍖','排骨':'🍖',
-  '红烧肉':'🥩','回锅肉':'�','水煮牛肉':'��','牛肉':'🥩',
+  '红烧肉':'🥩','回锅肉':'🥩','水煮牛肉':'🥩','牛肉':'🥩',
   '可乐鸡翅':'🍗','烤鸡翅':'🍗','炸鸡':'🍗','鸡翅':'🍗',
   '糖醋里脊':'🥩','里脊':'🥩',
   '青椒肉丝':'🥩','鱼香肉丝':'🥩','宫保鸡丁':'🍗','鸡丁':'🍗',
@@ -942,11 +1008,11 @@ const DISH_EMOJIS={
   // 素菜
   '番茄炒蛋':'🍳','西红柿炒蛋':'🍳','炒蛋':'🍳','蒸蛋':'🥚',
   '清炒西兰花':'🥦','西兰花':'🥦','花菜':'🥦',
-  '蒜蓉青菜':'🥬','青菜':'🥬','炒青菜':'🥬','娃娃菜':'�',
-  '醋溜白菜':'�','白菜':'🥬',
-  '干煸四季豆':'�','四季豆':'�','豆角':'�',
+  '蒜蓉青菜':'🥬','青菜':'🥬','炒青菜':'🥬','娃娃菜':'🥬',
+  '醋溜白菜':'🥬','白菜':'🥬',
+  '干煸四季豆':'🫛','四季豆':'🫛','豆角':'🫛',
   '地三鲜':'🍆','茄子':'🍆',
-  '凉拌黄瓜':'�','黄瓜':'🥒',
+  '凉拌黄瓜':'🥒','黄瓜':'🥒',
   '麻婆豆腐':'🧈','豆腐':'🧈',
   '炒土豆丝':'🥔','土豆丝':'🥔','土豆':'🥔',
   '蚝油生菜':'🥬','生菜':'🥬',
@@ -1177,7 +1243,7 @@ function pgSettings(){
 /* ============================================================
    模态框
    ============================================================ */
-function showConfirmModal(){if(!_selDishes.size){toast('还没选菜哦','warn');return}const dishes=DB.getDishesByIds([..._selDishes]);const total=dishes.reduce((s,d)=>s+(d.cost_estimate||0),0);showModal(`<div class="p-5"><div class="flex items-center justify-between mb-4"><h3 class="font-display text-lg">确认下单</h3><button data-action="close-modal" class="text-gray-400 p-1"><i class="fa-solid fa-xmark"></i></button></div><div class="flex flex-wrap gap-2 mb-3">${dishes.map(d=>`<span class="bg-primary-50 text-gray-800 px-3 py-1 rounded-full text-sm">${d.name}</span>`).join('')}</div><div class="text-xs text-gray-400 mb-4">${dishes.length}道菜 · 预估~${total}元</div><div class="mb-4"><label class="text-xs text-gray-400 block mb-1">备注（可选）</label><textarea id="order-remark" rows="2" placeholder="少油、不要香菜、想吃辣的..." class="w-full border border-primary-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-primary-400 resize-none"></textarea></div><button onclick="submitOrderDirect();" data-action="submit-order" class="w-full py-3.5 bg-gradient-to-r from-primary-400 to-primary-600 text-white rounded-2xl font-medium text-base active:scale-[.97] transition-transform relative z-50">召唤小跟班做饭</button></div>`)}
+function showConfirmModal(){if(!_selDishes.size){toast('还没选菜哦','warn');return}const dishes=DB.getDishesByIds([..._selDishes]);const total=dishes.reduce((s,d)=>s+(d.cost_estimate||0),0);showModal(`<div class="p-5"><div class="flex items-center justify-between mb-4"><h3 class="font-display text-lg">确认下单</h3><button data-action="close-modal" class="text-gray-400 p-1"><i class="fa-solid fa-xmark"></i></button></div><div class="flex flex-wrap gap-2 mb-3">${dishes.map(d=>`<span class="bg-primary-50 text-gray-800 px-3 py-1 rounded-full text-sm">${d.name}</span>`).join('')}</div><div class="text-xs text-gray-400 mb-4">${dishes.length}道菜 · 预估~${total}元</div><div class="mb-4"><label class="text-xs text-gray-400 block mb-1">备注（可选）</label><textarea id="order-remark" rows="2" placeholder="少油、不要香菜、想吃辣的..." class="w-full border border-primary-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-primary-400 resize-none"></textarea></div><button data-action="submit-order" class="w-full py-3.5 bg-gradient-to-r from-primary-400 to-primary-600 text-white rounded-2xl font-medium text-base active:scale-[.97] transition-transform relative z-50">召唤小跟班做饭</button></div>`)}
 function showCancelModal(oid){showModal(`<div class="p-5"><div class="flex items-center justify-between mb-4"><h3 class="font-display text-lg">今天做不了</h3><button data-action="close-modal" class="text-gray-400 p-1"><i class="fa-solid fa-xmark"></i></button></div><div class="space-y-2 mb-4">${CANCEL_REASONS.map(r=>`<button data-action="do-cancel" data-oid="${oid}" data-reason="${encodeURIComponent(r.text)}" class="w-full flex items-center gap-3 p-3 bg-primary-50 rounded-xl text-left active:bg-primary-50 transition"><i class="fa-solid ${r.icon} text-primary-400 w-5 text-center"></i><span class="text-sm">${r.text}</span></button>`).join('')}<div class="flex items-center gap-2 p-3"><i class="fa-solid fa-pen text-primary-400 w-5 text-center"></i><input type="text" id="cancel-custom" placeholder="其他原因..." class="flex-1 text-sm border-b border-primary-200 focus:outline-none focus:border-primary-400 pb-1 bg-transparent"><button data-action="do-cancel-custom" data-oid="${oid}" class="text-primary-400 text-sm font-medium shrink-0">确定</button></div></div></div>`)}
 function showNoCookModal(){showModal(`<div class="p-5"><div class="flex items-center justify-between mb-4"><h3 class="font-display text-lg">今天不做饭</h3><button data-action="close-modal" class="text-gray-400 p-1"><i class="fa-solid fa-xmark"></i></button></div><div class="space-y-2"><button data-action="save-no-cook" data-reason="${encodeURIComponent('不在家吃')}" class="w-full flex items-center gap-3 p-3 bg-primary-50 rounded-xl active:bg-primary-50"><i class="fa-solid fa-house-circle-xmark text-primary-400 w-6 text-center"></i><span class="text-sm">不在家吃</span></button><button data-action="save-no-cook" data-reason="${encodeURIComponent('小跟班自己解决')}" class="w-full flex items-center gap-3 p-3 bg-primary-50 rounded-xl active:bg-primary-50"><i class="fa-solid fa-bowl-rice text-primary-400 w-6 text-center"></i><span class="text-sm">小跟班自己解决</span></button><div class="flex items-center gap-2 p-3"><i class="fa-solid fa-pen text-primary-400 w-6 text-center"></i><input id="no-cook-custom" placeholder="写一下..." class="flex-1 text-sm border-b border-primary-200 focus:outline-none focus:border-primary-400 pb-1 bg-transparent"><button data-action="save-no-cook-custom" class="text-primary-400 text-sm font-medium">确定</button></div></div></div>`)}
 function showDishModal(did){const d=did?DB.getDish(did):null;const isEdit=!!d;showModal(`<div class="p-5"><div class="flex items-center justify-between mb-4"><h3 class="font-display text-lg">${isEdit?'编辑菜品':'添加菜品'}</h3><button data-action="close-modal" class="text-gray-400 p-1"><i class="fa-solid fa-xmark"></i></button></div><div class="space-y-3"><div><label class="text-xs text-gray-400 block mb-1">菜名</label><input id="dm-name" value="${d?d.name:''}" class="w-full border border-primary-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-primary-400" placeholder="如：红烧排骨"></div><div class="grid grid-cols-2 gap-3"><div><label class="text-xs text-gray-400 block mb-1">分类</label><select id="dm-cat" class="w-full border border-primary-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-primary-400 bg-white">${['荤菜','素菜','汤','主食'].map(c=>`<option ${d&&d.category===c?'selected':''}>${c}</option>`).join('')}</select></div><div><label class="text-xs text-gray-400 block mb-1">烹饪时间(分钟)</label><input id="dm-time" type="number" value="${d?d.cook_time:15}" class="w-full border border-primary-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-primary-400"></div></div><div><label class="text-xs text-gray-400 block mb-1">预估菜价(元)</label><input id="dm-cost" type="number" value="${d?d.cost_estimate:10}" class="w-full border border-primary-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-primary-400"></div><div><label class="text-xs text-gray-400 block mb-1">食材（每行一种）</label><textarea id="dm-ing" rows="3" class="w-full border border-primary-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-primary-400 resize-none" placeholder="排骨500g&#10;葱姜蒜&#10;生抽老抽">${d?(d.ingredients||[]).join('\n'):''}</textarea></div><div><label class="text-xs text-gray-400 block mb-1">做法步骤（可选，每行一步）</label><textarea id="dm-recipe" rows="5" class="w-full border border-primary-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-primary-400 resize-none" placeholder="1. 排骨冷水下锅焯水，去血沫后捞出洗净&#10;2. 锅中放油，加冰糖小火炒出糖色&#10;3. 放入排骨翻炒上色，加葱姜蒜、生抽老抽">${d?d.recipe||'':''}</textarea></div><label class="flex items-center gap-2"><input id="dm-fav" type="checkbox" ${d&&d.is_favorite?'checked':''} class="w-4 h-4 rounded accent-primary-400"><span class="text-sm">设为常吃（置顶显示）</span></label><button data-action="save-dish" data-did="${did||''}" class="w-full py-3 bg-primary-400 text-white rounded-xl font-medium active:scale-95 transition-transform">${isEdit?'保存修改':'添加菜品'}</button></div></div>`)}
@@ -1203,10 +1269,13 @@ window.submitOrderDirect = async function() {
    事件处理
    ============================================================ */
 document.addEventListener('click', async e => {
+  console.log('✅ 点击事件触发！', e.target);
   const btn = e.target.closest('[data-action]');
+  console.log('✅ 找到按钮：', btn);
   if (!btn) return;
   const a = btn.dataset.action;
   const d = btn.dataset;
+  console.log('✅ 执行 action：', a);
   
   switch (a) {
     case 'select-role':
